@@ -49,12 +49,10 @@ $teamMembers = array(
 
 $gamesMenu = array (
     "nim-game" => array (
-        "title" => "Nim Game<sup>&reg;</sup>",
-        "description" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor, ullam!"
+        "title" => "Nim Game",
     ),
     "guessing-game" => array (
         "title" => "The Guessing Game",
-        "description" => "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor, ullam!"
     ),
 );
 

@@ -147,13 +147,13 @@ input {
   height: 20rem;
 }
 
-.guessing-game {
+/* .guessing-game {
   background: url("img/guessing.png");
 }
 
 .nim-game {
   background: url("img/nim.png");
-}
+} */
 
 .guessing-game,
 .nim-game {
@@ -162,6 +162,9 @@ input {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+  overflow: hidden;
 }
 
 .guessing-game:hover,
@@ -174,4 +177,21 @@ input {
   margin: 3rem;
   display: flex;
   justify-content: center;
+}
+
+.btn-games {
+  color: white;
+}
+
+.game-img {
+  width: 100%;
+  height: 100%;
+}
+
+.center-text {
+  position: absolute;
+  transform: translate(10%, -60%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem;
+  border: 2px solid rgba(0, 0, 0, 0.6);
 }
