@@ -1,0 +1,33 @@
+.about-us {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.team-members {
+  text-align: center;
+  margin: 5rem auto 5rem auto;
+  width: 50%;
+}
+
+.members-column {
+  display: flex;
+  justify-content: center;
+  /* flex-direction: column; */
+}
+
+.member-img-size {
+  width: 85%;
+  margin: 1rem;
+}
+
+.team-bio {
+  /* margin-bottom: 5rem; */
+  width: 75%;
+  margin: 1rem auto 5rem auto;
+}
+
+.member {
+  width: 25%;
+}

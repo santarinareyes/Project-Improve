@@ -1,0 +1,27 @@
+.first {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.guessing-game,
+.nim-game {
+  color: white;
+  margin: 1rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+  overflow: hidden;
+  &:hover {
+    opacity: 0.3;
+    cursor: pointer;
+  }
+}
+
+.games-column {
+  margin: 3rem;
+  display: flex;
+  justify-content: center;
+}

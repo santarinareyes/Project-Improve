@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 
 <div class="games-column">
   <?php foreach ($gamesMenu as $game => $which) { ?>
-    <button class="btn <?php echo $game;?>"><img class="game-img" src="img/<?php echo $game;?>.png" alt="<?php echo $which["title"]; ?>"><p class="center-text"><?php echo $which["title"];?></p></button>
+    <button class="btn <?php echo $game;?>"><img class="game-img" src="img/<?php echo $game;?>.png" alt="<?php echo $which["title"]; ?>"><p class="game-name"><?php echo $which["title"];?></p></button>
     <?php }; ?>
 </div>
   <div class="blur hidden"></div>

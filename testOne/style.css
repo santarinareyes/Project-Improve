@@ -4,89 +4,107 @@
   padding: 0;
   font-size: 16px;
   color: black;
-  overflow-x: hidden;
-}
+  overflow-x: hidden; }
 
-.footer {
-  background: beige;
-  display: flex;
-  justify-content: space-around;
-}
+a {
+  text-decoration: none; }
 
-.footer-column {
-  margin: 7rem;
-}
-
-.copy {
-  text-align: center;
-  background: bisque;
-}
+input {
+  text-align: center; }
 
 header {
   background: url(img/header.png);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 70vh;
-}
+  height: 70vh; }
 
 .nav {
   display: flex;
   justify-content: center;
-  background-color: beige;
-}
+  background-color: beige; }
 
 li {
   list-style-type: none;
-  padding: 1rem 0 1rem 0;
-}
-
-a {
-  text-decoration: none;
-}
+  padding: 1rem 0 1rem 0; }
 
 .nav-item {
-  padding: 1rem;
-}
+  padding: 1rem; }
 
 .nav-item:hover {
   position: relative;
-  background-color: bisque;
-}
+  background-color: bisque; }
 
 .about-us {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  text-align: center;
-}
+  text-align: center; }
 
 .team-members {
   text-align: center;
   margin: 5rem auto 5rem auto;
-  width: 50%;
-}
+  width: 50%; }
 
 .members-column {
   display: flex;
   justify-content: center;
-  /* flex-direction: column; */
-}
+  /* flex-direction: column; */ }
 
 .member-img-size {
   width: 85%;
-  margin: 1rem;
-}
+  margin: 1rem; }
 
 .team-bio {
   /* margin-bottom: 5rem; */
   width: 75%;
-  margin: 1rem auto 5rem auto;
-}
+  margin: 1rem auto 5rem auto; }
 
 .member {
-  width: 25%;
-}
+  width: 25%; }
+
+.btn {
+  width: 20%;
+  height: 20rem; }
+
+.btn-games {
+  color: white; }
+
+.game-img {
+  width: 100%;
+  height: 100%; }
+
+.game-name {
+  position: absolute;
+  transform: translate(10%, -60%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem;
+  border: 2px solid rgba(0, 0, 0, 0.6); }
+
+.first {
+  display: flex;
+  flex-direction: column;
+  text-align: center; }
+
+.guessing-game,
+.nim-game {
+  color: white;
+  margin: 1rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+  overflow: hidden; }
+  .guessing-game:hover,
+  .nim-game:hover {
+    opacity: 0.3;
+    cursor: pointer; }
+
+.games-column {
+  margin: 3rem;
+  display: flex;
+  justify-content: center; }
 
 .modal {
   position: fixed;
@@ -102,24 +120,19 @@ a {
   padding: 5rem;
   z-index: 6;
   animation-name: animatetop;
-  animation-duration: 0.07s;
-}
+  animation-duration: 0.07s; }
 
 @keyframes animatetop {
   from {
     top: 0px;
-    opacity: 0;
-  }
+    opacity: 0; }
   to {
     top: 50%;
     left: 50%;
-    opacity: 1;
-  }
-}
+    opacity: 1; } }
 
 .hidden {
-  display: none;
-}
+  display: none; }
 
 .blur {
   position: fixed;
@@ -129,69 +142,16 @@ a {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
-  z-index: 5;
-}
+  z-index: 5; }
 
-.first {
+.footer {
+  background: beige;
   display: flex;
-  flex-direction: column;
+  justify-content: space-around; }
+
+.footer-column {
+  margin: 7rem; }
+
+.copy {
   text-align: center;
-}
-
-input {
-  text-align: center;
-}
-
-.btn {
-  width: 20%;
-  height: 20rem;
-}
-
-/* .guessing-game {
-  background: url("img/guessing.png");
-}
-
-.nim-game {
-  background: url("img/nim.png");
-} */
-
-.guessing-game,
-.nim-game {
-  color: white;
-  margin: 1rem;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  transition: 0.5s ease;
-  backface-visibility: hidden;
-  overflow: hidden;
-}
-
-.guessing-game:hover,
-.nim-game:hover {
-  opacity: 0.3;
-  cursor: pointer;
-}
-
-.games-column {
-  margin: 3rem;
-  display: flex;
-  justify-content: center;
-}
-
-.btn-games {
-  color: white;
-}
-
-.game-img {
-  width: 100%;
-  height: 100%;
-}
-
-.center-text {
-  position: absolute;
-  transform: translate(10%, -60%);
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 0.5rem;
-  border: 2px solid rgba(0, 0, 0, 0.6);
-}
+  background: bisque; }

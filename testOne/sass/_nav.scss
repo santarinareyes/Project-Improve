@@ -1,0 +1,19 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  background-color: beige;
+}
+
+li {
+  list-style-type: none;
+  padding: 1rem 0 1rem 0;
+}
+
+.nav-item {
+  padding: 1rem;
+}
+
+.nav-item:hover {
+  position: relative;
+  background-color: bisque;
+}
