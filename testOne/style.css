@@ -74,10 +74,104 @@ a {
 }
 
 .member-img-size {
-  width: 25rem;
+  width: 85%;
   margin: 1rem;
 }
 
 .team-bio {
-  margin-bottom: 5rem;
+  /* margin-bottom: 5rem; */
+  width: 75%;
+  margin: 1rem auto 5rem auto;
+}
+
+.member {
+  width: 25%;
+}
+
+.modal {
+  position: fixed;
+  margin: auto;
+  text-align: center;
+  height: 30rem;
+  width: 50%;
+  border: 2px solid black;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  padding: 5rem;
+  z-index: 6;
+  animation-name: animatetop;
+  animation-duration: 0.07s;
+}
+
+@keyframes animatetop {
+  from {
+    top: 0px;
+    opacity: 0;
+  }
+  to {
+    top: 50%;
+    left: 50%;
+    opacity: 1;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 5;
+}
+
+.first {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+input {
+  text-align: center;
+}
+
+.btn {
+  width: 20%;
+  height: 20rem;
+}
+
+.guessing-game {
+  background: url("img/guessing.png");
+}
+
+.nim-game {
+  background: url("img/nim.png");
+}
+
+.guessing-game,
+.nim-game {
+  color: white;
+  margin: 1rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.guessing-game:hover,
+.nim-game:hover {
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.games-column {
+  margin: 3rem;
+  display: flex;
+  justify-content: center;
 }
