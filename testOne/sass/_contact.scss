@@ -1,0 +1,40 @@
+.contact-container {
+  height: 50rem;
+  background: url(img/contact.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.contact-container,
+.contact-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.contact-form {
+  align-items: center;
+  height: 50%;
+}
+
+.contact-h1,
+.contact-form {
+  align-self: center;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 1rem;
+  border: 2px solid black;
+}
+
+.contact-titles {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid black;
+  transform: translate(0, 25%);
+}
+
+.left {
+  text-align: start;
+  padding-top: 3px;
+}

@@ -4,9 +4,9 @@
     <a href="contact.php" class="nav-item">Contact</a> -->
 
     <?php
-        foreach ($navItems as $item) {
-            echo "<a class=\"nav-item\" href=\"$item[redirect]\">$item[title]</a>";
-        }
+    foreach ($navItems as $item) {
+        echo "<a class=\"nav-item\" href=\"$item[redirect]\">$item[title]</a>";
+    }
     ?>
 
 </li>

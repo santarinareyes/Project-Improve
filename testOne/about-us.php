@@ -1,6 +1,6 @@
 <?php
-    define("TITLE", "About Us | Just For Fun");    
-    include('includes/header.php');
+define("TITLE", "About Us | Just For Fun");
+include('includes/header.php');
 ?>
 <div class="about-us">
   <div class="team-members">
@@ -18,19 +18,18 @@
 
   <div class="members-column">
     <?php
-              foreach ($teamMembers as $member) {
-          ?>
+    foreach ($teamMembers as $member) {
+    ?>
 
-    <div class="member">
-      <img class="member-img-size" src="img/<?php echo $member["img"]?>.png"
-      alt="<?php echo $member["name"];?>">
-      <h2><?php echo $member["name"];?></h2>
-      <p class="team-bio"><?php echo $member["bio"];?></p>
-    </div>
-    <!-- member -->
+      <div class="member">
+        <img class="member-img-size" src="img/<?php echo $member["img"] ?>.png" alt="<?php echo $member["name"]; ?>">
+        <h2><?php echo $member["name"]; ?></h2>
+        <p class="team-bio"><?php echo $member["bio"]; ?></p>
+      </div>
+      <!-- member -->
     <?php
-              }
-              ?>
+    }
+    ?>
   </div>
   <!-- members-column -->
 </div>
@@ -38,5 +37,5 @@
 
 
 <?php
-    include('includes/footer.php');
+include('includes/footer.php');
 ?>

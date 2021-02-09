@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Nav menu items
 $navItems = array(
@@ -47,13 +47,11 @@ $teamMembers = array(
     ),
 );
 
-$gamesMenu = array (
-    "nim-game" => array (
+$gamesMenu = array(
+    "nim-game" => array(
         "title" => "Nim Game",
     ),
-    "guessing-game" => array (
+    "guessing-game" => array(
         "title" => "The Guessing Game",
     ),
 );
-
-?>
