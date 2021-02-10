@@ -28,3 +28,7 @@ function closeGame() {
   guessingOpen.classList.add("hidden");
   blur.classList.add("hidden");
 }
+
+function escapeClose(key) {
+  console.log(key);
+}

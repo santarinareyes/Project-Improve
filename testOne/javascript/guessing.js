@@ -72,7 +72,9 @@ function resetClicked() {
 
 document.addEventListener("keydown", function (button) {
   let auto = document.querySelector(".number");
-  if (auto.value > 0 && button.key === "Enter") {
+  if (button.key === "Escape") {
+    closeGame();
+  } else if (auto.value > 0 && button.key === "Enter") {
     guessClicked();
     auto.value = "";
   } else if (!auto.value) {

@@ -12,7 +12,6 @@ $dummyName = 'Just For Fun';
   <link rel="stylesheet" href="style.css?v=1" />
   <script src="javascript/modal.js" defer></script>
   <script src="javascript/guessing.js" defer></script>
-  <script src="javascript/contact.js" defer></script>
   <title><?php echo TITLE; ?></title>
 </head>
 

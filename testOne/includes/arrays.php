@@ -11,6 +11,10 @@ $navItems = array(
         "title" => "Games"
     ),
     array(
+        "redirect" => "account.php",
+        "title" => "Account"
+    ),
+    array(
         "redirect" => "contact.php",
         "title" => "Contact"
     ),
