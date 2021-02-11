@@ -49,6 +49,12 @@ $teamMembers = array(
         "bio" => "Just practicing to get better. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate placeat tenetur cum non id inventore quo quam! Quasi, dolorem ipsum.",
         "img" => "three"
     ),
+    array(
+        "name" => "David Saupe",
+        "position" => "Student",
+        "bio" => "My name is David and i do believe that this is the best bio of them all :D",
+        "img" => "david"
+    ),
 );
 
 $gamesMenu = array(
