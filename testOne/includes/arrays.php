@@ -33,19 +33,19 @@ $navItems = array(
 $teamMembers = array(
     array(
         "name" => "Richard One",
-        "position" => "Owner",
+        "position" => "Student",
         "bio" => "Self-development is key. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate placeat tenetur cum non id inventore quo quam! Quasi, dolorem ipsum.",
         "img" => "one"
     ),
     array(
         "name" => "Richard Two",
-        "position" => "Founder",
+        "position" => "Student",
         "bio" => "Just practicing and testing. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate placeat tenetur cum non id inventore quo quam! Quasi, dolorem ipsum.",
         "img" => "two"
     ),
     array(
         "name" => "Richard Three",
-        "position" => "Webdeveloper",
+        "position" => "Student",
         "bio" => "Just practicing to get better. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate placeat tenetur cum non id inventore quo quam! Quasi, dolorem ipsum.",
         "img" => "three"
     ),

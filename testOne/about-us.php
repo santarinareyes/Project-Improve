@@ -23,7 +23,7 @@ include('includes/header.php');
 
       <div class="member">
         <img class="member-img-size" src="img/<?php echo $member["img"] ?>.png" alt="<?php echo $member["name"]; ?>">
-        <h2><?php echo $member["name"]; ?></h2>
+        <h2><?php echo $member["name"]; ?></h2><p><?php echo $member["position"] ?></p>
         <p class="team-bio"><?php echo $member["bio"]; ?></p>
       </div>
       <!-- member -->
