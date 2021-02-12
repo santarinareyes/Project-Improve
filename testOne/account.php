@@ -5,13 +5,15 @@
 
 Are you ready to join us ? Sign up!
 <form method="POST" action="handleSignup.php">
-<input type="text" placeholder="Insert username" name="username" /><br />
-<input type="password" placeholder="Insert password" name="password" /><br />
+<input type="text" placeholder="Insert username" name="usernamesign" /><br />
+<input type="password" placeholder="Insert password" name="passwordsign" /><br />
 <input type="password" placeholder="Confirm password" name="confirm"><br/>
 <input type="submit" value="Sign up!" />
 </form>
-Already a member ? Login here:
-<form action="loginPage.php" method="POST">
+<p>Already have an account? Login here</p>
+<form action="konto.php" method="POST">
+<input type="text" placeholder="Insert username" name="username" /><br />
+<input type="password" placeholder="Insert password" name="password" /><br />
 <input type="submit" value="Login">
 </form>
 

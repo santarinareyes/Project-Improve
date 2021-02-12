@@ -3,7 +3,7 @@ define("TITLE", "Feedbacks | Jus For Fun");
 include("includes/header.php");
 include("includes/sql.php");
 
-$stm = $pdo->query("SELECT name, message FROM blogg");
+$stm = $pdo->query("SELECT name, message FROM blog");
 // print_r($stm->fetch())
 while ($post = $stm->fetch()) {
 
