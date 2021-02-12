@@ -22,6 +22,10 @@ $navItems = array(
         "redirect" => "about-us.php",
         "title" => "About us"
     ),
+    array(
+        "redirect" => "feedbacks.php",
+        "title" => "Feedbacks"
+    ),
     // array(
     //     "redirect" => "test.php",
     //     "title" => "Test"
