@@ -1,8 +1,8 @@
 <?php 
     include("includes/sql.php");
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = $_POST['usernamesign'];
+$password = $_POST['passwordsign'];
 $sql = "INSERT INTO users(username, password) VALUES(:username_IN, :password_IN)";
 $stm = $pdo->prepare($sql);
 $stm->bindParam(':username_IN',$username);
