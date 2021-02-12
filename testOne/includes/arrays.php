@@ -32,7 +32,7 @@ $navItems = array(
 // Team members
 $teamMembers = array(
     array(
-        "name" => "Richard One",
+        "name" => "Richard",
         "position" => "Student",
         "bio" => "Self-development is key. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate placeat tenetur cum non id inventore quo quam! Quasi, dolorem ipsum.",
         "img" => "one"
