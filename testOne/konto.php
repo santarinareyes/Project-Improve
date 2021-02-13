@@ -11,14 +11,21 @@ $curentPassword = $_POST['password'];
 $stm = $pdo->query("SELECT id, username, password FROM users");
 
 foreach ($stm as $value) {
-    if ($value['username'] == $curentUsername && $value['password'] == $curentPassword) {
-        echo $value['username'] . " " . $value['password'];
-    } else if ($value['username'] == $curentUsername && $value['password'] != $curentPassword) {
-        echo "<p>Wrong password!</p>";
-    } else if ($value['username'] != $curentUsername) {
-        echo "Username does not exist!";
+    while ($curentUsername == $value['username']) {
+        echo $value['username'];
+        break;
     }
 }
+
+// foreach ($stm as $value) {
+//     if ($value['username'] == $curentUsername && $value['password'] == $curentPassword) {
+//         echo $value['username'] . " " . $value['password'];
+//     } else if ($value['username'] == $curentUsername && $value['password'] != $curentPassword) {
+//         echo "<p>Wrong password!</p>";
+//     } else if ($value['username'] != $curentUsername) {
+//         echo "Username does not exist!";
+//     }
+// }
 // foreach ($stm as $value) {
 
 // om databen har samma text som $curentUsername > continue
@@ -42,5 +49,5 @@ foreach ($stm as $value) {
 // }
 
 ?>
-</a>
-Welcome!
+
+<p>Welcome!</p>

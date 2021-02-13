@@ -8,7 +8,7 @@ $stm = $pdo->query("SELECT name, message FROM blog");
 while ($post = $stm->fetch()) {
 
 ?>
-<p><?php echo $post['name'] . " " . $post['message'];  ?></p>
+<p><?php echo $post['name'] . " " . $post['message'];  ?></p>z
 <?php } ?>
 <form action="blogsubmitted.php" method="post">
 <input type="text" name="name" placeholder="Name">

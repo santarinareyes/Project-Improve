@@ -17,5 +17,9 @@ if ($stm->execute()) {
 } else {
     echo "Error";
 };
+
+
+$blogid = $_POST['id'];
+$delete = "DELETE FROM blog WHERE id = $blogid";
 ?>
 
