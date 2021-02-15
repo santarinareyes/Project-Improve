@@ -14,7 +14,7 @@ Are you ready to join us ? Sign up!
 <form action="konto.php" method="POST">
 <input type="text" placeholder="Insert username" name="username" /><br />
 <input type="password" placeholder="Insert password" name="password" /><br />
-<input type="submit" value="Login">
+<input type="submit" name="submit" value="Login">
 </form>
 
 

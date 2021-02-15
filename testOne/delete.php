@@ -2,6 +2,9 @@
     include('includes/sql.php');
 
 
-
-    $delete = "DELETE FROM blog WHERE id={$_GET['delete']}";
+if (isset($_POST['delete'])) {
+    global $delete;
+    $query = "DELETE FROM blog WHERE id = $delete";
+    $delete = $_POST['delete'];
+    }
 ?>

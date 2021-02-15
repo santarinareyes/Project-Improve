@@ -10,10 +10,12 @@ $curentPassword = $_POST['password'];
 
 $stm = $pdo->query("SELECT id, username, password FROM users");
 
-foreach ($stm as $value) {
-    while ($curentUsername == $value['username']) {
-        echo $value['username'];
-        break;
+if (isset($_POST['submit'])) {
+    foreach ($stm as $value) {
+        while ($curentUsername == $value['username']) {
+            echo $value['username'];
+            break;
+        }
     }
 }
 
