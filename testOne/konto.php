@@ -1,18 +1,17 @@
-<pre>
 <?php
-
-
 include("includes/sql.php");
+?>
 
-$curentUsername = $_POST['username'];
-$curentPassword = $_POST['password'];
+<?php
+$currentUsername = $_POST['username'];
+$currentPassword = $_POST['password'];
 
 
 $stm = $pdo->query("SELECT id, username, password FROM users");
 
 if (isset($_POST['submit'])) {
     foreach ($stm as $value) {
-        while ($curentUsername == $value['username']) {
+        while ($currentUsername == $value['username']) {
             echo $value['username'];
             break;
         }
@@ -20,33 +19,33 @@ if (isset($_POST['submit'])) {
 }
 
 // foreach ($stm as $value) {
-//     if ($value['username'] == $curentUsername && $value['password'] == $curentPassword) {
+//     if ($value['username'] == $currentUsername && $value['password'] == $currentPassword) {
 //         echo $value['username'] . " " . $value['password'];
-//     } else if ($value['username'] == $curentUsername && $value['password'] != $curentPassword) {
+//     } else if ($value['username'] == $currentUsername && $value['password'] != $currentPassword) {
 //         echo "<p>Wrong password!</p>";
-//     } else if ($value['username'] != $curentUsername) {
+//     } else if ($value['username'] != $currentUsername) {
 //         echo "Username does not exist!";
 //     }
 // }
 // foreach ($stm as $value) {
 
-// om databen har samma text som $curentUsername > continue
-// if ($value['username'] == $curentUsername) {
+// om databen har samma text som $currentUsername > continue
+// if ($value['username'] == $currentUsername) {
 //     continue;
-// } else if ($value['username'] == $curentUsername && $value['password'] != $curentPassword) {
+// } else if ($value['username'] == $currentUsername && $value['password'] != $currentPassword) {
 //     echo "<p>Wrong password!</p>";
-// } else if ($value['username'] == $curentUsername && $value['password'] == $curentPassword) {
+// } else if ($value['username'] == $currentUsername && $value['password'] == $currentPassword) {
 //     echo $value['username'] . " " . $value['password'];
 // } else {
 //     echo "Username does not exist!";
 //     break;
 // }
 
-// if ($value['username'] != $curentUsername) {
+// if ($value['username'] != $currentUsername) {
 //     echo "testaaa";
 //     break;
-// } else if ($value['username'] == $curentUsername) {
-//     echo $curentUsername;
+// } else if ($value['username'] == $currentUsername) {
+//     echo $currentUsername;
 // }
 // }
 

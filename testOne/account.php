@@ -3,7 +3,7 @@
     include('includes/header.php');
 ?>
 
-Are you ready to join us ? Sign up!
+Are you ready to join us? Sign up!
 <form method="POST" action="handleSignup.php">
 <input type="text" placeholder="Insert username" name="usernamesign" /><br />
 <input type="password" placeholder="Insert password" name="passwordsign" /><br />

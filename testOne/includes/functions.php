@@ -7,7 +7,7 @@ function deleteBlog()
     if (isset($_POST['btndelete'])) {
         $delete = ($_POST['btndelete']);
         $onlyid = substr($delete, 7);
-        $stm = $pdo->query("DELETE FROM blog WHERE id = $onlyid");
+        $pdo->query("DELETE FROM blog WHERE id = $onlyid");
         header("location:feedbacks.php#anchorTest");
     }
 }
@@ -32,4 +32,22 @@ function addBlog()
             echo "Error";
         }
     };
+}
+
+// Register-info to the database
+function registerAcc()
+{
+    global $pdo;
+    $username = $_POST['usernamesign'];
+    $password = $_POST['passwordsign'];
+    $sql = "INSERT INTO users(username, password) VALUES(:username_IN, :password_IN)";
+    $stm = $pdo->prepare($sql);
+    $stm->bindParam(':username_IN', $username);
+    $stm->bindParam(':password_IN', $password);
+
+    if ($stm->execute()) {
+        header("location:account.php");
+    } else {
+        echo "Det gick fel!";
+    }
 }
