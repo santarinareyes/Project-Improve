@@ -9,12 +9,12 @@ $stmt = $pdo->query("SELECT id FROM blog");
 
 if ($stmt->fetch()) {
 ?>
-<form action="delete.php" method="post">
+<form action="delete.php" method="post" id="anchorTest">
 <?php 
 $stm = $pdo->query("SELECT id, name, message FROM blog");
 // print_r($stm->fetch())
 while ($post = $stm->fetch()) {
-    echo "<p> $post[name] <br/> $post[message] <br/> (ID: $post[id])</p> 
+    echo "<p>Name: $post[name] <br/>Message: <br/> $post[message] <br/> 
     <input type=\"submit\" name=\"btndelete\" value=\"DELETE $post[id]\">";
     ?>
 <?php }
