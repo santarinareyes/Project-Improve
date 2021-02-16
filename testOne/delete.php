@@ -1,10 +1,9 @@
 <?php
     include('includes/sql.php');
 
-
-if (isset($_POST['delete'])) {
-    global $delete;
-    $query = "DELETE FROM blog WHERE id = $delete";
-    $delete = $_POST['delete'];
+    if (isset($_POST['btndelete'])) {
+        $delete = $_POST['delete'];
+        $stm = $pdo->query("DELETE FROM blog WHERE id = $delete");
+        header("location:feedbacks.php");
     }
 ?>
