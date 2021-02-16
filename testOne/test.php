@@ -9,39 +9,17 @@
 </head>
 <body>
 <!--kolla om det finns användarinput-->
+    
 <?php
-// if ($_SERVER['REQUEST_METHOD'] == 'POST') {​​​​​
-//         if (isset($_POST['sticksChosen'])) {​​​​​
-//         $updateSticks = intval($_POST['updateSticks']);
-//         $noOfSticks = $_POST['noOfSticks'];
-//         $updateSticks = $updateSticks + $noOfSticks;
-//         $sticksLeft = $updateSticks;
-//         }​​​​​
-//     }​​​​​ else {​​​​​
-//     $sticksLeft=21;
-//     }​​​​​
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['sticksChosen'])) {
-        $updateSticks = intval($_POST['updateSticks']);
-        $noOfSticks = $_POST['noOfSticks'];
-        $updateSticks = $updateSticks - $noOfSticks;
-        $sticksLeft = $updateSticks;
-    }
-} else {
-    $sticksLeft = 21;
-}
-
-
-
+//Hll Wrld f PHP
+//$vowels = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U");
+$test = ['a', 'e'];
+$vowels = array("o","O");
+$onlyconsonants = str_replace($vowels, $test, "Hello World of PHP");
+echo $onlyconsonants;
 ?>
-<form action='' method='POST'>
-<input type='number' name='noOfSticks' min='1' max='3'> No of Sticks
-<input type='submit' name='sticksChosen' id='sticksChosen' value='Sticks Chosen'>
-<input type='hidden' name='updateSticks' id='updateSticks' value='<?php echo $sticksLeft; ?>'>
-</form>
-<h3>
-<?php echo $sticksLeft; ?>
-</h3>
+
+
+
 </body>
 </html>
