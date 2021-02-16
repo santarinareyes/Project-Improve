@@ -1,7 +1,8 @@
 <?php
-define("TITLE", "Feedbacks | Jus For Fun");
-include("includes/header.php");
-include("includes/sql.php");
+define( "TITLE", "Feedbacks | Jus For Fun");
+include "includes/header.php";
+include "includes/sql.php";
+include "includes/functions.php";
 ?>
 
 <?php
