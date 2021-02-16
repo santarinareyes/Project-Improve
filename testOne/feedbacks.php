@@ -17,10 +17,10 @@ while ($post = $stm->fetch()) {
     echo "<p> $post[name] <br/> $post[message] <br/> (ID: $post[id])</p> <input type=\"hidden\" name=\"delete\" value=\"$post[id]\">
 <input type=\"submit\" name=\"btndelete\" value=\"DELETE POSTID: $post[id]\">"
     ?>
-</form>
 <?php }
 } else {
     echo "No feedbacks yet"; }?>
+    </form>
 
 <form action="blogsubmitted.php" method="post">
 <input type="text" name="name" placeholder="Name">
