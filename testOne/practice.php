@@ -8,7 +8,6 @@ include "includes/sql.php";
 <?php
 
 if (isset($_POST["submit"])) {
-    global $pdo;
     $first = $_POST['firstname'];
     $last = $_POST['lastname'];
     
