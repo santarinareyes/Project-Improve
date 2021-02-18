@@ -13,10 +13,8 @@
 function guessNumber($guessed) {
     global $play_count, $correct_guesses, $guess_low, $guess_high, $correct, $low, $high;
     $randNum = rand(1, 10);
-    echo "<br/> Random number: $randNum <br/>";
     if ($guessed > 0) {
         $myGuess = $_POST['theguess'];
-        echo "<br/> My Guess: $myGuess <br/>";
         $new_count = intval($_POST['count']);
         $new_count++;
         $play_count = $new_count;
@@ -30,9 +28,14 @@ function guessNumber($guessed) {
             $high++;
             newValues();
         }
-        echo "<br/> Correct Guesses: $correct_guesses <br/>";
-        echo "<br/> Low guesses: $guess_low <br/> ";
-        echo "<br/> High guesses: $guess_high <br/>";
+        echo "
+        Random number: $randNum <br/>
+        My guess: $myGuess <br/> <br/> 
+        Statistics:<br/> 
+        Correct guesses: $correct_guesses <br/> 
+        Low guesses: $guess_low <br/> 
+        High guesses: $guess_high
+        ";
     }
 }
 
