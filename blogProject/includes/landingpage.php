@@ -1,4 +1,13 @@
+<?php 
+$dbposts = $abc->query("SELECT * FROM posts");
 
+while ($posts = $dbposts->fetch()) {
+  $ptitle = $posts["post_title"];
+  $pauthor = $posts["post_author"];
+  $pdate = $posts["post_date"];
+  $pimage = $posts["post_img"];
+  $pcontent = $posts["post_content"];
+?>
     <div class="container">
       <div class="row">
         <!-- Blog Entries Column -->
@@ -10,12 +19,11 @@
 
           <!-- First Blog Post -->
           <h2>
-            <a href="#">Blog Post Title</a>
+            <a href="#"><?php echo $ptitle;?></a>
           </h2>
-          <p class="lead">by <a href="index.php">Start Bootstrap</a></p>
+          <p class="lead">by <a href="index.php"><?php echo $pauthor?></a></p>
           <p>
-            <span class="glyphicon glyphicon-time"></span> Posted on August 28,
-            2013 at 10:00 PM
+            <span class="glyphicon glyphicon-time"></span>Posted on <?php echo $pdate;?>
           </p>
           <hr />
           <img
@@ -25,18 +33,16 @@
           />
           <hr />
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore,
-            veritatis, tempora, necessitatibus inventore nisi quam quia repellat
-            ut tempore laborum possimus eum dicta id animi corrupti debitis
-            ipsum officiis rerum.
+            <?php echo $pcontent;?>
           </p>
           <a class="btn btn-primary" href="#"
             >Read More <span class="glyphicon glyphicon-chevron-right"></span
           ></a>
 
           <hr />
-
-          <!-- Second Blog Post -->
+<?php } ?>
+<!--
+            Second Blog Post
           <h2>
             <a href="#">Blog Post Title</a>
           </h2>
@@ -64,7 +70,7 @@
 
           <hr />
 
-          <!-- Third Blog Post -->
+          Third Blog Post
           <h2>
             <a href="#">Blog Post Title</a>
           </h2>
@@ -91,3 +97,4 @@
           ></a>
 
           <hr />
+-->

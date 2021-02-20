@@ -24,8 +24,8 @@
             $getNav = $abc->query("SELECT * FROM menus");
             
             while ($menus = $getNav->fetch()) {
-              $menuU = strtoupper($menus['title']);
-              $menuL = strtolower($menus['title']);
+              $menuU = strtoupper($menus['menu_title']);
+              $menuL = strtolower($menus['menu_title']);
               echo "<li><a href=\"$menuL.php\">$menuU</a></li>";
             }
             ?>
