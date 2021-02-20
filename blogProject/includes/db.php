@@ -6,8 +6,8 @@ $c = "password";
 
 $abc = new PDO($a, $b, $c);
 
-    if($abc) {
-        echo "connected";
-    } else {
-        echo "nope";
-    }
+    // if($abc) {
+    //     echo "connected";
+    // } else {
+    //     echo "nope";
+    // }
