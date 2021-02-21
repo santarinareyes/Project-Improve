@@ -39,17 +39,17 @@ function adminEdit()
             $menuTitle = $editMenu['menu_title'];
             echo "
             <div class=\"col-xs-6\">
-                <div class=\"form-group\">
-                    <form action=\"\" method=\"post\">
-                        <label for=\"new_title_input\">You have currently selected: $menuTitle</label>
-                            <input class=\"form-control\" type=\"text\" name=\"new_title_input\" placeholder=\"Enter a new title\">
-                            <input type=\"hidden\" name=\"old_title\" value=\"$menuTitle\">
+            <div class=\"form-group\">
+            <form action=\"\" method=\"post\">
+            <label for=\"new_title_input\">You have currently selected: $menuTitle</label>
+            <input class=\"form-control\" type=\"text\" name=\"new_title_input\" placeholder=\"Enter a new title\">
+            <input type=\"hidden\" name=\"old_title\" value=\"$menuTitle\">
                                 </div>
-                            <div class=\"form-group\">
+                                <div class=\"form-group\">
                         <input type=\"submit\" name=\"menu_update\" class=\"btn btn-primary\" value=\"Update\">
-                    </div>
+                        </div>
                 </form>
-            </div>                
+                </div>                
             ";
         }
  
@@ -60,21 +60,25 @@ function adminEdit()
             $updateTitle = $abc->query("UPDATE menus SET menu_title = '$newTitle' WHERE menu_id = $e_id");
             
             if ($updateTitle) {
-                header("location:?updated=$old_title");
+                header("location:?updated=$old_title?to=$newTitle");
             }
         }
     }
     
+    
     if (isset($_GET["updated"])) {
-        $oldTitle = $_GET["updated"];
-
+        $old_new = $_GET["updated"];
+        $oTitle_len = strlen(substr($old_new, strrpos($old_new, "?")));
+        $oTitle = substr_replace($old_new, "", -$oTitle_len);
+        $nTitle = substr($old_new, strpos($old_new, "=") +1);
+        
         $newTitle = $abc->query("SELECT * FROM menus");
-
+        
         echo "
         <div class=\"col-xs-6\">
-            <div class=\"form-group\">
-                $oldTitle
-            </div>
+        <div class=\"form-group\">
+        <strong>$oTitle</strong> was successfully changed to <strong>$nTitle</strong>
+        </div>
         </div>         
         ";
     }
