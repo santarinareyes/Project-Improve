@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 include "../includes/db.php";
 include "admin_functions.php";
 ?>

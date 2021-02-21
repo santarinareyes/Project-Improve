@@ -13,15 +13,15 @@
                 <small>Author</small>
               </h1>
               <div class="col-xs-6">
-                  <?php adminAddMenu();?>
-                  <form action="" method="post">
-                      <div class="form-group">
-                          <label for="menu_title"></label>
+                  <div class="form-group">
+                      <form action="" method="post">
+                          <label for="menu_title">Add a new menu/category</label>
                           <input class="form-control" type="text" name="menu_title">
                         </div>
                         <div class="form-group">
                             <input name="menu_add" class="btn btn-primary" type="submit" value="Add Menu">
                         </div>
+                        <?php adminAddMenu();?>
                   </form>
               </div>                    
               <!-- /.Menu add form -->
