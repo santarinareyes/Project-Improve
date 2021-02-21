@@ -21,18 +21,13 @@
           <ul class="nav navbar-nav">
           
           <?php
-            $getNav = $abc->query("SELECT * FROM menus");
-            
-            while ($menus = $getNav->fetch()) {
-              $menuU = strtoupper($menus['menu_title']);
-              $menuL = strtolower($menus['menu_title']);
-              echo "<li><a href=\"$menuL.php\">$menuU</a></li>";
-            }
+            showMenus();
             ?>
 
-            <!-- <li>
-              <a href="#">About</a>
-            </li>
+          <li>
+            <a href="admin">Admin</a>
+          </li>
+<!-- 
             <li>
               <a href="#">Services</a>
             </li>

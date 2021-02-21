@@ -1,4 +1,6 @@
 <?php 
+
+// Search in the database and display from the searchbar
 function search() {
     global $abc;
     if(isset($_POST["searchsubmit"])) {
@@ -53,5 +55,17 @@ function search() {
             echo "<h1>NO RESULTS!</h1>";
         }
     }
+}
+
+// Functions to display the navs from database
+function showMenus() {
+  global $abc;
+  $getNav = $abc->query("SELECT * FROM menus");
+            
+  while ($menus = $getNav->fetch()) {
+    $menuU = strtoupper($menus['menu_title']);
+    $menuL = strtolower($menus['menu_title']);
+    echo "<li><a href=\"$menuL.php\">$menuU</a></li>";
+  }
 }
 ?>
