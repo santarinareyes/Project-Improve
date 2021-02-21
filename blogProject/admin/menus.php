@@ -12,6 +12,7 @@
                 This is the Admin page
                 <small>Author</small>
               </h1>
+              <!-- Menu add form -->
               <div class="col-xs-6">
                   <div class="form-group">
                       <form action="" method="post">
@@ -25,6 +26,7 @@
                   </form>
               </div>                    
               <!-- /.Menu add form -->
+              <!-- The table for Id/Menu -->
               <div class="col-xs-6">
                   <table class="table table-bordered table-hover">
                       <thead>
@@ -38,6 +40,9 @@
                       </tbody>
                   </table>
               </div>
+              <!-- End of id/menu -->
+                          <?php adminEdit();?>                
+              <!-- /.Menu add form -->
             </div>
           </div>
           <!-- /.row -->

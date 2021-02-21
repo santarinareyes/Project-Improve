@@ -1,7 +1,7 @@
 <?php
 
 // Show all menus/categories from the database
-// And also the delete function from the admin page
+// as well as the delete function from the admin page
 function adminShowMenus()
 {
     global $abc;
@@ -12,16 +12,73 @@ function adminShowMenus()
         $m_id = $menus['menu_id'];
         echo "<tr><td>$m_id</td>";
         echo "<td>$m_title</td>";
-        echo "<td><a href=\"?delete=$m_id\">Delete</a></td></tr>";
+        echo "<td><a href=\"?delete=$m_id\">Delete</a></td>";
+        echo "<td><a href=\"?edit=$m_id\">Edit</a></td></tr>";
     }
 
-    if(isset($_GET["delete"])) {
+    if (isset($_GET["delete"])) {
         $d_id = $_GET["delete"];
-        
+
         $delete_menu = $abc->query("DELETE FROM menus WHERE menu_id = $d_id");
         $delete_menu->fetch();
         header("location:menus.php");
     }
+}
+
+// Edit from the admin page
+function adminEdit()
+{
+    global $abc;
+
+    
+    if (isset($_GET["edit"])) {
+        $e_id = $_GET["edit"];
+        
+        $edit_menu = $abc->query("SELECT * FROM menus WHERE menu_id = $e_id");
+        while ($editMenu = $edit_menu->fetch()) {
+            $menuTitle = $editMenu['menu_title'];
+            echo "
+            <div class=\"col-xs-6\">
+                <div class=\"form-group\">
+                    <form action=\"\" method=\"post\">
+                        <label for=\"new_title_input\">You have currently selected: $menuTitle</label>
+                            <input class=\"form-control\" type=\"text\" name=\"new_title_input\" placeholder=\"Enter a new title\">
+                            <input type=\"hidden\" name=\"old_title\" value=\"$menuTitle\">
+                                </div>
+                            <div class=\"form-group\">
+                        <input type=\"submit\" name=\"menu_update\" class=\"btn btn-primary\" value=\"Update\">
+                    </div>
+                </form>
+            </div>                
+            ";
+        }
+ 
+        if (isset($_POST["menu_update"])) {
+            $old_title = $_POST["old_title"];
+            $newTitle = $_POST["new_title_input"];
+            
+            $updateTitle = $abc->query("UPDATE menus SET menu_title = '$newTitle' WHERE menu_id = $e_id");
+            
+            if ($updateTitle) {
+                header("location:?updated=$old_title");
+            }
+        }
+    }
+    
+    if (isset($_GET["updated"])) {
+        $oldTitle = $_GET["updated"];
+
+        $newTitle = $abc->query("SELECT * FROM menus");
+
+        echo "
+        <div class=\"col-xs-6\">
+            <div class=\"form-group\">
+                $oldTitle
+            </div>
+        </div>         
+        ";
+    }
+
 }
 
 
