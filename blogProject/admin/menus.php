@@ -1,7 +1,7 @@
-<?php include "includes/header.php";?>
+<?php include "includes/admin_header.php";?>
 <div id="wrapper">
       <!-- Navigation -->
-      <?php include "includes/nav.php";?>
+      <?php include "includes/admin_nav.php";?>
 
       <div id="page-wrapper">
         <div class="container-fluid">
@@ -13,19 +13,20 @@
                 <small>Author</small>
               </h1>
               <div class="col-xs-6">
-                  <form action="">
+                  <?php adminAddMenu();?>
+                  <form action="" method="post">
                       <div class="form-group">
                           <label for="menu_title"></label>
                           <input class="form-control" type="text" name="menu_title">
                         </div>
                         <div class="form-group">
-                            <input class="btn btn-primary" type="submit" value="Add Menu">
+                            <input name="menu_add" class="btn btn-primary" type="submit" value="Add Menu">
                         </div>
                   </form>
               </div>                    
               <!-- /.Menu add form -->
               <div class="col-xs-6">
-                  <table>
+                  <table class="table table-bordered table-hover">
                       <thead>
                           <tr>
                               <th>Id</th>
@@ -33,10 +34,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <tr>
-                              <td>TestingOne</td>
-                              <td>TestingTwo</td>
-                          </tr>
+                              <?php adminShowMenus();?>                            
                       </tbody>
                   </table>
               </div>
@@ -47,4 +45,4 @@
         <!-- /.container-fluid -->
       </div>
       <!-- /#page-wrapper -->
-      <?php include "includes/footer.php";?>
+      <?php include "includes/admin_footer.php";?>
