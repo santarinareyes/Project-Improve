@@ -178,7 +178,8 @@ function newPostSuccess() {
         $addedTitleCrypted = $_GET["added"];
         $titleDecrypt = decrypt($addedTitleCrypted);
 
-        echo "<h3><strong>$titleDecrypt</strong> has been added.</h3>";
+        echo "<h2><strong>$titleDecrypt</strong> has been added.</h2>";
+        header("refresh:3;url=view_posts.php");
     }
 }
 
@@ -187,5 +188,49 @@ function checkQuery($checkthis) {
     global $abc;
     if(!$checkthis) {
         die("Something went wrong in the Query ." . mysqli_error($abc));
+    }
+}
+
+// Display all Posts and delete post function
+function showAllPosts() {
+    global $abc;
+    $getPosts = $abc->query("SELECT * FROM posts");
+                  
+    while ($postsrow = $getPosts->fetch()) {
+        $vp_id = $postsrow["post_id"];
+        $vp_author = $postsrow["post_author"];
+        $vp_title = $postsrow["post_title"];
+        //   $vp_menu = $postsrow["post_title"];
+        $vp_status = $postsrow["post_status"];
+        $vp_img = $postsrow["post_img"];
+        $vp_tags = $postsrow["post_tags"];
+        $vp_comments = $postsrow["post_comment_count"];
+        $vp_date = $postsrow["post_date"];
+        
+        echo "
+        <tr>
+          <td> $vp_id</td>
+          <td> $vp_author</td>
+          <td> $vp_title</td>
+          <td>Placeholder</td>
+          <td> $vp_status</td>
+          <td><img src='../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
+          <td> $vp_tags</td>
+          <td> $vp_comments</td>
+          <td> $vp_date</td>
+          <td><a href='?post_delete=$vp_id'>Delete</a></td>
+          <td><a href='?action=post_edit'>Edit</a></td>
+          </tr>
+          ";
+    }
+
+    if (isset($_GET["post_delete"])) {
+        $post_delete = $_GET["post_delete"];
+
+        $deleteThis = $abc->query("DELETE FROM posts WHERE post_id = $post_delete");
+
+        if ($deleteThis->execute()) {
+            header("location:view_posts.php");
+        }
     }
 }

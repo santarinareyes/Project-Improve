@@ -12,7 +12,7 @@ newPost();
           <div class="row">
             <div class="col-lg-12">
               <h1 class="page-header">
-                View posts
+                Posts
                 <small>Author</small>
               </h1>
           <?php newPostSuccess();?>
@@ -24,8 +24,8 @@ newPost();
                   $viewing_post_id = '';
               }
                 switch($viewing_post_id) {
-                    case 'all_posts';
-                    include "includes/all_posts.php";
+                    case 'post_edit';
+                    include "includes/post_edit.php";
                     break;
 
                     case 'new_post';

@@ -61,7 +61,7 @@
                   <a href="view_posts.php">View all posts</a>
                 </li>
                 <li>
-                  <a href="add_post.php">Add post</a>
+                  <a href="view_posts.php?action=new_post">Add post</a>
                 </li>
               </ul>
             </li>
