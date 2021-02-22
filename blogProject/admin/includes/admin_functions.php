@@ -54,16 +54,20 @@ function adminEdit()
         }
 
         if (isset($_POST["menu_update"])) {
-            $old_title = $_POST["old_title"];
-            $newTitle = $_POST["new_title_input"];
-            // Encrypting with a function for the URL
-            $old_dec = encrypt($old_title);
-            $new_dec = encrypt($newTitle);
-
-            $updateTitle = $abc->query("UPDATE menus SET menu_title = '$newTitle' WHERE menu_id = $e_id");
-
-            if ($updateTitle) {
-                header("location:?updated=$old_dec?to=$new_dec");
+            if ($_POST["new_title_input"]) {
+                $old_title = $_POST["old_title"];
+                $newTitle = $_POST["new_title_input"];
+                // Encrypting with a function for the URL
+                $old_dec = encrypt($old_title);
+                $new_dec = encrypt($newTitle);
+                
+                $updateTitle = $abc->query("UPDATE menus SET menu_title = '$newTitle' WHERE menu_id = $e_id");
+                
+                if ($updateTitle) {
+                    header("location:?updated=$old_dec?to=$new_dec");
+                }
+            } else {
+                header("location:?failed");
             }
         }
     }
@@ -98,6 +102,14 @@ function adminEdit()
                     ";
             }
         }
+    } else if (isset($_GET["failed"])) {
+        echo "
+        <div class=\"col-xs-6\">
+        <div class=\"form-group\">
+        <strong>Field cannot be empty. Update failed. </strong>
+        </div>
+        </div>         
+        ";
     }
 }
 
@@ -126,7 +138,11 @@ function adminAddMenu()
         if ($newMenu && $insertNav->execute()) {
             echo "<strong>$newMenu added</strong>";
         } else {
-            echo "<strong>Field cannot be empty. If this continues, please contact Richard.</strong>";
+            header("location:menus.php?empty_field");
         }
+    }
+
+    if (isset($_GET["empty_field"])) {
+        echo "<strong>Field cannot be empty. If this continues, please contact Richard.</strong>";
     }
 }
