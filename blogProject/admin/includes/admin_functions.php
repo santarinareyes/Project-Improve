@@ -21,7 +21,7 @@ function adminShowMenus()
 
         $delete_menu = $abc->query("DELETE FROM menus WHERE menu_id = $d_id");
         $delete_menu->fetch();
-        header("location:menus.php");
+        header("location:menus.php?deleted=$d_id");
     }
 }
 
@@ -103,18 +103,17 @@ function adminEdit()
     }
 }
 
-// functions for simple encrypting
+// Simple encrypting
 function encrypt($input)
 {
     return strtr(base64_encode($input), '+/=', '-_,');
 }
 
-// functions for simple decrypting
+// Simple decrypting
 function decrypt($input)
 {
     return base64_decode(strtr($input, '-_,', '+/='));
 }
-
 
 // Add a new menu/cateogry into the database and display in admin
 function adminAddMenu()
@@ -142,7 +141,7 @@ function adminAddMenu()
     }
 }
 
-// Function to add a new post from admin>posts
+// Add a new post from admin>posts
 function newPost() {
     global $abc;
     if (isset($_POST["add_post"])) {
@@ -158,9 +157,35 @@ function newPost() {
         $new_content = $_POST["new_content"];
         $new_date = date('d-m-y');
         $post_comment_count = 1;
-    
+        $post_view_count = 1;
+        $post_user = 1;
+        
         move_uploaded_file($new_image_temp, "../images/$new_image");
+        
+        $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
+        
+        $new_title_encrypt = encrypt($new_title);
 
-        $new_post = $abc->query("INSERT INTO posts (post_menu_id, post_title, post_author, post_date, post_img, post_content, post_status, post_tags, post_comment_count) VALUES ($category, '$new_title', '$new_author', now(), '$new_image', '$new_content', $new_status', '$new_tags', '$post_comment_count')");
+        if ($new_post->execute()) {
+            header("location:view_posts.php?added=$new_title_encrypt");
+        }
+    }
+}
+
+// When posts has been successfully added
+function newPostSuccess() {
+    if (isset($_GET["added"])) {
+        $addedTitleCrypted = $_GET["added"];
+        $titleDecrypt = decrypt($addedTitleCrypted);
+
+        echo "<h3><strong>$titleDecrypt</strong> has been added.</h3>";
+    }
+}
+
+// To check if query failed
+function checkQuery($checkthis) {
+    global $abc;
+    if(!$checkthis) {
+        die("Something went wrong in the Query ." . mysqli_error($abc));
     }
 }

@@ -1,4 +1,7 @@
-<?php include "includes/admin_header.php";?>
+<?php
+include "includes/admin_header.php";
+newPost();
+?>
 <div id="wrapper">
       <!-- Navigation -->
       <?php include "includes/admin_nav.php";?>
@@ -12,6 +15,7 @@
                 View posts
                 <small>Author</small>
               </h1>
+          <?php newPostSuccess();?>
               <!-- Table to show all posts -->
               <?php 
               if (isset($_GET["action"])) {
