@@ -12,6 +12,8 @@
                 This is the Admin page
                 <small>Author</small>
               </h1>
+              <div class="col-xs-12">
+              </div>
             </div>
           </div>
           <!-- /.row -->
