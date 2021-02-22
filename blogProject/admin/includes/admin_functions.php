@@ -38,7 +38,6 @@ function adminEdit()
         while ($editMenu = $edit_menu->fetch()) {
             $menuTitle = $editMenu['menu_title'];
             echo "
-            <div class=\"col-xs-6\">
             <div class=\"form-group\">
             <form action=\"\" method=\"post\">
             <label for=\"new_title_input\">You have currently selected: $menuTitle</label>
@@ -48,8 +47,7 @@ function adminEdit()
                                 <div class=\"form-group\">
                         <input type=\"submit\" name=\"menu_update\" class=\"btn btn-primary\" value=\"Update\">
                         </div>
-                </form>
-                </div>                
+                </form>             
             ";
         }
 
@@ -106,7 +104,7 @@ function adminEdit()
         echo "
         <div class=\"col-xs-6\">
         <div class=\"form-group\">
-        <strong>Field cannot be empty. Update failed. </strong>
+        <strong>Field cannot be empty. Updating failed.</strong>
         </div>
         </div>         
         ";

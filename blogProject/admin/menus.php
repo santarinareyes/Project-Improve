@@ -23,6 +23,7 @@
                             <input name="menu_add" class="btn btn-primary" type="submit" value="Add Menu">
                         </div>
                         <?php adminAddMenu();?>
+                        <?php adminEdit();?>
                   </form>
               </div>                    
               <!-- /.Menu add form -->
@@ -40,8 +41,7 @@
                       </tbody>
                   </table>
               </div>
-              <!-- End of id/menu -->
-                          <?php adminEdit();?>                
+              <!-- End of id/menu -->                
               <!-- /.Menu add form -->
             </div>
           </div>
