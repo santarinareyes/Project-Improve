@@ -67,9 +67,13 @@ function adminEdit()
     
     
     if (isset($_GET["updated"])) {
+        // Get all the strings from updated=
         $old_new = $_GET["updated"];
+        // Get the string lengt after the old title
         $oTitle_len = strlen(substr($old_new, strrpos($old_new, "?")));
+        // Replace the whole string and remove letters equal to strlen
         $oTitle = substr_replace($old_new, "", -$oTitle_len);
+        // Show the strings after "="
         $nTitle = substr($old_new, strpos($old_new, "=") +1);
         
         $newTitle = $abc->query("SELECT * FROM menus");
