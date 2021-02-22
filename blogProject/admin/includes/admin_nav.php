@@ -12,7 +12,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">SB Admin</a>
+          <a class="navbar-brand" href="index.html">CMS Admin</a>
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
@@ -58,10 +58,10 @@
               ></a>
               <ul id="posts_dropdown" class="collapse">
                 <li>
-                  <a href="#">View all posts</a>
+                  <a href="view_posts.php">View all posts</a>
                 </li>
                 <li>
-                  <a href="#">Add post</a>
+                  <a href="add_post.php">Add post</a>
                 </li>
               </ul>
             </li>
