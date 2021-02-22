@@ -30,10 +30,10 @@ function adminEdit()
 {
     global $abc;
 
-    
+
     if (isset($_GET["edit"])) {
         $e_id = $_GET["edit"];
-        
+
         $edit_menu = $abc->query("SELECT * FROM menus WHERE menu_id = $e_id");
         while ($editMenu = $edit_menu->fetch()) {
             $menuTitle = $editMenu['menu_title'];
@@ -52,20 +52,22 @@ function adminEdit()
                 </div>                
             ";
         }
- 
+
         if (isset($_POST["menu_update"])) {
             $old_title = $_POST["old_title"];
             $newTitle = $_POST["new_title_input"];
-            
+            // Encrypting with a function for the URL
+            $old_dec = encrypt($old_title);
+            $new_dec = encrypt($newTitle);
+
             $updateTitle = $abc->query("UPDATE menus SET menu_title = '$newTitle' WHERE menu_id = $e_id");
-            
+
             if ($updateTitle) {
-                header("location:?updated=$old_title?to=$newTitle");
+                header("location:?updated=$old_dec?to=$new_dec");
             }
         }
     }
-    
-    
+
     if (isset($_GET["updated"])) {
         // Get all the strings from updated=
         $old_new = $_GET["updated"];
@@ -73,20 +75,42 @@ function adminEdit()
         $oTitle_len = strlen(substr($old_new, strrpos($old_new, "?")));
         // Replace the whole string and remove letters equal to strlen
         $oTitle = substr_replace($old_new, "", -$oTitle_len);
+        // Decrypting the old title from the URL with a function
+        $olddec = decrypt($oTitle);
         // Show the strings after "="
-        $nTitle = substr($old_new, strpos($old_new, "=") +1);
-        
-        $newTitle = $abc->query("SELECT * FROM menus");
-        
-        echo "
-        <div class=\"col-xs-6\">
-        <div class=\"form-group\">
-        <strong>$oTitle</strong> was successfully changed to <strong>$nTitle</strong>
-        </div>
-        </div>         
-        ";
-    }
+        $nTitle = substr($old_new, strpos($old_new, "=") + 1);
+        //  Decrypting the new title from the URL with a function
+        $newdec = decrypt($nTitle);
 
+        // Basically -> If it doesnt match with the database, then dont show anything.
+        // For URL editors
+        $donttry = $abc->query("SELECT * FROM menus WHERE menu_title = '$newdec'");
+
+        while ($nope = $donttry->fetch()) {
+            $dontdoit = $nope['menu_title'];
+            if ($newdec == $dontdoit) {
+                echo "
+                    <div class=\"col-xs-6\">
+                    <div class=\"form-group\">
+                    <strong>$olddec</strong> was successfully changed to <strong>$newdec</strong>
+                    </div>
+                    </div>         
+                    ";
+            }
+        }
+    }
+}
+
+// functions for simple encrypting
+function encrypt($input)
+{
+    return strtr(base64_encode($input), '+/=', '-_,');
+}
+
+// functions for simple decrypting
+function decrypt($input)
+{
+    return base64_decode(strtr($input, '-_,', '+/='));
 }
 
 
