@@ -200,7 +200,7 @@ function showAllPosts() {
         $vp_id = $postsrow["post_id"];
         $vp_author = $postsrow["post_author"];
         $vp_title = $postsrow["post_title"];
-        //   $vp_menu = $postsrow["post_title"];
+        // $vp_menu = $postsrow["post_title"];
         $vp_status = $postsrow["post_status"];
         $vp_img = $postsrow["post_img"];
         $vp_tags = $postsrow["post_tags"];
@@ -267,7 +267,11 @@ function editPost() {
             <div class='form-group'>
             <label for='category'>Category
             </label>
-            <input type='number' name='category' class='form-control' value='$ep_category'>
+            <select name='category'>";
+            displayCategoriesOption();
+            
+            echo 
+            "</select>
             </div>
             
             <div class='form-group'>
@@ -281,9 +285,10 @@ function editPost() {
             </div>
             
             
+            <img src='../images/$ep_img' alt='' width='100'>
             <div class='form-group'>
             <label for='new_image'>Select Image</label>
-            <input type='file' name='new_image' class='form-control' value='$ep_img'>
+            <input type='file' name='new_image' class='form-control'>
             </div>
             
             <div class='form-group'>
@@ -304,5 +309,18 @@ function editPost() {
             </div>
             ";
         }
+    }
+}
+
+// Display Category name instead of category id (menu id)
+function displayCategoriesOption() {
+    global $abc;
+    $getCat = $abc->query("SELECT * FROM menus");
+
+    while ($allCat = $getCat->fetch()) {
+        $cat_title = $allCat["menu_title"];
+        $menu_id = $allCat["menu_id"];
+
+        echo "<option value='$menu_id'>$cat_title</option>";
     }
 }
