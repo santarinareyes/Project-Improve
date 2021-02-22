@@ -12,8 +12,8 @@ function adminShowMenus()
         $m_id = $menus['menu_id'];
         echo "<tr><td>$m_id</td>";
         echo "<td>$m_title</td>";
-        echo "<td><a href=\"?delete=$m_id\">Delete</a></td>";
-        echo "<td><a href=\"?edit=$m_id\">Edit</a></td></tr>";
+        echo "<td><a href=\"?edit=$m_id\">Edit</a></td>";
+        echo "<td><a href=\"?delete=$m_id\">Delete</a></td></tr>";
     }
 
     if (isset($_GET["delete"])) {
@@ -218,8 +218,8 @@ function showAllPosts() {
           <td> $vp_tags</td>
           <td> $vp_comments</td>
           <td> $vp_date</td>
+          <td><a href='?action=post_edit&editing=$vp_id'>Edit</a></td>
           <td><a href='?post_delete=$vp_id'>Delete</a></td>
-          <td><a href='?action=post_edit'>Edit</a></td>
           </tr>
           ";
     }
@@ -231,6 +231,78 @@ function showAllPosts() {
 
         if ($deleteThis->execute()) {
             header("location:view_posts.php");
+        }
+    }
+}
+
+// Fetch the data from the selected post
+function editPost() {
+    global $abc;
+    if(isset($_GET["editing"])) {
+        $editThis = $_GET["editing"];
+
+        $editThese = $abc->query("SELECT * FROM posts WHERE post_id = $editThis");
+
+        while($values = $editThese->fetch()) {
+            $ep_id = $values["post_id"];
+            $ep_category = $values["post_menu_id"];
+            $ep_author = $values["post_author"];
+            $ep_title = $values["post_title"];
+            //   $ep_menu = $values["post_title"];
+            $ep_status = $values["post_status"];
+            $ep_img = $values["post_img"];
+            $ep_content = $values["post_content"];
+            $ep_tags = $values["post_tags"];
+            $ep_comments = $values["post_comment_count"];
+            $ep_date = $values["post_date"];
+
+            echo 
+            "<div class='col-xs-6'>
+            <form action='' method='post' enctype='multipart/form-data'>
+            <div class='form-group'>
+            <label for='new_title'>Title</label>
+            <input type='text' name='new_title' class='form-control' value='$ep_title'>
+            </div>
+            
+            <div class='form-group'>
+            <label for='category'>Category
+            </label>
+            <input type='number' name='category' class='form-control' value='$ep_category'>
+            </div>
+            
+            <div class='form-group'>
+            <label for='new_author'>Author</label>
+            <input type='text' name='new_author' class='form-control' value='$ep_author'>
+            </div>
+            
+            <div class='form-group'>
+            <label for='new_status'>Post Status</label>
+            <input type='text' name='new_status' class='form-control' value='$ep_status'>
+            </div>
+            
+            
+            <div class='form-group'>
+            <label for='new_image'>Select Image</label>
+            <input type='file' name='new_image' class='form-control' value='$ep_img'>
+            </div>
+            
+            <div class='form-group'>
+            <label for='new_content'>Content</label>
+            <textarea name='new_content' class='form-control' rows='10' cols='30' style='resize: none'>$ep_content</textarea>
+            </div>
+            
+            <div class='form-group'>
+            <label for='new_tags'>Tags</label>
+            <input type='text' name='new_tags' class='form-control' value='$ep_tags'>
+            </div>
+            
+            <div class='form-group'>
+            <input class='btn btn-primary' type='submit' value='Publish Post' name='add_post'>
+            </div>
+            
+            </form>
+            </div>
+            ";
         }
     }
 }
