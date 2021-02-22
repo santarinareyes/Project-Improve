@@ -25,7 +25,7 @@ function adminShowMenus()
     }
 }
 
-// Edit from the admin page
+// Edit a menu title from the admin page
 function adminEdit()
 {
     global $abc;
@@ -92,21 +92,13 @@ function adminEdit()
             $dontdoit = $nope['menu_title'];
             if ($newdec == $dontdoit) {
                 echo "
-                    <div class=\"col-xs-6\">
-                    <div class=\"form-group\">
-                    <strong>$olddec</strong> was successfully changed to <strong>$newdec</strong>
-                    </div>
-                    </div>         
+                    <strong>$olddec</strong> was successfully changed to <strong>$newdec</strong>       
                     ";
             }
         }
     } else if (isset($_GET["failed"])) {
         echo "
-        <div class=\"col-xs-6\">
-        <div class=\"form-group\">
         <strong>Field cannot be empty. Updating failed.</strong>
-        </div>
-        </div>         
         ";
     }
 }
@@ -147,5 +139,28 @@ function adminAddMenu()
     if (isset($_GET["success"])) {
         $addedMenu = $_GET["success"];
         echo "<strong>$addedMenu added</strong>";
+    }
+}
+
+// Function to add a new post from admin>posts
+function newPost() {
+    global $abc;
+    if (isset($_POST["add_post"])) {
+        $new_title = $_POST["new_title"];
+        $category = $_POST["category"];
+        $new_author = $_POST["new_author"];
+        $new_status = $_POST["new_status"];
+        
+        $new_image = $_FILES["new_image"]['name'];
+        $new_image_temp = $_FILES["new_image"]['tmp_name'];
+        
+        $new_tags = $_POST["new_tags"];
+        $new_content = $_POST["new_content"];
+        $new_date = date('d-m-y');
+        $post_comment_count = 1;
+    
+        move_uploaded_file($new_image_temp, "../images/$new_image");
+
+        $new_post = $abc->query("INSERT INTO posts (post_menu_id, post_title, post_author, post_date, post_img, post_content, post_status, post_tags, post_comment_count) VALUES ($category, '$new_title', '$new_author', now(), '$new_image', '$new_content', $new_status', '$new_tags', '$post_comment_count')");
     }
 }
