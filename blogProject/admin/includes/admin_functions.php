@@ -134,7 +134,7 @@ function adminAddMenu()
         $insertNav->bindParam(":yaas", $newMenu);
 
         if ($newMenu && $insertNav->execute()) {
-            echo "<strong>$newMenu added</strong>";
+            header("location:?success=$newMenu");
         } else {
             header("location:menus.php?empty_field");
         }
@@ -142,5 +142,10 @@ function adminAddMenu()
 
     if (isset($_GET["empty_field"])) {
         echo "<strong>Field cannot be empty. If this continues, please contact Richard.</strong>";
+    }
+
+    if (isset($_GET["success"])) {
+        $addedMenu = $_GET["success"];
+        echo "<strong>$addedMenu added</strong>";
     }
 }
