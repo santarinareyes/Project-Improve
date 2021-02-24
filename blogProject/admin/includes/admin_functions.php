@@ -401,6 +401,7 @@ function showAllUsers() {
         $user_first = $row['user_firstname'];
         $user_last = $row['user_lastname'];
         $user_email = $row['user_email'];
+        $created = $row['user_created'];
         $user_image = $row['user_image'];
         $user_role = $row['user_role'];
 
@@ -411,7 +412,8 @@ function showAllUsers() {
         <td>$user_first</td>
         <td>$user_last</td>
         <td>$user_email</td>
-        <td>Placeholder</td>
+        <td>$created</td>
+        <td>$user_role</td>
         <td><a href='?action=edit_user&user_id=$user_id'>Edit</a></td>
         <td><a href='?user_delete=$user_id'>Delete</a></td>
         </tr>
@@ -522,6 +524,33 @@ function editUser() {
         }
     }
 
+}
+
+// Create a user from CMS
+function adminNewUser() {
+    global $abc;
+
+    if(isset($_POST["add_user"])) {
+        $username = $_POST["new_user"];
+        $role = $_POST["role"];
+        $firstname = $_POST["new_first"];
+        $lastname = $_POST["new_last"];
+        $email = $_POST["new_email"];
+        $password = $_POST["new_password"];
+        $image = $_FILES['new_user_img']['name'];
+
+        $addUser = "INSERT INTO users (username, user_role, user_firstname, user_lastname, user_email, user_password, user_created) ";
+        $addUser .= "VALUES (:altUser, '$role', '$firstname', '$lastname', '$email', :altPass, now())";
+        $stm = $abc->prepare("$addUser");
+        $stm->bindParam(':altPass', $password);
+        $stm->bindParam(':altUser', $username);
+
+        if($stm->execute()) {
+            header("location:users.php");
+        } else {
+            die("Something went wrong");
+        }
+    }
 }
 
 // Display all comments, approve, unapprove and delete comments

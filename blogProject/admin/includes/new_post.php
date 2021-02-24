@@ -24,7 +24,10 @@ include "../includes/db.php";
 
         <div class="form-group">
             <label for="new_status">Post Status</label>
-            <input type="text" name="new_status" class="form-control">
+            <select name="new_status" class="form-control">
+                <option value="Draft">Draft</option>
+                <option value="Publish">Publish</option>
+            </select>
         </div>
 
 

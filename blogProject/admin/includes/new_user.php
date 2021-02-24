@@ -4,47 +4,45 @@ include "../includes/db.php";
 <div class="col-xs-6">
     <form action="" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="new_title">Title</label>
-            <input type="text" name="new_title" class="form-control">
+            <label for="new_user">Username</label>
+            <input type="text" name="new_user" class="form-control">
         </div>
 
         <div class="form-group">
-            <label for="category">Category</label>
-            <select class='form-control' name='update_category'>";
-                <?php
-                displayCategoriesOption();
-                ?>
+            <label for="role">Role</label>
+            <select class='form-control' name='role'>";
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="new_author">Author</label>
-            <input type="text" name="new_author" class="form-control">
+            <label for="new_first">Firstname</label>
+            <input type="text" name="new_first" class="form-control">
         </div>
 
         <div class="form-group">
-            <label for="new_status">Post Status</label>
-            <input type="text" name="new_status" class="form-control">
-        </div>
-
-
-        <div class="form-group">
-            <label for="new_image">Select Image</label>
-            <input type="file" name="new_image" class="form-control">
+            <label for="new_last">Lastname</label>
+            <input type="text" name="new_last" class="form-control">
         </div>
 
         <div class="form-group">
-            <label for="new_content">Content</label>
-            <textarea name="new_content" class="form-control" rows="10" cols="30" style="resize: none"></textarea>
+            <label for="new_email">E-mail</label>
+            <input type="email" name="new_email" class="form-control">
         </div>
 
         <div class="form-group">
-            <label for="new_tags">Tags</label>
-            <input type="text" name="new_tags" class="form-control">
+            <label for="new_password">Password</label>
+            <input type="password" name="new_password" class="form-control">
         </div>
 
         <div class="form-group">
-            <input class="btn btn-primary" type="submit" value="Publish Post" name="add_post">
+            <label for="new_user_img">Select Image</label>
+            <input type="file" name="new_user_img" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Add User" name="add_user">
         </div>
 
     </form>
