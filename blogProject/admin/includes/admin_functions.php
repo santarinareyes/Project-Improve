@@ -146,7 +146,7 @@ function newPost() {
     global $abc;
     if (isset($_POST["add_post"])) {
         $new_title = $_POST["new_title"];
-        $category = $_POST["category"];
+        $category = $_POST["update_category"];
         $new_author = $_POST["new_author"];
         $new_status = $_POST["new_status"];
         
@@ -159,16 +159,21 @@ function newPost() {
         $post_comment_count = 1;
         $post_view_count = 1;
         $post_user = 1;
-        
+
         move_uploaded_file($new_image_temp, "../images/$new_image");
         
-        $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
+
+            $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
+            
+            $new_title_encrypt = encrypt($new_title);
+            
+            if ($new_post->execute()) {
+                header("location:view_posts.php?added=$new_title_encrypt");
+            }
+
         
-        $new_title_encrypt = encrypt($new_title);
         
-        if ($new_post->execute()) {
-            header("location:view_posts.php?added=$new_title_encrypt");
-        }
+        
     }
 }
 
