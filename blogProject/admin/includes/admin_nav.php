@@ -12,7 +12,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">CMS Admin</a>
+          <a class="navbar-brand" href="index.php">CMS Admin</a>
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
@@ -42,7 +42,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
             <li>
-              <a href="index.html"
+              <a href="index.php"
                 ><i class="fa fa-fw fa-dashboard"></i> Dashboard</a
               >
             </li>
@@ -58,7 +58,7 @@
               ></a>
               <ul id="posts_dropdown" class="collapse">
                 <li>
-                  <a href="view_posts.php">View all posts</a>
+                  <a href="posts.php">View all posts</a>
                 </li>
                 <li>
                   <a href="view_posts.php?action=new_post">Add post</a>
@@ -72,10 +72,10 @@
               ></a>
               <ul id="demo" class="collapse">
                 <li>
-                  <a href="#">Dropdown Item</a>
+                  <a href="users.php">View all users</a>
                 </li>
                 <li>
-                  <a href="#">Dropdown Item</a>
+                  <a href="users.php?action=new_user">Add users</a>
                 </li>
               </ul>
             </li>

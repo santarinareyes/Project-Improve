@@ -33,7 +33,7 @@ newPost();
                     break;
                     
                     default:
-                    include "includes/admin_view_posts.php";
+                    include "includes/view_posts.php";
                     break;
                 }
                   ?>

@@ -352,7 +352,7 @@ function editPost()
             $updatePost2 = $abc->prepare($updatePost);
 
             if (!$updatePost2->execute()) {
-                die("FAILED");
+                die("Something went wrong.");
             } else {
                 header("location:view_posts.php");
             }
@@ -387,4 +387,139 @@ function categoryName($theId)
 
         echo "<td>$cat_title</td>";
     }
+}
+
+// View all users from the database and delete users
+function showAllUsers() {
+    global $abc;
+    
+    $getUsers = $abc->query("SELECT * FROM users");
+
+    while($row = $getUsers->fetch()) {
+        $user_id = $row['user_id'];
+        $user_user = $row['username'];
+        $user_first = $row['user_firstname'];
+        $user_last = $row['user_lastname'];
+        $user_email = $row['user_email'];
+        $user_image = $row['user_image'];
+        $user_role = $row['user_role'];
+
+        echo "
+        <tr>
+        <td>$user_id</td>
+        <td>$user_user</td>
+        <td>$user_first</td>
+        <td>$user_last</td>
+        <td>$user_email</td>
+        <td>Placeholder</td>
+        <td><a href='?action=edit_user&user_id=$user_id'>Edit</a></td>
+        <td><a href='?user_delete=$user_id'>Delete</a></td>
+        </tr>
+        ";
+    }
+
+    if (isset($_GET["user_delete"])) {
+        $user_id = $_GET["user_delete"];
+
+        $deleteUser = $abc->query("DELETE FROM users WHERE user_id = $user_id");
+
+        if($deleteUser->execute()) {
+            header("location:users.php");
+        }
+    }
+    
+}
+
+// Edit users
+function editUser() {
+    global $abc;
+
+    if (isset($_GET["user_id"])) {
+        $user_id = $_GET["user_id"];
+
+        $getUser = $abc->query("SELECT * FROM users WHERE user_id = $user_id");
+
+        while ($row = $getUser->fetch()) {
+            $user_user = $row['username'];
+            $user_first = $row['user_firstname'];
+            $user_last = $row['user_lastname'];
+            $user_email = $row['user_email'];
+            $user_image = $row['user_image'];
+            $user_role = $row['user_role'];
+
+            echo
+            "<div class='col-xs-6'>
+            <form action='' method='post' enctype='multipart/form-data'>
+            <div class='form-group'>
+            <label for='update_user'>Username</label>
+            <input type='text' name='update_user' class='form-control' value='$user_user'>
+            </div>
+
+            <div class='form-group'>
+            <label for='update_role'>role</label>
+            <select class='form-control' name='update_role'>;
+            <option>Admin</option>
+            <option>User</option>
+            </select>
+            </div>
+            
+            <div class='form-group'>
+            <label for='update_first'>Firstname</label>
+            <input type='text' name='update_first' class='form-control' value='$user_first'>
+            </div>
+            
+            <div class='form-group'>
+            <label for='update_last'>Lastname</label>
+            <input type='text' name='update_last' class='form-control' value='$user_last'>
+            </div>
+
+            <div class='form-group'>
+            <label for='update_email'>Email</label>
+            <input type='email' name='update_email' class='form-control' value='$user_email'>
+            </div>
+
+            <div class='form-group'>
+            <label for='update_password'>New password</label>
+            <input type='text' name='update_password' class='form-control' value=''>
+            </div>
+            
+            <img src='../images/$user_image' alt='' width='100'>
+            <div class='form-group'>
+            <label for='update_image'>Select Image</label>
+            <input type='file' name='update_image' class='form-control'>
+            </div>
+            
+            <div class='form-group'>
+            <input class='btn btn-primary' type='submit' value='Update user' name='u_user'>
+            </div>
+            
+            </form>
+            </div>
+            ";
+        }
+
+        if(isset($_POST["u_user"])) {
+            $u_user = $_POST["update_user"];
+            $u_role = $_POST["update_role"];
+            $u_first = $_POST["update_first"];
+            $u_last = $_POST["update_last"];
+            $u_email = $_POST["update_email"];
+            
+            $updateUser = "UPDATE users SET ";
+            $updateUser .= "username = '$u_user', ";
+            $updateUser .= "user_role = '$u_role', ";
+            $updateUser .= "user_firstname = '$u_first', ";
+            $updateUser .= "user_lastname = '$u_last', ";
+            $updateUser .= "user_email = '$u_email' ";
+            $updateUser .= "WHERE user_id = $user_id";
+            $stm = $abc->prepare("$updateUser");
+
+            if (!$stm->execute()) {
+                die("Something went wrong.");
+            } else {
+                header("location:users.php");
+            }
+        }
+    }
+
 }

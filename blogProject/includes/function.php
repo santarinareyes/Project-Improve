@@ -20,26 +20,22 @@ function search()
         $pauthor = $posts["post_author"];
         $pdate = $posts["post_date"];
         $pimage = $posts["post_img"];
-        $pcontent = $posts["post_content"];
+        $pcontent1 = $posts["post_content"];
+        $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
 
         echo "
-        <h1 class='page-header'>
-        Page Heading
-        <small>Secondary Text</small>
-        </h1>
-        
         <h2>
-        <a href='#'>$ptitle;?></a>
+        <a href='#'>$ptitle</a>
         </h2>
-        <p class='lead'>by <a href='index.php'>$pauthor?></a></p>
+        <p class='lead'>by <a href='index.php'>$pauthor</a></p>
         <p>
-        <span class='glyphicon glyphicon-time'></span>Posted on $pdate;?>
+        <span class='glyphicon glyphicon-time'></span>Posted on $pdate
         </p>
         <hr />
         <img class='img-responsive' src='images/$pimage' alt='$ptitle' />
         <hr />
         <p>
-        $pcontent;?>
+        $pcontent
         </p>
         <a class='btn btn-primary' href='#'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>
         
@@ -83,12 +79,7 @@ function landingPagePosts()
       $pimage = $posts["post_img"];
       $pcontent = $posts["post_content"];
 
-      echo "
-      <h1 class='page-header'>
-      Page Heading
-      <small>Secondary Text</small>
-      </h1>
-      
+      echo "    
       <h2>
       <a href='post.php?reading=$pid'>$ptitle</a>
       </h2>
@@ -108,8 +99,7 @@ function landingPagePosts()
       </p>
       <a class='btn btn-primary' href='#'
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
-      ></a>
-      
+      ></a>      
       <hr />
       ";
     }
@@ -123,7 +113,8 @@ function landingPagePosts()
       $pauthor = $posts["post_author"];
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
-      $pcontent = $posts["post_content"];
+      $pcontent1 = $posts["post_content"];
+      $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
 
       echo "      
       <h2>
@@ -167,7 +158,8 @@ function categoryPagePosts() {
       $pauthor = $posts["post_author"];
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
-      $pcontent = $posts["post_content"];
+      $pcontent1 = $posts["post_content"];
+      $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
 
       echo "
       <h1 class='page-header'>
