@@ -7,13 +7,7 @@
               <!-- Blog Entries Column -->
               <div class="col-md-8">
 <!-- Display blog posts -->
-<h1 class='page-header'>
-      Page Heading
-      <small>Secondary Text</small>
-      </h1>
-<?php landingPagePosts(); ?>
-<!-- Display comments -->
-<?php include "includes/comments.php";?>
+<?php categoryPagePosts(); ?>
 <!-- Pager -->
 <?php include "includes/pagination.php";?>
 <!-- Blog Sidebar Widgets Column -->

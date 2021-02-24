@@ -217,10 +217,10 @@ function showAllPosts()
         <td> $vp_id</td>
         <td> $vp_author</td>
         <td> $vp_title</td>
-        <td>";
-        categoryName();
+        ";
+        categoryName($vp_menu);
         echo "
-        </td>
+        
         <td> $vp_status</td>
         <td><img src='../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
         <td> $vp_tags</td>
@@ -375,16 +375,9 @@ function displayCategoriesOption()
 }
 
 // Another display category name instead of the id function
-function categoryName()
+function categoryName($theId)
 {
     global $abc;
-
-    $getThePosts = $abc->query("SELECT * FROM posts");
-
-    while ($row = $getThePosts->fetch()) {
-        $theId = $row['post_menu_id'];
-    }
-
 
     $getCat = $abc->query("SELECT * FROM menus WHERE menu_id = $theId");
 
@@ -392,6 +385,6 @@ function categoryName()
         $cat_title = $allCat["menu_title"];
         $menu_id = $allCat["menu_id"];
 
-        echo "$cat_title";
+        echo "<td>$cat_title</td>";
     }
 }
