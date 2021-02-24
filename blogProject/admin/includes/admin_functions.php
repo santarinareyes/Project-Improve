@@ -329,7 +329,6 @@ function editPost()
             move_uploaded_file($up_image_temp, "../images/$up_image");
 
             if (empty($up_image)) {
-                // $editThis = $_GET["editing"];
 
                 $empty_img = $abc->query("SELECT post_img FROM posts WHERE post_id = $editThis");
 
@@ -486,7 +485,7 @@ function editUser() {
             <input type='text' name='update_password' class='form-control' value=''>
             </div>
             
-            <img src='../images/$user_image' alt='' width='100'>
+            <img src='../images/user_images/$user_image' alt='' width='100'>
             <div class='form-group'>
             <label for='update_image'>Select Image</label>
             <input type='file' name='update_image' class='form-control'>
@@ -507,13 +506,26 @@ function editUser() {
             $u_first = $_POST["update_first"];
             $u_last = $_POST["update_last"];
             $u_email = $_POST["update_email"];
+            $u_image = $_FILES["update_image"]["name"];
+            $u_image_temp = $_FILES["update_image"]["tmp_name"];
+
+            move_uploaded_file($u_image_temp, "../images/user_images/$u_image");
+
+            if(empty($u_image)) {
+                $get_old_img = $abc->query("SELECT user_image FROM users WHERE user_id = $user_id");
+
+                while($rows = $get_old_img->fetch()) {
+                    $u_image = $rows['user_image'];
+                }
+            }
             
             $updateUser = "UPDATE users SET ";
             $updateUser .= "username = '$u_user', ";
             $updateUser .= "user_role = '$u_role', ";
             $updateUser .= "user_firstname = '$u_first', ";
             $updateUser .= "user_lastname = '$u_last', ";
-            $updateUser .= "user_email = '$u_email' ";
+            $updateUser .= "user_email = '$u_email', ";
+            $updateUser .= "user_image = '$u_image' ";
             $updateUser .= "WHERE user_id = $user_id";
             $stm = $abc->prepare("$updateUser");
 
