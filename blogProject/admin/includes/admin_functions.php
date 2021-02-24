@@ -523,3 +523,69 @@ function editUser() {
     }
 
 }
+
+// Display all comments, approve, unapprove and delete comments
+function showAllComments()
+{
+    global $abc;
+    $getComments = $abc->query("SELECT * FROM comments");
+
+    while ($row = $getComments->fetch()) {
+        $comment_id = $row["comment_id"];
+        $post_id = $row["comment_post_id"];
+        $user = $row["comment_author_id"];
+        $content = $row["comment_content"];
+        $status = $row["comment_status"];
+        $date = $row["comment_date"];
+
+        echo "
+        <tr>
+        <td> $comment_id</td>";
+        showArtice($post_id);
+        showUser($user);
+        echo "
+        <td> $content</td>
+        <td> $status</td>
+        <td> $date</td>
+        <td><a href='?action=post_edit&editing='>Edit</a></td>
+        <td><a href='?post_delete='>Delete</a></td>
+        </tr>
+        ";
+    }
+
+    if (isset($_GET["post_delete"])) {
+        $post_delete = $_GET["post_delete"];
+
+        $deleteThis = $abc->query("DELETE FROM posts WHERE post_id = $post_delete");
+
+        if ($deleteThis->execute()) {
+            header("location:view_posts.php");
+        }
+    }
+}
+
+// Convert post_id into post_title
+function showArtice($post) {
+    global $abc;
+
+    $getPosts = $abc->query("SELECT * FROM posts WHERE post_id = $post");
+    
+    while($row = $getPosts->fetch()) {
+        $post_title = $row['post_title'];
+    }
+
+    echo "<td> $post_title</td>";
+}
+
+// Convert user_id into user_title
+function showUser($user) {
+    global $abc;
+
+    $getUsers = $abc->query("SELECT * FROM users WHERE user_id = $user");
+
+    while ($row = $getUsers->fetch()) {
+        $username = $row['username'];
+        
+        echo "<td> $username</td>";
+    }
+}

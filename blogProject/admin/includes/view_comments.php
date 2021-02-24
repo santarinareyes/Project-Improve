@@ -1,0 +1,20 @@
+<table class="table table-bordered table-hover">
+                  <thead>
+                      <tr>
+                          <th>Id</th>
+                          <th>Article</th>
+                          <th>User</th>
+                          <th>Comment</th>
+                          <th>Status</th>
+                          <th>Date</th>
+                          <th>Approve</th>
+                          <th>Unapprove</th>
+                          <th>Delete</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  <?php 
+                    showAllComments();
+                  ?>
+                  </tbody>
+              </table>
