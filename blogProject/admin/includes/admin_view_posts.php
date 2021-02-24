@@ -4,7 +4,7 @@
                           <th>Id</th>
                           <th>Author</th>
                           <th>Title</th>
-                          <th>Menu</th>
+                          <th>Category</th>
                           <th>Status</th>
                           <th>Image</th>
                           <th>Tags</th>

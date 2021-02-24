@@ -200,7 +200,7 @@ function showAllPosts() {
         $vp_id = $postsrow["post_id"];
         $vp_author = $postsrow["post_author"];
         $vp_title = $postsrow["post_title"];
-        // $vp_menu = $postsrow["post_title"];
+        $vp_menu = $postsrow["post_menu_id"];
         $vp_status = $postsrow["post_status"];
         $vp_img = $postsrow["post_img"];
         $vp_tags = $postsrow["post_tags"];
@@ -212,7 +212,10 @@ function showAllPosts() {
         <td> $vp_id</td>
         <td> $vp_author</td>
         <td> $vp_title</td>
-        <td>Placeholder</td>
+        <td>";
+        categoryName();
+        echo"
+        </td>
         <td> $vp_status</td>
         <td><img src='../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
         <td> $vp_tags</td>
@@ -369,12 +372,20 @@ function displayCategoriesOption() {
 // Another display category name instead of the id function
 function categoryName() {
     global $abc;
-    $getCat = $abc->query("SELECT * FROM menus");
+
+    $getThePosts = $abc->query("SELECT * FROM posts");
+
+    while($row = $getThePosts->fetch()) {
+        $theId = $row['post_menu_id'];
+    }
+
+
+    $getCat = $abc->query("SELECT * FROM menus WHERE menu_id = $theId");
     
     while ($allCat = $getCat->fetch()) {
         $cat_title = $allCat["menu_title"];
         $menu_id = $allCat["menu_id"];
         
-        echo "<option value='$menu_id'>$cat_title</option>";
+        echo "$cat_title";
     }
 }
