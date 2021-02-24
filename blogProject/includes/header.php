@@ -25,3 +25,5 @@
   </head>
 
   <body>
+  <!-- Navigation -->
+<?php include "includes/nav.php";?> 

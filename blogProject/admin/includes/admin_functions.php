@@ -58,9 +58,9 @@ function adminEdit()
                 // Encrypting with a function for the URL
                 $old_dec = encrypt($old_title);
                 $new_dec = encrypt($newTitle);
-                
+
                 $updateTitle = $abc->query("UPDATE menus SET menu_title = '$newTitle' WHERE menu_id = $e_id");
-                
+
                 if ($updateTitle) {
                     header("location:?updated=$old_dec?to=$new_dec");
                 }
@@ -142,17 +142,18 @@ function adminAddMenu()
 }
 
 // Add a new post from admin>posts
-function newPost() {
+function newPost()
+{
     global $abc;
     if (isset($_POST["add_post"])) {
         $new_title = $_POST["new_title"];
         $category = $_POST["update_category"];
         $new_author = $_POST["new_author"];
         $new_status = $_POST["new_status"];
-        
+
         $new_image = $_FILES["new_image"]['name'];
         $new_image_temp = $_FILES["new_image"]['tmp_name'];
-        
+
         $new_tags = $_POST["new_tags"];
         $new_content = $_POST["new_content"];
         $new_date = date('d-m-y');
@@ -161,46 +162,45 @@ function newPost() {
         $post_user = 1;
 
         move_uploaded_file($new_image_temp, "../images/$new_image");
-        
 
-            $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
-            
-            $new_title_encrypt = encrypt($new_title);
-            
-            if ($new_post->execute()) {
-                header("location:view_posts.php?added=$new_title_encrypt");
-            }
 
-        
-        
-        
+        $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
+
+        $new_title_encrypt = encrypt($new_title);
+
+        if ($new_post->execute()) {
+            header("location:view_posts.php?added=$new_title_encrypt");
+        }
     }
 }
 
 // When posts has been successfully added
-function newPostSuccess() {
+function newPostSuccess()
+{
     if (isset($_GET["added"])) {
         $addedTitleCrypted = $_GET["added"];
         $titleDecrypt = decrypt($addedTitleCrypted);
-        
+
         echo "<h2><strong>$titleDecrypt</strong> has been added.</h2>";
         header("refresh:3;url=view_posts.php");
     }
 }
 
 // To check if query failed
-function checkQuery($checkthis) {
+function checkQuery($checkthis)
+{
     global $abc;
-    if(!$checkthis) {
+    if (!$checkthis) {
         die("Something went wrong in the Query ." . mysqli_error($abc));
     }
 }
 
 // Display all Posts and delete post function
-function showAllPosts() {
+function showAllPosts()
+{
     global $abc;
     $getPosts = $abc->query("SELECT * FROM posts");
-    
+
     while ($postsrow = $getPosts->fetch()) {
         $vp_id = $postsrow["post_id"];
         $vp_author = $postsrow["post_author"];
@@ -211,7 +211,7 @@ function showAllPosts() {
         $vp_tags = $postsrow["post_tags"];
         $vp_comments = $postsrow["post_comment_count"];
         $vp_date = $postsrow["post_date"];
-        
+
         echo "
         <tr>
         <td> $vp_id</td>
@@ -219,7 +219,7 @@ function showAllPosts() {
         <td> $vp_title</td>
         <td>";
         categoryName();
-        echo"
+        echo "
         </td>
         <td> $vp_status</td>
         <td><img src='../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
@@ -231,12 +231,12 @@ function showAllPosts() {
         </tr>
         ";
     }
-    
+
     if (isset($_GET["post_delete"])) {
         $post_delete = $_GET["post_delete"];
-        
+
         $deleteThis = $abc->query("DELETE FROM posts WHERE post_id = $post_delete");
-        
+
         if ($deleteThis->execute()) {
             header("location:view_posts.php");
         }
@@ -244,15 +244,16 @@ function showAllPosts() {
 }
 
 // Fetch the data from the selected post
-function editPost() {
+function editPost()
+{
     global $abc;
-    
-    if(isset($_GET["editing"])) {
+
+    if (isset($_GET["editing"])) {
         $editThis = $_GET["editing"];
-        
+
         $editThese = $abc->query("SELECT * FROM posts WHERE post_id = $editThis");
-        
-        while($values = $editThese->fetch()) {
+
+        while ($values = $editThese->fetch()) {
             $ep_id = $values["post_id"];
             $ep_category = $values["post_menu_id"];
             $ep_author = $values["post_author"];
@@ -264,8 +265,8 @@ function editPost() {
             $ep_tags = $values["post_tags"];
             $ep_comments = $values["post_comment_count"];
             $ep_date = $values["post_date"];
-            
-            echo 
+
+            echo
             "<div class='col-xs-6'>
             <form action='' method='post' enctype='multipart/form-data'>
             <div class='form-group'>
@@ -277,8 +278,8 @@ function editPost() {
             <label for='update_category'>Category</label>
             <select class='form-control' name='update_category'>";
             displayCategoriesOption();
-            
-            echo 
+
+            echo
             "</select>
             </div>
             
@@ -325,15 +326,15 @@ function editPost() {
             $up_image_temp = $_FILES["update_image"]['tmp_name'];
             $up_content = $_POST["update_content"];
             $up_tags = $_POST["update_tags"];
-            
+
             move_uploaded_file($up_image_temp, "../images/$up_image");
-    
-            if(empty($up_image)) {
+
+            if (empty($up_image)) {
                 // $editThis = $_GET["editing"];
-        
+
                 $empty_img = $abc->query("SELECT post_img FROM posts WHERE post_id = $editThis");
 
-                while($get_img = $empty_img->fetch()) {
+                while ($get_img = $empty_img->fetch()) {
                     $up_image = $get_img['post_img'];
                 }
             }
@@ -349,7 +350,7 @@ function editPost() {
             $updatePost .= "post_tags = '$up_tags' ";
             $updatePost .= "WHERE post_id = $editThis ";
             $updatePost2 = $abc->prepare($updatePost);
-            
+
             if (!$updatePost2->execute()) {
                 die("FAILED");
             } else {
@@ -357,40 +358,40 @@ function editPost() {
             }
         }
     }
-    
-    
 }
 
 // Display Category name instead of category id in <option> (menu id)
-function displayCategoriesOption() {
+function displayCategoriesOption()
+{
     global $abc;
     $getCat = $abc->query("SELECT * FROM menus");
-    
+
     while ($allCat = $getCat->fetch()) {
         $cat_title = $allCat["menu_title"];
         $menu_id = $allCat["menu_id"];
-        
+
         echo "<option value='$menu_id'>$cat_title</option>";
     }
 }
 
 // Another display category name instead of the id function
-function categoryName() {
+function categoryName()
+{
     global $abc;
 
     $getThePosts = $abc->query("SELECT * FROM posts");
 
-    while($row = $getThePosts->fetch()) {
+    while ($row = $getThePosts->fetch()) {
         $theId = $row['post_menu_id'];
     }
 
 
     $getCat = $abc->query("SELECT * FROM menus WHERE menu_id = $theId");
-    
+
     while ($allCat = $getCat->fetch()) {
         $cat_title = $allCat["menu_title"];
         $menu_id = $allCat["menu_id"];
-        
+
         echo "$cat_title";
     }
 }
