@@ -165,7 +165,7 @@ function newPost() {
         $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
         
         $new_title_encrypt = encrypt($new_title);
-
+        
         if ($new_post->execute()) {
             header("location:view_posts.php?added=$new_title_encrypt");
         }
@@ -177,7 +177,7 @@ function newPostSuccess() {
     if (isset($_GET["added"])) {
         $addedTitleCrypted = $_GET["added"];
         $titleDecrypt = decrypt($addedTitleCrypted);
-
+        
         echo "<h2><strong>$titleDecrypt</strong> has been added.</h2>";
         header("refresh:3;url=view_posts.php");
     }
@@ -195,7 +195,7 @@ function checkQuery($checkthis) {
 function showAllPosts() {
     global $abc;
     $getPosts = $abc->query("SELECT * FROM posts");
-                  
+    
     while ($postsrow = $getPosts->fetch()) {
         $vp_id = $postsrow["post_id"];
         $vp_author = $postsrow["post_author"];
@@ -209,26 +209,26 @@ function showAllPosts() {
         
         echo "
         <tr>
-          <td> $vp_id</td>
-          <td> $vp_author</td>
-          <td> $vp_title</td>
-          <td>Placeholder</td>
-          <td> $vp_status</td>
-          <td><img src='../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
-          <td> $vp_tags</td>
-          <td> $vp_comments</td>
-          <td> $vp_date</td>
-          <td><a href='?action=post_edit&editing=$vp_id'>Edit</a></td>
-          <td><a href='?post_delete=$vp_id'>Delete</a></td>
-          </tr>
-          ";
+        <td> $vp_id</td>
+        <td> $vp_author</td>
+        <td> $vp_title</td>
+        <td>Placeholder</td>
+        <td> $vp_status</td>
+        <td><img src='../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
+        <td> $vp_tags</td>
+        <td> $vp_comments</td>
+        <td> $vp_date</td>
+        <td><a href='?action=post_edit&editing=$vp_id'>Edit</a></td>
+        <td><a href='?post_delete=$vp_id'>Delete</a></td>
+        </tr>
+        ";
     }
-
+    
     if (isset($_GET["post_delete"])) {
         $post_delete = $_GET["post_delete"];
-
+        
         $deleteThis = $abc->query("DELETE FROM posts WHERE post_id = $post_delete");
-
+        
         if ($deleteThis->execute()) {
             header("location:view_posts.php");
         }
@@ -238,11 +238,12 @@ function showAllPosts() {
 // Fetch the data from the selected post
 function editPost() {
     global $abc;
+    
     if(isset($_GET["editing"])) {
         $editThis = $_GET["editing"];
-
+        
         $editThese = $abc->query("SELECT * FROM posts WHERE post_id = $editThis");
-
+        
         while($values = $editThese->fetch()) {
             $ep_id = $values["post_id"];
             $ep_category = $values["post_menu_id"];
@@ -255,19 +256,18 @@ function editPost() {
             $ep_tags = $values["post_tags"];
             $ep_comments = $values["post_comment_count"];
             $ep_date = $values["post_date"];
-
+            
             echo 
             "<div class='col-xs-6'>
             <form action='' method='post' enctype='multipart/form-data'>
             <div class='form-group'>
-            <label for='new_title'>Title</label>
-            <input type='text' name='new_title' class='form-control' value='$ep_title'>
+            <label for='update_title'>Title</label>
+            <input type='text' name='update_title' class='form-control' value='$ep_title'>
             </div>
             
             <div class='form-group'>
-            <label for='category'>Category
-            </label>
-            <select name='category'>";
+            <label for='update_category'>Category</label>
+            <select class='form-control' name='update_category'>";
             displayCategoriesOption();
             
             echo 
@@ -275,52 +275,106 @@ function editPost() {
             </div>
             
             <div class='form-group'>
-            <label for='new_author'>Author</label>
-            <input type='text' name='new_author' class='form-control' value='$ep_author'>
+            <label for='update_author'>Author</label>
+            <input type='text' name='update_author' class='form-control' value='$ep_author'>
             </div>
             
             <div class='form-group'>
-            <label for='new_status'>Post Status</label>
-            <input type='text' name='new_status' class='form-control' value='$ep_status'>
+            <label for='update_status'>Post Status</label>
+            <input type='text' name='update_status' class='form-control' value='$ep_status'>
             </div>
-            
             
             <img src='../images/$ep_img' alt='' width='100'>
             <div class='form-group'>
-            <label for='new_image'>Select Image</label>
-            <input type='file' name='new_image' class='form-control'>
+            <label for='update_image'>Select Image</label>
+            <input type='file' name='update_image' class='form-control'>
             </div>
             
             <div class='form-group'>
-            <label for='new_content'>Content</label>
-            <textarea name='new_content' class='form-control' rows='10' cols='30' style='resize: none'>$ep_content</textarea>
+            <label for='update_content'>Content</label>
+            <textarea name='update_content' class='form-control' rows='10' cols='30' style='resize: none'>$ep_content</textarea>
             </div>
             
             <div class='form-group'>
-            <label for='new_tags'>Tags</label>
-            <input type='text' name='new_tags' class='form-control' value='$ep_tags'>
+            <label for='update_tags'>Tags</label>
+            <input type='text' name='update_tags' class='form-control' value='$ep_tags'>
             </div>
             
             <div class='form-group'>
-            <input class='btn btn-primary' type='submit' value='Publish Post' name='add_post'>
+            <input class='btn btn-primary' type='submit' value='Update post' name='update_post'>
             </div>
             
             </form>
             </div>
             ";
         }
+        if (isset($_POST["update_post"])) {
+            $up_title = $_POST["update_title"];
+            $up_category = $_POST["update_category"];
+            $up_author = $_POST["update_author"];
+            $up_status = $_POST["update_status"];
+            $up_image = $_FILES["update_image"]['name'];
+            $up_image_temp = $_FILES["update_image"]['tmp_name'];
+            $up_content = $_POST["update_content"];
+            $up_tags = $_POST["update_tags"];
+            
+            move_uploaded_file($up_image_temp, "../images/$up_image");
+    
+            if(empty($up_image)) {
+                // $editThis = $_GET["editing"];
+        
+                $empty_img = $abc->query("SELECT post_img FROM posts WHERE post_id = $editThis");
+
+                while($get_img = $empty_img->fetch()) {
+                    $up_image = $get_img['post_img'];
+                }
+            }
+
+            $updatePost = "UPDATE posts SET ";
+            $updatePost .= "post_menu_id = $up_category, ";
+            $updatePost .= "post_title = '$up_title', ";
+            $updatePost .= "post_author = '$up_author', ";
+            $updatePost .= "post_status = '$up_status', ";
+            $updatePost .= "post_date = now(), ";
+            $updatePost .= "post_img = '$up_image', ";
+            $updatePost .= "post_content = '$up_content', ";
+            $updatePost .= "post_tags = '$up_tags' ";
+            $updatePost .= "WHERE post_id = $editThis ";
+            $updatePost2 = $abc->prepare($updatePost);
+            
+            if (!$updatePost2->execute()) {
+                die("FAILED");
+            } else {
+                header("location:view_posts.php");
+            }
+        }
     }
+    
+    
 }
 
-// Display Category name instead of category id (menu id)
+// Display Category name instead of category id in <option> (menu id)
 function displayCategoriesOption() {
     global $abc;
     $getCat = $abc->query("SELECT * FROM menus");
-
+    
     while ($allCat = $getCat->fetch()) {
         $cat_title = $allCat["menu_title"];
         $menu_id = $allCat["menu_id"];
+        
+        echo "<option value='$menu_id'>$cat_title</option>";
+    }
+}
 
+// Another display category name instead of the id function
+function categoryName() {
+    global $abc;
+    $getCat = $abc->query("SELECT * FROM menus");
+    
+    while ($allCat = $getCat->fetch()) {
+        $cat_title = $allCat["menu_title"];
+        $menu_id = $allCat["menu_id"];
+        
         echo "<option value='$menu_id'>$cat_title</option>";
     }
 }
