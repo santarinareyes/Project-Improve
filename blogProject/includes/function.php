@@ -134,7 +134,7 @@ function landingPagePosts()
       <p>
       $pcontent
       </p>
-      <a class='btn btn-primary' href='#'
+      <a class='btn btn-primary' href='post.php?reading=$pid'
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
       ></a>
       
@@ -184,7 +184,7 @@ function categoryPagePosts() {
       <p>
       $pcontent
       </p>
-      <a class='btn btn-primary' href='#'
+      <a class='btn btn-primary' href='post.php?reading=$pid'
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
       ></a>
       

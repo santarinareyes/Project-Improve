@@ -541,13 +541,15 @@ function showAllComments()
         echo "
         <tr>
         <td> $comment_id</td>";
-        showArtice($post_id);
         showUser($user);
         echo "
-        <td> $content</td>
+        <td> $content</td>";
+        showArticle($post_id);
+        echo "
         <td> $status</td>
         <td> $date</td>
-        <td><a href='?action=post_edit&editing='>Edit</a></td>
+        <td><a href='?action=post_edit&editing='>Approve</a></td>
+        <td><a href='?action=post_edit&editing='>Unnaprove</a></td>
         <td><a href='?post_delete='>Delete</a></td>
         </tr>
         ";
@@ -565,7 +567,7 @@ function showAllComments()
 }
 
 // Convert post_id into post_title
-function showArtice($post) {
+function showArticle($post) {
     global $abc;
 
     $getPosts = $abc->query("SELECT * FROM posts WHERE post_id = $post");

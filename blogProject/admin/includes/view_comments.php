@@ -2,9 +2,9 @@
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Article</th>
-                          <th>User</th>
+                          <th>Author</th>
                           <th>Comment</th>
+                          <th>Article</th>
                           <th>Status</th>
                           <th>Date</th>
                           <th>Approve</th>
