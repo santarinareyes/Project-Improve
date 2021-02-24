@@ -2,6 +2,7 @@
                   <thead>
                       <tr>
                           <th>Id</th>
+                          <th>Photo</th>
                           <th>Username</th>
                           <th>Firstname</th>
                           <th>Lastname</th>

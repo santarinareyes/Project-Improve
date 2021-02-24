@@ -15,7 +15,6 @@ adminNewUser();
                 Posts
                 <small>Author</small>
               </h1>
-          <?php newPostSuccess();?>
               <!-- Table to show all users -->
               <?php 
               if (isset($_GET["action"])) {

@@ -156,7 +156,6 @@ function newPost()
 
         $new_tags = $_POST["new_tags"];
         $new_content = $_POST["new_content"];
-        $new_date = date('d-m-y');
         $post_comment_count = 1;
         $post_view_count = 1;
         $post_user = 1;
@@ -407,6 +406,7 @@ function showAllUsers() {
 
         echo "
         <tr>
+        <td><img src='../images/user_images/$user_image' class='img-responsive' alt='profile-picture' style='max-height: 100px'></td>
         <td>$user_id</td>
         <td>$user_user</td>
         <td>$user_first</td>
@@ -460,8 +460,9 @@ function editUser() {
             <div class='form-group'>
             <label for='update_role'>role</label>
             <select class='form-control' name='update_role'>;
-            <option>Admin</option>
-            <option>User</option>
+            <option value='$user_role'></option>
+            <option value='Admin'>Admin</option>
+            <option value='User'>User</option>
             </select>
             </div>
             
@@ -538,9 +539,12 @@ function adminNewUser() {
         $email = $_POST["new_email"];
         $password = $_POST["new_password"];
         $image = $_FILES['new_user_img']['name'];
+        $temp_image = $_FILES['new_user_img']['tmp_name'];
 
-        $addUser = "INSERT INTO users (username, user_role, user_firstname, user_lastname, user_email, user_password, user_created) ";
-        $addUser .= "VALUES (:altUser, '$role', '$firstname', '$lastname', '$email', :altPass, now())";
+        move_uploaded_file($temp_image, "../images/user_images/$image");
+
+        $addUser = "INSERT INTO users (username, user_role, user_firstname, user_lastname, user_email, user_password, user_created, user_image) ";
+        $addUser .= "VALUES (:altUser, '$role', '$firstname', '$lastname', '$email', :altPass, now(), '$image')";
         $stm = $abc->prepare("$addUser");
         $stm->bindParam(':altPass', $password);
         $stm->bindParam(':altUser', $username);
