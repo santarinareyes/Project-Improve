@@ -405,8 +405,8 @@ function showAllUsers() {
 
         echo "
         <tr>
-        <td><img src='../../images/user_images/$user_image' class='img-responsive' alt='profile-picture' style='max-height: 100px'></td>
         <td>$user_id</td>
+        <td><img src='../../images/user_images/$user_image' class='img-responsive' alt='profile-picture' style='max-height: 100px'></td>
         <td>$user_user</td>
         <td>$user_first</td>
         <td>$user_last</td>
@@ -552,6 +552,8 @@ function adminNewUser() {
         $password = $_POST["new_password"];
         $image = $_FILES['new_user_img']['name'];
         $temp_image = $_FILES['new_user_img']['tmp_name'];
+
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
 
         move_uploaded_file($temp_image, "../../images/user_images/$image");
 

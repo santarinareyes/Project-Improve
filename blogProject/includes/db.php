@@ -6,8 +6,5 @@ $c = "password";
 
 $abc = new PDO($a, $b, $c);
 
-    // if($abc) {
-    //     echo "connected";
-    // } else {
-    //     echo "nope";
-    // }
+$abc->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+$abc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

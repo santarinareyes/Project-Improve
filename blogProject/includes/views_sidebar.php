@@ -1,18 +1,22 @@
-        <div class="col-md-4">
-          <!-- Login -->
+<div class="col-md-4">
+          <!-- Login Form -->
           <div class="well">
-            <h4>Blog Search</h4>
-            <form action="search.php" method="post">
+            <h4>Login</h4>
+            <form action="../includes/login.php" method="post">
+              <div class="form-group">
+                <input name="username" type="text" class="form-control" placeholder="Username"/>
+              </div>
+              <!-- /.input-group -->
               <div class="input-group">
-                <input name="search" type="text" class="form-control" />
+                <input name="password" type="password" class="form-control" placeholder="Password"/>
                 <span class="input-group-btn">
-                  <button name="searchsubmit" class="btn btn-default" type="submit">
-                    <span class="glyphicon glyphicon-search"></span>
+                  <button class="btn btn-primary" type="submit" name="login">Login
                   </button>
                 </span>
               </div>
-            </form> <!-- search form -->
-            <!-- /.input-group -->
+              <!-- /.input-group -->              
+            </form> 
+            <!-- login form -->
           </div>
           <!-- /. well -->
           

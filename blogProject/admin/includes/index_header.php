@@ -1,6 +1,10 @@
 <?php 
-ob_start();
 include "admin_functions.php";
+ob_start();
+session_start();
+if(!isset($_SESSION['role']) || $_SESSION['role'] !== 'Admin') {
+  header("location:../index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
