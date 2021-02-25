@@ -236,3 +236,75 @@ function showAdminNav($views) {
     }
   }
 }
+
+// Sign in
+function signIn() {
+  global $abc;
+  if(isset($_POST["sign_in"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    $stm = $abc->prepare("SELECT * FROM users WHERE username = :name");
+    $stm->bindParam(":name", $username);
+    $stm->execute();
+
+    while($rows = $stm->fetch()) {
+        $user_id = $rows['user_id'];
+        $db_username = $rows['username'];
+        $db_password = $rows['user_password'];
+        $user_firstname = $rows['user_firstname'];
+        $user_lastname = $rows['user_lastname'];
+        $user_role = $rows['user_role'];
+    }
+
+    if (password_verify($password, $db_password)) {
+        $_SESSION['username'] = $db_username;
+        $_SESSION['firstname'] = $user_firstname;
+        $_SESSION['lastname'] = $user_lastname;
+        $_SESSION['role'] = $user_role;
+
+        header("location:../index.php");
+    } else {
+        header("location:../index.php");
+    }
+}
+}
+
+// dont display login form when signed in
+function signedIn($link) {
+  if(isset($_SESSION['username'])) {
+    $username = $_SESSION['username'];
+    echo "
+    <div class='well'>
+    <h4>Signed in as</h4>
+    <form action='$link/signout.php' method='post'>
+    <div class='input-group'>
+    <input type='text' class='form-control' placeholder='$username' disabled/>
+    <span class='input-group-btn'>
+    <button class='btn btn-primary' type='submit' name='sign_out'>Sign out
+    </button>
+    </span>
+    </div>
+    </form> 
+    </div>
+    ";
+  } else {
+    echo "
+    <div class='well'>
+    <h4>Sign in</h4>
+    <form action='$link/login.php' method='post'>
+    <div class='form-group'>
+    <input name='username' type='text' class='form-control' placeholder='Username'/>
+    </div>
+    <div class='input-group'>
+    <input name='password' type='password' class='form-control' placeholder='Password'/>
+    <span class='input-group-btn'>
+    <button class='btn btn-primary' type='submit' name='sign_in'>Sign in
+    </button>
+    </span>
+    </div>
+    </form> 
+    </div>
+    ";
+  }
+}
