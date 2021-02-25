@@ -1,10 +1,11 @@
 <?php
-include "includes/admin_header.php";
+include "../includes/admin_header.php";
+include "../../includes/db.php";
 newPost();
 ?>
 <div id="wrapper">
       <!-- Navigation -->
-      <?php include "includes/admin_nav.php";?>
+      <?php include "../includes/admin_nav.php";?>
 
       <div id="page-wrapper">
         <div class="container-fluid">
@@ -25,15 +26,15 @@ newPost();
               }
                 switch($viewing_post_id) {
                     case 'post_edit';
-                    include "includes/post_edit.php";
+                    include "../includes/post_edit.php";
                     break;
 
                     case 'new_post';
-                    include "includes/new_post.php";
+                    include "../includes/new_post.php";
                     break;
                     
                     default:
-                    include "includes/view_comments.php";
+                    include "../includes/view_comments.php";
                     break;
                 }
                   ?>
@@ -44,4 +45,4 @@ newPost();
         <!-- /.container-fluid -->
       </div>
       <!-- /#page-wrapper -->
-      <?php include "includes/admin_footer.php";?>
+      <?php include "../includes/admin_footer.php";?>

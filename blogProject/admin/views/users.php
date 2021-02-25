@@ -1,10 +1,11 @@
 <?php
-include "includes/admin_header.php";
+include "../includes/admin_header.php";
+include "../../includes/db.php";
 adminNewUser();
 ?>
 <div id="wrapper">
       <!-- Navigation -->
-      <?php include "includes/admin_nav.php";?>
+      <?php include "../includes/admin_nav.php";?>
 
       <div id="page-wrapper">
         <div class="container-fluid">
@@ -24,15 +25,15 @@ adminNewUser();
               }
                 switch($viewing_user_id) {
                     case 'edit_user';
-                    include "includes/user_edit.php";
+                    include "../includes/user_edit.php";
                     break;
 
                     case 'new_user';
-                    include "includes/new_user.php";
+                    include "../includes/new_user.php";
                     break;
                     
                     default:
-                    include "includes/view_users.php";
+                    include "../includes/view_users.php";
                     break;
                 }
                   ?>
@@ -43,4 +44,4 @@ adminNewUser();
         <!-- /.container-fluid -->
       </div>
       <!-- /#page-wrapper -->
-      <?php include "includes/admin_footer.php";?>
+      <?php include "../includes/admin_footer.php";?>

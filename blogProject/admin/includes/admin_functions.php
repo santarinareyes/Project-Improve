@@ -21,12 +21,12 @@ function adminShowMenus()
 
         $delete_menu = $abc->query("DELETE FROM menus WHERE menu_id = $d_id");
         $delete_menu->fetch();
-        header("location:menus.php?deleted=$d_id");
+        header("location:categories.php?deleted=$d_id");
     }
 }
 
-// Edit a menu title from the admin page
-function adminEdit()
+// Edit a category title from the admin page
+function editCategory()
 {
     global $abc;
 
@@ -160,7 +160,7 @@ function newPost()
         $post_view_count = 1;
         $post_user = 1;
 
-        move_uploaded_file($new_image_temp, "../images/$new_image");
+        move_uploaded_file($new_image_temp, "../../images/$new_image");
 
 
         $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
@@ -168,7 +168,7 @@ function newPost()
         $new_title_encrypt = encrypt($new_title);
 
         if ($new_post->execute()) {
-            header("location:view_posts.php?added=$new_title_encrypt");
+            header("location:posts.php?added=$new_title_encrypt");
         }
     }
 }
@@ -181,7 +181,7 @@ function newPostSuccess()
         $titleDecrypt = decrypt($addedTitleCrypted);
 
         echo "<h2><strong>$titleDecrypt</strong> has been added.</h2>";
-        header("refresh:3;url=view_posts.php");
+        header("refresh:3;url=posts.php");
     }
 }
 
@@ -221,7 +221,7 @@ function showAllPosts()
         echo "
         
         <td> $vp_status</td>
-        <td><img src='../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
+        <td><img src='../../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
         <td> $vp_tags</td>
         <td> $vp_comments</td>
         <td> $vp_date</td>
@@ -237,7 +237,7 @@ function showAllPosts()
         $deleteThis = $abc->query("DELETE FROM posts WHERE post_id = $post_delete");
 
         if ($deleteThis->execute()) {
-            header("location:view_posts.php");
+            header("location:posts.php");
         }
     }
 }
@@ -292,7 +292,7 @@ function editPost()
             <input type='text' name='update_status' class='form-control' value='$ep_status'>
             </div>
             
-            <img src='../images/$ep_img' alt='' width='100'>
+            <img src='../../images/$ep_img' alt='' width='100'>
             <div class='form-group'>
             <label for='update_image'>Select Image</label>
             <input type='file' name='update_image' class='form-control'>
@@ -326,7 +326,7 @@ function editPost()
             $up_content = $_POST["update_content"];
             $up_tags = $_POST["update_tags"];
 
-            move_uploaded_file($up_image_temp, "../images/$up_image");
+            move_uploaded_file($up_image_temp, "../../images/$up_image");
 
             if (empty($up_image)) {
 
@@ -352,7 +352,7 @@ function editPost()
             if (!$updatePost2->execute()) {
                 die("Something went wrong.");
             } else {
-                header("location:view_posts.php");
+                header("location:../views/posts.php");
             }
         }
     }
@@ -405,7 +405,7 @@ function showAllUsers() {
 
         echo "
         <tr>
-        <td><img src='../images/user_images/$user_image' class='img-responsive' alt='profile-picture' style='max-height: 100px'></td>
+        <td><img src='../../images/user_images/$user_image' class='img-responsive' alt='profile-picture' style='max-height: 100px'></td>
         <td>$user_id</td>
         <td>$user_user</td>
         <td>$user_first</td>
@@ -485,7 +485,7 @@ function editUser() {
             <input type='text' name='update_password' class='form-control' value=''>
             </div>
             
-            <img src='../images/user_images/$user_image' alt='' width='100'>
+            <img src='../../images/user_images/$user_image' alt='' width='100'>
             <div class='form-group'>
             <label for='update_image'>Select Image</label>
             <input type='file' name='update_image' class='form-control'>
@@ -509,7 +509,7 @@ function editUser() {
             $u_image = $_FILES["update_image"]["name"];
             $u_image_temp = $_FILES["update_image"]["tmp_name"];
 
-            move_uploaded_file($u_image_temp, "../images/user_images/$u_image");
+            move_uploaded_file($u_image_temp, "../../images/user_images/$u_image");
 
             if(empty($u_image)) {
                 $get_old_img = $abc->query("SELECT user_image FROM users WHERE user_id = $user_id");
@@ -553,7 +553,7 @@ function adminNewUser() {
         $image = $_FILES['new_user_img']['name'];
         $temp_image = $_FILES['new_user_img']['tmp_name'];
 
-        move_uploaded_file($temp_image, "../images/user_images/$image");
+        move_uploaded_file($temp_image, "../../images/user_images/$image");
 
         $addUser = "INSERT INTO users (username, user_role, user_firstname, user_lastname, user_email, user_password, user_created, user_image) ";
         $addUser .= "VALUES (:altUser, '$role', '$firstname', '$lastname', '$email', :altPass, now(), '$image')";

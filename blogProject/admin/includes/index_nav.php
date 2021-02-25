@@ -12,7 +12,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.php">CMS Admin</a>
+          <a class="navbar-brand" href="index.php">CMS Admin</a>
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
@@ -42,45 +42,45 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
             <li>
-              <a href="../index.php"
+              <a href="index.php"
                 ><i class="fa fa-fw fa-dashboard"></i> Dashboard</a
               >
             </li>
             <li>
-              <a href="categories.php"
+              <a href="views/categories.php"
                 ><i class="fa fa-fw fa-wrench"></i> Categories</a
               >
             </li>
             <li>
-              <a href="javascript:;" data-toggle="collapse" data-target="#views_posts"
+              <a href="javascript:;" data-toggle="collapse" data-target="#index_posts"
                 ><i class="fa fa-fw fa-arrows-v"></i> Posts
                 <i class="fa fa-fw fa-caret-down"></i
               ></a>
-              <ul id="views_posts" class="collapse">
+              <ul id="index_posts" class="collapse">
                 <li>
-                  <a href="posts.php">View all posts</a>
+                  <a href="views/posts.php">View all posts</a>
                 </li>
                 <li>
-                  <a href="posts.php?action=new_post">Add post</a>
+                  <a href="views/posts.php?action=new_post">Add post</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="javascript:;" data-toggle="collapse" data-target="#views_users"
+              <a href="javascript:;" data-toggle="collapse" data-target="#index_user"
                 ><i class="fa fa-fw fa-arrows-v"></i> Users
                 <i class="fa fa-fw fa-caret-down"></i
               ></a>
-              <ul id="views_users" class="collapse">
+              <ul id="index_user" class="collapse">
                 <li>
-                  <a href="users.php">View all users</a>
+                  <a href="views/users.php">View all users</a>
                 </li>
                 <li>
-                  <a href="users.php?action=new_user">Add users</a>
+                  <a href="views/users.php?action=new_user">Add users</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="comments.php"
+              <a href="views/comments.php"
                 ><i class="fa fa-fw fa-file"></i> Comments</a
               >
             </li>

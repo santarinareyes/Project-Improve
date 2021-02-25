@@ -1,7 +1,10 @@
-<?php include "includes/admin_header.php";?>
+<?php 
+include "../includes/admin_header.php";
+include "../../includes/db.php";
+?>
 <div id="wrapper">
       <!-- Navigation -->
-      <?php include "includes/admin_nav.php";?>
+      <?php include "../includes/admin_nav.php";?>
 
       <div id="page-wrapper">
         <div class="container-fluid">
@@ -23,7 +26,7 @@
                             <input name="menu_add" class="btn btn-primary" type="submit" value="Add Menu">
                         </div>
                         <?php adminAddMenu();?>
-                        <?php adminEdit();?>
+                        <?php editCategory();?>
                   </form>
               </div>                    
               <!-- /.Menu add form -->
@@ -50,4 +53,4 @@
         <!-- /.container-fluid -->
       </div>
       <!-- /#page-wrapper -->
-      <?php include "includes/admin_footer.php";?>
+      <?php include "../includes/admin_footer.php";?>

@@ -1,7 +1,7 @@
-<?php include "includes/admin_header.php";?>
+<?php include "includes/index_header.php";?>
 <div id="wrapper">
       <!-- Navigation -->
-      <?php include "includes/admin_nav.php";?>
+      <?php include "includes/index_nav.php";?>
 
       <div id="page-wrapper">
         <div class="container-fluid">
