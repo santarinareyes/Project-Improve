@@ -14,7 +14,7 @@
 <?php landingPagePosts(1); ?>
 <!-- Pager -->
 <?php include "includes/pagination.php";?>
-<!-- Blog Sidebar Widgets Column -->
+<!-- Sidebar Widgets Column -->
 <?php include "includes/sidebar.php";?>
 
           <!-- Side Widget Well -->
