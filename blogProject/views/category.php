@@ -1,6 +1,7 @@
-<?php include "includes/function.php";?>
+<?php include "../includes/function.php";?>
 <!-- Header -->
-<?php include "includes/header.php"; ?> 
+<?php include "../includes/views_header.php"; ?> 
+  <!-- Navigation -->
 <!-- Page Content -->
 <div class="container">
       <div class="row">
@@ -9,9 +10,9 @@
 <!-- Display blog posts -->
 <?php categoryPagePosts(); ?>
 <!-- Pager -->
-<?php include "includes/pagination.php";?>
+<?php include "../includes/pagination.php";?>
 <!-- Blog Sidebar Widgets Column -->
-<?php include "includes/sidebar.php";?>
+<?php include "../includes/sidebar.php";?>
 </div> <!-- /.row -->
 <hr/>
-<?php include "includes/footer.php";?>
+<?php include "../includes/footer.php";?>

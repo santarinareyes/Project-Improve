@@ -1,6 +1,6 @@
-<?php include "includes/function.php";?>
+<?php include "../includes/function.php";?>
 <!-- Header -->
-<?php include "includes/header.php"; ?> 
+<?php include "../includes/views_header.php"; ?> 
 <!-- Page Content -->
 <div class="container">
       <div class="row">
@@ -13,11 +13,11 @@
       </h1>
 <?php landingPagePosts(); ?>
 <!-- Display comments -->
-<?php include "includes/comments.php";?>
+<?php include "../includes/comments.php";?>
 <!-- Pager -->
-<?php include "includes/pagination.php";?>
+<?php include "../includes/pagination.php";?>
 <!-- Blog Sidebar Widgets Column -->
-<?php include "includes/sidebar.php";?>
+<?php include "../includes/sidebar.php";?>
 </div> <!-- /.row -->
 <hr/>
-<?php include "includes/footer.php";?>
+<?php include "../includes/footer.php";?>

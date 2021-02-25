@@ -43,13 +43,13 @@ function search()
         ";
       }
     } else {
-      echo '<h1>NO RESULTS!</h1>';
+      echo "<h1>Couldn't find what you were looking for.</h1>";
     }
   }
 }
 
 // Functions to display the navs (Menu/Category) from database
-function showMenus()
+function showMenus($link)
 {
   global $abc;
   $getNav = $abc->query("SELECT * FROM menus");
@@ -57,7 +57,7 @@ function showMenus()
   while ($menus = $getNav->fetch()) {
     $menu = $menus['menu_title'];
     $menu_id = $menus['menu_id'];
-    echo "<li><a href='category.php?category=$menu_id.php'>$menu</a></li>";
+    echo "<li><a href='$link?category=$menu_id.php'>$menu</a></li>";
   }
 }
 
@@ -81,7 +81,7 @@ function landingPagePosts()
 
       echo "    
       <h2>
-      <a href='post.php?reading=$pid'>$ptitle</a>
+      <a href='views/post.php?reading=$pid'>$ptitle</a>
       </h2>
       <p class='lead'>by <a href='index.php'>$pauthor</a></p>
       <p>
@@ -118,7 +118,7 @@ function landingPagePosts()
 
       echo "      
       <h2>
-      <a href='post.php?reading=$pid'>$ptitle</a>
+      <a href='views/post.php?reading=$pid'>$ptitle</a>
       </h2>
       <p class='lead'>by <a href='index.php'>$pauthor</a></p>
       <p>
@@ -168,7 +168,7 @@ function categoryPagePosts() {
       </h1>
       
       <h2>
-      <a href='post.php?reading=$pid'>$ptitle</a>
+      <a href='views/post.php?reading=$pid'>$ptitle</a>
       </h2>
       <p class='lead'>by <a href='index.php'>$pauthor</a></p>
       <p>
