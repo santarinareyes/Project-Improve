@@ -33,7 +33,7 @@ function search()
         <span class='glyphicon glyphicon-time'></span>Posted on $pdate
         </p>
         <hr />
-        <img class='img-responsive' src='images/$pimage' alt='$ptitle' />
+        <img class='img-responsive' src='../images/$pimage' alt='$ptitle' />
         <hr />
         <p>
         $pcontent
@@ -116,7 +116,7 @@ function landingPagePosts($readmore)
         <hr />
         <img
         class='img-responsive'
-        src='images/$pimage'
+        src='../images/$pimage'
         alt=''
         />
         <hr />

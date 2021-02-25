@@ -2,7 +2,7 @@
           <!-- Blog Search Well -->
           <div class="well">
             <h4>Blog Search</h4>
-            <form action="views/search.php" method="post">
+            <form action="search.php" method="post">
             <div class="input-group">
               <input name="search" type="text" class="form-control" />
               <span class="input-group-btn">
@@ -22,7 +22,7 @@
               <div class="col-lg-12">
                 <ul class="list-unstyled">
                 <?php 
-                  showMenus('views/category.php');
+                  showMenus('category.php');
                 ?>
                 </ul>
               </div>
@@ -46,3 +46,7 @@
             <!-- /.row -->
           </div> 
           <!-- /. well -->
+
+          <!-- Side Widget Well -->
+          <?php include "../includes/widget.php";?>
+        </div>

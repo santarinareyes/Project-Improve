@@ -13,7 +13,7 @@
 <!-- Pager -->
 <?php include "../includes/pagination.php";?>
 <!-- Blog Sidebar Widgets Column -->
-<?php include "../includes/sidebar.php";?>
+<?php include "../includes/views_sidebar.php";?>
 </div> <!-- /.row -->
 <hr/>
 <?php include "../includes/footer.php";?>
