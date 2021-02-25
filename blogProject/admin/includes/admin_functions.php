@@ -508,15 +508,22 @@ function editUser() {
             $u_email = $_POST["update_email"];
             $u_image = $_FILES["update_image"]["name"];
             $u_image_temp = $_FILES["update_image"]["tmp_name"];
-
+            $u_password = $_POST["update_password"];
+            
             move_uploaded_file($u_image_temp, "../../images/user_images/$u_image");
-
+            
             if(empty($u_image)) {
                 $get_old_img = $abc->query("SELECT user_image FROM users WHERE user_id = $user_id");
-
+                
                 while($rows = $get_old_img->fetch()) {
                     $u_image = $rows['user_image'];
                 }
+            }
+            
+            if(!empty($u_password)) {
+                $u_password = password_hash($u_password, PASSWORD_BCRYPT, array('cost' => 10));
+                $stm = $abc->prepare("UPDATE users SET user_password = '$u_password' WHERE user_id = $user_id");
+                $stm->execute();
             }
             
             $updateUser = "UPDATE users SET ";
@@ -553,7 +560,7 @@ function adminNewUser() {
         $image = $_FILES['new_user_img']['name'];
         $temp_image = $_FILES['new_user_img']['tmp_name'];
 
-        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
         move_uploaded_file($temp_image, "../../images/user_images/$image");
 
