@@ -16,6 +16,7 @@ function search()
 
     if ($search && $stm != 0) {
       while ($posts = $aftersearch->fetch()) {
+        $pid = $posts["post_id"];
         $ptitle = $posts["post_title"];
         $pauthor = $posts["post_author"];
         $pdate = $posts["post_date"];
@@ -25,7 +26,7 @@ function search()
 
         echo "
         <h2>
-        <a href='#'>$ptitle</a>
+        <a href='post.php?reading=$pid'>$ptitle</a>
         </h2>
         <p class='lead'>by <a href='index.php'>$pauthor</a></p>
         <p>
@@ -37,7 +38,7 @@ function search()
         <p>
         $pcontent
         </p>
-        <a class='btn btn-primary' href='#'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>
+        <a class='btn btn-primary' href='post.php?reading=$pid'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>
         
         <hr />
         ";
@@ -62,7 +63,7 @@ function showMenus($link)
 }
 
 // Show all posts
-function landingPagePosts()
+function landingPagePosts($readmore)
 {
   global $abc;
 
@@ -79,29 +80,52 @@ function landingPagePosts()
       $pimage = $posts["post_img"];
       $pcontent = $posts["post_content"];
 
-      echo "    
-      <h2>
-      <a href='views/post.php?reading=$pid'>$ptitle</a>
-      </h2>
-      <p class='lead'>by <a href='index.php'>$pauthor</a></p>
-      <p>
-      <span class='glyphicon glyphicon-time'></span>Posted on $pdate
-      </p>
-      <hr />
-      <img
-      class='img-responsive'
-      src='images/$pimage'
-      alt=''
-      />
-      <hr />
-      <p>
-      $pcontent
-      </p>
-      <a class='btn btn-primary' href='#'
-      >Read More <span class='glyphicon glyphicon-chevron-right'></span
-      ></a>      
-      <hr />
-      ";
+      if ($readmore == 1) {
+        echo "    
+        <h2>
+        <a href='views/post.php?reading=$pid'>$ptitle</a>
+        </h2>
+        <p class='lead'>by <a href='index.php'>$pauthor</a></p>
+        <p>
+        <span class='glyphicon glyphicon-time'></span>Posted on $pdate
+        </p>
+        <hr />
+        <img
+        class='img-responsive'
+        src='images/$pimage'
+        alt=''
+        />
+        <hr />
+        <p>
+        $pcontent
+        </p>
+        <a class='btn btn-primary' href='#'
+        >Read More <span class='glyphicon glyphicon-chevron-right'></span
+        ></a>
+        <hr />
+        ";
+      } else {
+        echo "    
+        <h2>
+        <a href='#'>$ptitle</a>
+        </h2>
+        <p class='lead'>by <a href='#'>$pauthor</a></p>
+        <p>
+        <span class='glyphicon glyphicon-time'></span>Posted on $pdate
+        </p>
+        <hr />
+        <img
+        class='img-responsive'
+        src='images/$pimage'
+        alt=''
+        />
+        <hr />
+        <p>
+        $pcontent
+        </p>
+        <hr />
+        ";
+      }
     }
   } else {
 
@@ -134,7 +158,7 @@ function landingPagePosts()
       <p>
       $pcontent
       </p>
-      <a class='btn btn-primary' href='post.php?reading=$pid'
+      <a class='btn btn-primary' href='views/post.php?reading=$pid'
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
       ></a>
       

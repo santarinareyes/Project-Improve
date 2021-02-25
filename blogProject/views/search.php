@@ -2,7 +2,7 @@
 <!-- Header -->
 <?php include "../includes/views_header.php"; ?> 
 <!-- Navigation -->
-<?php include "../includes/nav.php";?> 
+<?php include "../includes/views_nav.php";?> 
 <!-- Page Content -->
 <div class="container">
       <div class="row">

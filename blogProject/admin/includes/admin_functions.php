@@ -457,7 +457,7 @@ function editUser() {
             </div>
 
             <div class='form-group'>
-            <label for='update_role'>role</label>
+            <label for='update_role'>Role</label>
             <select class='form-control' name='update_role'>;
             <option value='$user_role'></option>
             <option value='Admin'>Admin</option>

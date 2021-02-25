@@ -22,7 +22,7 @@
               <div class="col-lg-12">
                 <ul class="list-unstyled">
                 <?php 
-                  showMenus();
+                  showMenus('category.php');
                 ?>
                 </ul>
               </div>
@@ -32,5 +32,5 @@
           <!-- /. well -->
 
           <!-- Side Widget Well -->
-          <?php include "includes/widget.php";?>
+          <?php include "../includes/widget.php";?>
         </div>

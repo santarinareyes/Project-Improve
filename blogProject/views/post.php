@@ -11,7 +11,7 @@
       Page Heading
       <small>Secondary Text</small>
       </h1>
-<?php landingPagePosts(); ?>
+<?php landingPagePosts(0); ?>
 <!-- Display comments -->
 <?php include "../includes/comments.php";?>
 <!-- Pager -->
