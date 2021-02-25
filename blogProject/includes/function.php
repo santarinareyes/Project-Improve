@@ -50,7 +50,7 @@ function search()
 }
 
 // Functions to display the navs (Menu/Category) from database
-function showMenus($link)
+function showCategories($link)
 {
   global $abc;
   $getNav = $abc->query("SELECT * FROM menus");
@@ -192,7 +192,7 @@ function categoryPagePosts() {
       </h1>
       
       <h2>
-      <a href='views/post.php?reading=$pid'>$ptitle</a>
+      <a href='post.php?reading=$pid'>$ptitle</a>
       </h2>
       <p class='lead'>by <a href='index.php'>$pauthor</a></p>
       <p>
@@ -201,7 +201,7 @@ function categoryPagePosts() {
       <hr />
       <img
       class='img-responsive'
-      src='images/$pimage'
+      src='../images/$pimage'
       alt=''
       />
       <hr />
@@ -213,6 +213,25 @@ function categoryPagePosts() {
       ></a>
       
       <hr />
+      ";
+    }
+  }
+}
+
+// Show admin nav
+function showAdminNav($views) {
+  if (isset($_SESSION['role'])) {
+    if($_SESSION['role'] == 'Admin' && $views === 0) {
+      echo "
+      <li>
+      <a href='admin'>Admin</a>
+      </li>
+      ";
+    } else if ($_SESSION['role'] == 'Admin' && $views === 1) {
+      echo "
+      <li>
+      <a href='../admin'>Admin</a>
+      </li>
       ";
     }
   }

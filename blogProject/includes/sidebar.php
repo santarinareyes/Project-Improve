@@ -45,7 +45,7 @@
               <div class="col-lg-12">
                 <ul class="list-unstyled">
                   <?php
-                  showMenus('views/category.php');
+                  showCategories('views/category.php');
                   ?>
                 </ul>
               </div>

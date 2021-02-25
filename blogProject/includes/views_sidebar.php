@@ -43,7 +43,7 @@
               <div class="col-lg-12">
                 <ul class="list-unstyled">
                   <?php
-                  showMenus('category.php');
+                  showCategories('category.php');
                   ?>
                 </ul>
               </div>

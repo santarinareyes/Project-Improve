@@ -482,7 +482,7 @@ function editUser() {
 
             <div class='form-group'>
             <label for='update_password'>New password</label>
-            <input type='text' name='update_password' class='form-control' value=''>
+            <input type='text' name='update_password' class='form-control' value='' autocomplete='off'>
             </div>
             
             <img src='../../images/user_images/$user_image' alt='' width='100'>
@@ -542,8 +542,9 @@ function editUser() {
                 header("location:users.php");
             }
         }
+    } else {
+        header("location:../index.php");
     }
-
 }
 
 // Create a user from CMS

@@ -21,12 +21,14 @@
           <ul class="nav navbar-nav">
           
           <?php
-            showMenus('category.php');
+            session_start();
+            showCategories('category.php');
+            showAdminNav(1);
             ?>
 
-          <li>
+          <!-- <li>
             <a href="../admin">Admin</a>
-          </li>
+          </li> -->
 <!-- 
             <li>
               <a href="#">Services</a>
