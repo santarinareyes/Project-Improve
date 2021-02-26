@@ -266,6 +266,7 @@ function signIn()
     }
 
     if (password_verify($password, $db_password)) {
+      $_SESSION['user_id'] = $user_id;
       $_SESSION['username'] = $db_username;
       $_SESSION['firstname'] = $user_firstname;
       $_SESSION['lastname'] = $user_lastname;
@@ -439,11 +440,12 @@ function displayCat() {
 function writeComment() {
   global $abc;
   if (isset($_SESSION['username'])) {
+    $user_id = $_SESSION['user_id'];
 
     echo "
     <div class='well'>
     <h4>Leave a Comment:</h4>
-    <form role='form'>
+    <form role='form' method='post' action='#'>
     <div class='form-group'>
     <textarea class='form-control' name='comment_content' rows='5' style='resize: none'></textarea>
     </div>
@@ -452,11 +454,28 @@ function writeComment() {
     </div>
     <hr />
     ";
+
+    if (isset($_POST["comment_submit"])) {
+      $comment_status = 'Draft';
+      $comment_date = date('y-m-d');
+      $post_id = $_GET["reading"];
+      $comment_content = $_POST["comment_content"];
+
+      $stm = "INSERT INTO comments (comment_status, comment_post_id, comment_author_id, comment_content, comment_date) ";
+      $stm .= "VALUES (:status, :post_id, :author, :content, :date)";
+      $stm = $abc->prepare($stm);
+      $stm->bindParam(":status", $comment_status);
+      $stm->bindParam(":post_id", $post_id);
+      $stm->bindParam(":author", $user_id);
+      $stm->bindParam(":content", $comment_content);
+      $stm->bindParam(":date", $comment_date);
+      
+      if(!$stm->execute()) {
+        die("Something went wrong.");
+      }
+    }
   }
 
-  if (isset($_POST["comment_submit"])) {
-    
-  }
 }
 
 // Display comments
@@ -466,7 +485,7 @@ function displayComments() {
   if(isset($_GET["reading"])) {
     $post_id = $_GET["reading"];
 
-    $stm=$abc->query("SELECT * FROM comments WHERE comment_post_id = $post_id");
+    $stm=$abc->query("SELECT * FROM comments WHERE comment_post_id = $post_id AND comment_status = 'Approved'");
 
     while ($row = $stm->fetch()) {
       $comment_author_id = $row['comment_author_id'];

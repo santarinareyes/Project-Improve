@@ -597,26 +597,37 @@ function showAllComments()
         <tr>
         <td> $comment_id</td>";
         showUser($user);
+        showArticle($post_id);
         echo "
         <td> $content</td>";
-        showArticle($post_id);
         echo "
         <td> $status</td>
         <td> $date</td>
-        <td><a href='?action=post_edit&editing='>Approve</a></td>
-        <td><a href='?action=post_edit&editing='>Unnaprove</a></td>
-        <td><a href='?post_delete='>Delete</a></td>
+        <td><a href='?comment_approve=$comment_id'>Approve</a></td>
+        <td><a href='?comment_delete=$comment_id'>Unnaprove</a></td>
         </tr>
         ";
     }
 
-    if (isset($_GET["post_delete"])) {
-        $post_delete = $_GET["post_delete"];
+    if (isset($_GET["comment_delete"])) {
+        $comment_id = $_GET["comment_delete"];
 
-        $deleteThis = $abc->query("DELETE FROM posts WHERE post_id = $post_delete");
+        $deleteThis = $abc->query("DELETE FROM comments WHERE comment_id = $comment_id");
 
         if ($deleteThis->execute()) {
-            header("location:view_posts.php");
+            header("location:comments.php");
+        }
+    }
+
+    if (isset($_GET["comment_approve"])) {
+        $comment_id = $_GET["comment_approve"];
+
+        $stm = $abc->prepare("UPDATE comments SET comment_status = 'Approved' WHERE comment_id = $comment_id");
+        
+        if (!$stm->execute()) {
+            die("Something went wrong");
+        } else {
+            header("location:comments.php");
         }
     }
 }

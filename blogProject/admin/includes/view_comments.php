@@ -3,13 +3,12 @@
                       <tr>
                           <th>Id</th>
                           <th>Author</th>
-                          <th>Comment</th>
                           <th>Article</th>
+                          <th>Comment</th>
                           <th>Status</th>
                           <th>Date</th>
                           <th>Approve</th>
                           <th>Unapprove</th>
-                          <th>Delete</th>
                       </tr>
                   </thead>
                   <tbody>
