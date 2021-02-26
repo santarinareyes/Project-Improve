@@ -1,8 +1,8 @@
 <?php
 
-// Show all menus/categories from the database
+// Show all categories from the database
 // as well as the delete function from the admin page
-function adminShowMenus()
+function adminShowCategories()
 {
     global $abc;
     $getNav = $abc->query("SELECT * FROM menus");
@@ -10,7 +10,6 @@ function adminShowMenus()
     while ($menus = $getNav->fetch()) {
         $m_title = $menus['menu_title'];
         $m_id = $menus['menu_id'];
-        echo "<tr><td>$m_id</td>";
         echo "<td>$m_title</td>";
         echo "<td><a href=\"?edit=$m_id\">Edit</a></td>";
         echo "<td><a href=\"?delete=$m_id\">Delete</a></td></tr>";
@@ -213,18 +212,18 @@ function showAllPosts()
 
         echo "
         <tr>
-        <td> $vp_id</td>
-        <td> $vp_author</td>
+        <td><img src='../../images/$vp_img' class='img-responsive' alt='image' style='max-width: 100px'></td>
         <td> $vp_title</td>
+        <td> $vp_author</td>
         ";
         categoryName($vp_menu);
         echo "
         
         <td> $vp_status</td>
-        <td><img src='../../images/$vp_img' class='img-responsive' alt='image' style='max-height: 100px'></td>
-        <td> $vp_tags</td>
-        <td> $vp_comments</td>
         <td> $vp_date</td>
+        <td> $vp_tags</td>";
+        publish_unpublish_btn($vp_status, $vp_id);
+        echo"
         <td><a href='?action=post_edit&editing=$vp_id'>Edit</a></td>
         <td><a href='?post_delete=$vp_id'>Delete</a></td>
         </tr>
@@ -238,6 +237,42 @@ function showAllPosts()
 
         if ($deleteThis->execute()) {
             header("location:posts.php");
+        }
+    }
+}
+
+// Display publish/unpublish
+function publish_unpublish_btn($status, $post_id) {
+    global $abc;
+    if($status === 'Published') {
+        echo"
+        <td><a href='?post_status=$status&post_id=$post_id'>Unpublish</a></td>
+        ";
+    } else {
+        echo"
+        <td><a href='?post_status=$status&post_id=$post_id'>Publish</a></td>
+        ";
+    }
+
+    if (isset($_GET["post_status"])) {
+        $post_status = $_GET["post_status"];
+        $update_post_id = $_GET["post_id"];
+        if ($post_status == 'Published') {
+            $stm = $abc->prepare("UPDATE posts SET post_status = 'Unpublished' WHERE post_id = $update_post_id");
+            
+            if($stm->execute()) {
+                header("location:posts.php");
+            } else {
+                die("Something went wrong!");
+            }
+        } else {
+            $stm = $abc->prepare("UPDATE posts SET post_status = 'Published' WHERE post_id = $update_post_id");
+
+            if ($stm->execute()) {
+                header("location:posts.php");
+            } else {
+                die("Something went wrong!");
+            }
         }
     }
 }
@@ -288,10 +323,14 @@ function editPost()
             </div>
             
             <div class='form-group'>
-            <label for='update_status'>Post Status</label>
-            <input type='text' name='update_status' class='form-control' value='$ep_status'>
+            <label for='update_status'>Post status</label>
+            <select class='form-control' name='update_status'>;
+            <option value='$ep_status'></option>
+            <option value='Published'>Publish</option>
+            <option value='Drafted'>Draft</option>
+            </select>
             </div>
-            
+
             <img src='../../images/$ep_img' alt='' width='100'>
             <div class='form-group'>
             <label for='update_image'>Select Image</label>
@@ -579,7 +618,7 @@ function adminNewUser() {
     }
 }
 
-// Display all comments, approve, unapprove and delete comments
+// Display all comments, approve/delete comments
 function showAllComments()
 {
     global $abc;
@@ -595,17 +634,17 @@ function showAllComments()
         $anchor = $post_id - 1;
 
         echo "
-        <tr>
-        <td id='approved$comment_id'> $comment_id</td>";
+        <tr>";
         showUser($user);
         showArticle($post_id);
         echo "
-        <td> $content</td>";
+        <td id='approved$comment_id'> $content</td>";
         echo "
         <td> $status</td>
-        <td> $date</td>
+        <td> $date</td>";
+        showApproveBtn($comment_id);
+        echo"
         <td><a href='../../views/post.php?reading=$post_id'>Go to article</a></td>
-        <td><a href='?comment_approve=$comment_id#approved$comment_id'>Approve</a></td>
         <td><a href='?comment_delete=$comment_id'>Delete</a></td>
         </tr>
         ";
@@ -630,6 +669,27 @@ function showAllComments()
             die("Something went wrong");
         } else {
             header("location:comments.php");
+        }
+    }
+}
+
+// Show approve button if comment is not yet approved
+function showApproveBtn($comment_id) {
+    global $abc;
+
+    $stm = $abc->query("SELECT * FROM comments where comment_id = $comment_id");
+
+    while ($row = $stm->fetch()) {
+        $comment_status = $row['comment_status'];
+
+        if ($comment_status !== 'Approved') {
+            echo "
+            <td><a href='?comment_approve=$comment_id#approved$comment_id'>Approve</a></td>
+            ";
+        } else {
+            echo "
+            <td class='danger'><a href='?comment_approve=$comment_id#approved$comment_id'></a></td>
+            ";
         }
     }
 }

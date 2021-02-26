@@ -1,15 +1,13 @@
 <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                          <th>Id</th>
-                          <th>Author</th>
+                          <th>Image</th>
                           <th>Title</th>
+                          <th>Author</th>
                           <th>Category</th>
                           <th>Status</th>
-                          <th>Image</th>
+                          <th>Published</th>
                           <th>Tags</th>
-                          <th>Comments</th>
-                          <th>Date</th>
                       </tr>
                   </thead>
                   <tbody>

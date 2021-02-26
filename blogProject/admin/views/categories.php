@@ -33,12 +33,11 @@ include "../includes/admin_header.php";
                   <table class="table table-bordered table-hover">
                       <thead>
                           <tr>
-                              <th>Id</th>
-                              <th>Menu Title</th>
+                              <th>Category title</th>
                           </tr>
                       </thead>
                       <tbody>
-                              <?php adminShowMenus();?>                            
+                              <?php adminShowCategories();?>                            
                       </tbody>
                   </table>
               </div>
