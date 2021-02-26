@@ -1,6 +1,3 @@
-<?php
-include "../../includes/db.php";
-?>
 <div class="col-xs-6">
     <form action="" method="post" enctype="multipart/form-data">
         <div class="form-group">

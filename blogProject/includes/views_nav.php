@@ -21,7 +21,6 @@
           <ul class="nav navbar-nav">
           
           <?php
-            session_start();
             showCategories('category.php');
             showAdminNav(1);
             ?>
