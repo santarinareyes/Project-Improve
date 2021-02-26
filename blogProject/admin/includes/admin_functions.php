@@ -450,7 +450,7 @@ function editUser() {
 
             echo
             "<div class='col-xs-6'>
-            <form action='' method='post' enctype='multipart/form-data'>
+            <form role='form' action='' method='post' enctype='multipart/form-data'>
             <div class='form-group'>
             <label for='update_user'>Username</label>
             <input type='text' name='update_user' class='form-control' value='$user_user'>
@@ -482,7 +482,7 @@ function editUser() {
 
             <div class='form-group'>
             <label for='update_password'>New password</label>
-            <input type='text' name='update_password' class='form-control' value='' autocomplete='off'>
+            <input type='password' name='update_password' class='form-control' value='' autocomplete='off'>
             </div>
             
             <img src='../../images/user_images/$user_image' alt='' width='100'>

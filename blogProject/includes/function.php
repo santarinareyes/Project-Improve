@@ -58,7 +58,7 @@ function showCategories($link)
   while ($menus = $getNav->fetch()) {
     $menu = $menus['menu_title'];
     $menu_id = $menus['menu_id'];
-    echo "<li><a href='$link?category=$menu_id.php'>$menu</a></li>";
+    echo "<li><a href='$link?category=$menu_id'>$menu</a></li>";
   }
 }
 
@@ -200,7 +200,7 @@ function categoryPagePosts()
       <h2>
       <a href='post.php?reading=$pid'>$ptitle</a>
       </h2>
-      <p class='lead'>by <a href='index.php'>$pauthor</a></p>
+      <p class='lead'>by <a href='#'>$pauthor</a></p>
       <p>
       <span class='glyphicon glyphicon-time'></span>Posted on $pdate
       </p>
@@ -416,5 +416,81 @@ function registerAcc()
     }
 
 
+  }
+}
+
+// Display Category title when in a specific category
+function displayCat() {
+  global $abc;
+  if(isset($_GET["category"])) {
+    $category = $_GET["category"];
+
+    $stm = $abc->query("SELECT menu_title FROM menus WHERE menu_id = $category");
+
+    while($row = $stm->fetch()) {
+      $cat_title = $row['menu_title'];
+
+      echo "<small>$cat_title</small>";
+    }
+  }
+}
+
+// Write a comment section
+function writeComment() {
+  global $abc;
+  if (isset($_SESSION['username'])) {
+
+    echo "
+    <div class='well'>
+    <h4>Leave a Comment:</h4>
+    <form role='form'>
+    <div class='form-group'>
+    <textarea class='form-control' name='comment_content' rows='5' style='resize: none'></textarea>
+    </div>
+    <button type='submit' name='comment_submit' class='btn btn-primary'>Submit</button>
+    </form>
+    </div>
+    <hr />
+    ";
+  }
+
+  if (isset($_POST["comment_submit"])) {
+    
+  }
+}
+
+// Display comments
+function displayComments() {
+  global $abc;
+  
+  if(isset($_GET["reading"])) {
+    $post_id = $_GET["reading"];
+
+    $stm=$abc->query("SELECT * FROM comments WHERE comment_post_id = $post_id");
+
+    while ($row = $stm->fetch()) {
+      $comment_author_id = $row['comment_author_id'];
+      $comment_content = $row['comment_content'];
+      $comment_date =  $row['comment_date'];
+
+      echo "
+      <div class='media'>
+      <a class='pull-left' href='#'>
+      <img
+      class='media-object'
+      src='http://placehold.it/64x64'
+      alt=''
+      />
+      </a>
+      <div class='media-body'>
+      <h4 class='media-heading'>
+      $comment_author_id
+      <small>$comment_date</small>
+      </h4>
+      $comment_content
+      </div>
+      </div>
+      ";
+    }
   }
 }

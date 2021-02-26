@@ -8,8 +8,8 @@
               <div class="col-md-8">
 <!-- Display blog posts -->
 <h1 class='page-header'>
-      Page Heading
-      <small>Secondary Text</small>
+      Category
+      <?php displayCat();?>
       </h1>
 <?php categoryPagePosts(); ?>
 <!-- Pager -->
