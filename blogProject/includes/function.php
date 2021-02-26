@@ -75,15 +75,26 @@ function showCategories($link)
   }
 }
 
-// Show all posts
+// Show all posts and selected post
 function landingPagePosts($readmore)
 {
   global $abc;
 
-  if (isset($_GET["reading"])) {
+  if( (isset($_GET["article_removed"]))) {
+    echo "
+    <h3 class='page-header form-group'>
+    The article you are trying to find has been drafted or removed.
+    </h3>
+    <a class='btn'>Back to start</a>
+    ";
+  } else if (isset($_GET["reading"])) {
     $readingid = $_GET["reading"];
 
     $dbposts = $abc->query("SELECT * FROM posts WHERE post_id = $readingid AND post_status = 'Published'");
+    
+    if ($dbposts->rowCount() < 1) {
+      header("location:../index.php?article_removed");
+    }
 
     while ($posts = $dbposts->fetch()) {
       $ptitle = $posts["post_title"];
@@ -92,6 +103,7 @@ function landingPagePosts($readmore)
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
       $pcontent = $posts["post_content"];
+      $pstatus = $posts["post_status"];
 
       if ($readmore == 1) {
         echo "    
@@ -185,6 +197,7 @@ function landingPagePosts($readmore)
       ";
     }
   }
+
 }
 
 // Show posts related to the category

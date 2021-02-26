@@ -236,7 +236,15 @@ function showAllPosts()
         $deleteThis = $abc->query("DELETE FROM posts WHERE post_id = $post_delete");
 
         if ($deleteThis->execute()) {
-            header("location:posts.php");
+            $stm = $abc->query("DELETE FROM comments WHERE comment_post_id = $post_delete");
+            
+            if($stm->execute()) {
+                header("location:posts.php");
+            } else {
+                die("Something went wrong.");
+            }
+        } else {
+            die("Something went wrong.");
         }
     }
 }
