@@ -169,10 +169,11 @@ function landingPagePosts($readmore)
 }
 
 // Show posts related to the category
-function categoryPagePosts() {
+function categoryPagePosts()
+{
   global $abc;
   if (isset($_GET["category"])) {
-  $category_id = $_GET["category"];
+    $category_id = $_GET["category"];
 
     $dbposts = $abc->query("SELECT * FROM posts WHERE post_menu_id = '$category_id'");
 
@@ -219,9 +220,10 @@ function categoryPagePosts() {
 }
 
 // Show admin nav
-function showAdminNav($views) {
+function showAdminNav($views)
+{
   if (isset($_SESSION['role'])) {
-    if($_SESSION['role'] == 'Admin' && $views === 0) {
+    if ($_SESSION['role'] == 'Admin' && $views === 0) {
       echo "
       <li>
       <a href='admin'>Admin</a>
@@ -238,9 +240,10 @@ function showAdminNav($views) {
 }
 
 // Sign in
-function signIn() {
+function signIn()
+{
   global $abc;
-  if(isset($_POST["sign_in"])) {
+  if (isset($_POST["sign_in"])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
@@ -248,31 +251,32 @@ function signIn() {
     $stm->bindParam(":name", $username);
     $stm->execute();
 
-    while($rows = $stm->fetch()) {
-        $user_id = $rows['user_id'];
-        $db_username = $rows['username'];
-        $db_password = $rows['user_password'];
-        $user_firstname = $rows['user_firstname'];
-        $user_lastname = $rows['user_lastname'];
-        $user_role = $rows['user_role'];
+    while ($rows = $stm->fetch()) {
+      $user_id = $rows['user_id'];
+      $db_username = $rows['username'];
+      $db_password = $rows['user_password'];
+      $user_firstname = $rows['user_firstname'];
+      $user_lastname = $rows['user_lastname'];
+      $user_role = $rows['user_role'];
     }
 
     if (password_verify($password, $db_password)) {
-        $_SESSION['username'] = $db_username;
-        $_SESSION['firstname'] = $user_firstname;
-        $_SESSION['lastname'] = $user_lastname;
-        $_SESSION['role'] = $user_role;
+      $_SESSION['username'] = $db_username;
+      $_SESSION['firstname'] = $user_firstname;
+      $_SESSION['lastname'] = $user_lastname;
+      $_SESSION['role'] = $user_role;
 
-        header("location:../index.php");
+      header("location:../index.php");
     } else {
-        header("location:../index.php");
+      header("location:../index.php");
     }
-}
+  }
 }
 
-// dont display login form when signed in
-function signedIn($link) {
-  if(isset($_SESSION['username'])) {
+// This will switch between signed in and sign in
+function signedIn($link)
+{
+  if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
     echo "
     <div class='well'>
@@ -301,10 +305,106 @@ function signedIn($link) {
     <span class='input-group-btn'>
     <button class='btn btn-primary' type='submit' name='sign_in'>Sign in
     </button>
+    </span>";
+    btnRegister($link);
+    echo "
+    </div>
+    </form>
+    </div>
+    ";
+  }
+}
+
+// Display register button
+function btnRegister($link)
+{
+  if ($link === 'includes') {
+    echo "
+    <span class='input-group-btn'>
+    <a class='btn' href='views/register.php'>Click here to register.</a>
     </span>
-    </div>
-    </form> 
-    </div>
+    ";
+  } else {
+    echo "
+    <span class='input-group-btn'>
+    <a class='btn' href='register.php'>Click here to register.</a>
+    </span>
+    ";
+  }
+}
+
+// The register procedure
+function registerAcc()
+{
+  if (isset($_SESSION['username'])) {
+    echo "Please sign out if you want to register another account.";
+  } else {
+    echo "
+  <form
+  role='form'
+  action='registration.php'
+  method='post'
+  id='login-form'
+  autocomplete='off'
+  >
+  <div class='form-group'>
+    <label for='username' class='sr-only'>Username</label>
+    <input
+      type='text'
+      name='username'
+      id='username'
+      class='form-control'
+      placeholder='Username'
+    />
+  </div>
+  <div class='form-group'>
+    <label for='email' class='sr-only'>Email</label>
+    <input
+      type='email'
+      name='email'
+      id='email'
+      class='form-control'
+      placeholder='example@example.com'
+    />
+  </div>
+  <div class='form-group'>
+    <label for='firstname' class='sr-only'>Firstname</label>
+    <input
+      type='text'
+      name='firstname'
+      id='firstname'
+      class='form-control'
+      placeholder='Firstname'
+    />
+  </div>
+  <div class='form-group'>
+    <label for='lastname' class='sr-only'>Lastname</label>
+    <input
+      type='text'
+      name='lastname'
+      id='lastname'
+      class='form-control'
+      placeholder='Lastname'
+    />
+  </div>
+  <div class='form-group'>
+    <label for='password' class='sr-only'>Password</label>
+    <input
+      type='password'
+      name='password'
+      id='key'
+      class='form-control'
+      placeholder='Password'
+    />
+  </div>
+  <input
+    type='submit'
+    name='submit'
+    id='btn-login'
+    class='btn btn-primary btn-lg btn-block'
+    value='Register'
+  />
+  </form>
     ";
   }
 }

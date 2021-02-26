@@ -22,9 +22,9 @@
               ><i class="fa fa-user"></i> <?php echo $_SESSION['firstname'];?> <b class="caret"></b
             ></a>
             <ul class="dropdown-menu">
-              <li>
+              <!-- <li>
                 <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-              </li>
+              </li> -->
               <li class="divider"></li>
               <li>
                 <a href="includes/logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
@@ -78,11 +78,11 @@
                 ><i class="fa fa-fw fa-file"></i> Comments</a
               >
             </li>
-            <li>
+            <!-- <li>
               <a href="index-rtl.html"
                 ><i class="fa fa-fw fa-dashboard"></i> Profile</a
               >
-            </li>
+            </li> -->
           </ul>
         </div>
         <!-- /.navbar-collapse -->

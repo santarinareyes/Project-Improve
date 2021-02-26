@@ -1,7 +1,6 @@
 <?php include "../includes/function.php";?>
 <!-- Header -->
 <?php include "../includes/views_header.php"; ?> 
-  <!-- Navigation -->
 <!-- Page Content -->
 <div class="container">
       <div class="row">
