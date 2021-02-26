@@ -138,7 +138,12 @@ function landingPagePosts($readmore)
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
       $pcontent1 = $posts["post_content"];
-      $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
+
+      if (strlen($pcontent1) > 150) {
+        $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
+      } else {
+        $pcontent = $pcontent1;
+      }
 
       echo "      
       <h2>
@@ -184,14 +189,14 @@ function categoryPagePosts()
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
       $pcontent1 = $posts["post_content"];
-      $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
+      
+      if(strlen($pcontent1 > 150)) {
+        $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
+      } else {
+        $pcontent = $pcontent1;
+      }
 
       echo "
-      <h1 class='page-header'>
-      Page Heading
-      <small>Secondary Text</small>
-      </h1>
-      
       <h2>
       <a href='post.php?reading=$pid'>$ptitle</a>
       </h2>
