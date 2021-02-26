@@ -16,6 +16,7 @@ function search()
 
     if ($search && $stm != 0) {
       while ($posts = $aftersearch->fetch()) {
+        $post_status = $posts['post_status'];
         $pid = $posts["post_id"];
         $ptitle = $posts["post_title"];
         $pauthor = $posts["post_author"];
@@ -23,6 +24,12 @@ function search()
         $pimage = $posts["post_img"];
         $pcontent1 = $posts["post_content"];
         $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
+
+        if (strlen($pcontent1) > 150) {
+          $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
+        } else {
+          $pcontent = $pcontent1;
+        }
 
         echo "
         <h2>
@@ -38,8 +45,14 @@ function search()
         <p>
         $pcontent
         </p>
-        <a class='btn btn-primary' href='post.php?reading=$pid'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>
-        
+        <a class='btn btn-primary' href='post.php?reading=$pid'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>";
+        if ($post_status === 'Featured') {
+          $post_status = 1;
+        } else {
+          $post_status = 0;
+        }
+        adminArticleBtn($post_status);
+        echo "
         <hr />
         ";
       }
@@ -70,7 +83,7 @@ function landingPagePosts($readmore)
   if (isset($_GET["reading"])) {
     $readingid = $_GET["reading"];
 
-    $dbposts = $abc->query("SELECT * FROM posts WHERE post_id = $readingid");
+    $dbposts = $abc->query("SELECT * FROM posts WHERE post_id = $readingid AND post_status = 'Published'");
 
     while ($posts = $dbposts->fetch()) {
       $ptitle = $posts["post_title"];
@@ -129,7 +142,7 @@ function landingPagePosts($readmore)
     }
   } else {
 
-    $dbposts = $abc->query("SELECT * FROM posts");
+    $dbposts = $abc->query("SELECT * FROM posts WHERE post_status = 'Published'");
 
     while ($posts = $dbposts->fetch()) {
       $ptitle = $posts["post_title"];
@@ -165,8 +178,9 @@ function landingPagePosts($readmore)
       </p>
       <a class='btn btn-primary' href='views/post.php?reading=$pid'
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
-      ></a>
-      
+      ></a>";
+      adminArticleBtn($readmore);
+      echo"
       <hr />
       ";
     }
@@ -180,7 +194,7 @@ function categoryPagePosts()
   if (isset($_GET["category"])) {
     $category_id = $_GET["category"];
 
-    $dbposts = $abc->query("SELECT * FROM posts WHERE post_menu_id = '$category_id'");
+    $dbposts = $abc->query("SELECT * FROM posts WHERE post_menu_id = '$category_id' AND post_status = 'Published'");
 
     while ($posts = $dbposts->fetch()) {
       $ptitle = $posts["post_title"];
@@ -216,8 +230,9 @@ function categoryPagePosts()
       </p>
       <a class='btn btn-primary' href='post.php?reading=$pid'
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
-      ></a>
-      
+      ></a>";
+      adminArticleBtn(0);
+      echo"
       <hr />
       ";
     }
@@ -445,7 +460,7 @@ function writeComment() {
     echo "
     <div class='well'>
     <h4>Leave a Comment:</h4>
-    <form role='form' method='post' action='#'>
+    <form role='form' method='post' action='#comment_submitted'>
     <div class='form-group'>
     <textarea class='form-control' name='comment_content' rows='5' style='resize: none'></textarea>
     </div>
@@ -472,6 +487,8 @@ function writeComment() {
       
       if(!$stm->execute()) {
         die("Something went wrong.");
+      } else {
+        echo "<p id='comment_submitted'>Thank you for your comment! Comment will be shown after an admin has approved.</p>";
       }
     }
   }
@@ -510,6 +527,40 @@ function displayComments() {
       </div>
       </div>
       ";
+    }
+  }
+}
+
+// Display delete button on articles for fast delete
+function adminArticleBtn($unfeature) {
+  global $abc;
+  if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] == 'Admin') {
+      if($unfeature === 1) {
+        echo "
+        <span>
+        <button class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</button>
+        </span>
+        <span>
+        <button class='btn btn-warning' type='submit' name='draft_article'>Draft article</button>
+        </span>
+        <span>
+        <button class='btn btn-danger' type='submit' name='delete_article'>Delete article</button>
+        </span>
+        ";
+      } else {
+        echo "
+        <span>
+        <button class='btn btn-success' type='submit' name='feature_article'>Feature article</button>
+        </span>
+        <span>
+        <button class='btn btn-warning' type='submit' name='draft_article'>Draft article</button>
+        </span>
+        <span>
+        <button class='btn btn-danger' type='submit' name='delete_article'>Delete article</button>
+        </span>
+        ";
+      }
     }
   }
 }

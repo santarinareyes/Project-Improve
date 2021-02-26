@@ -1,6 +1,5 @@
 <?php
 include "../includes/admin_header.php";
-include "../../includes/db.php";
 adminNewUser();
 ?>
 <div id="wrapper">
@@ -13,8 +12,7 @@ adminNewUser();
           <div class="row">
             <div class="col-lg-12">
               <h1 class="page-header">
-                Posts
-                <small>Author</small>
+                Users
               </h1>
               <!-- Table to show all users -->
               <?php 

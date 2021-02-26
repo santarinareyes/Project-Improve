@@ -7,8 +7,6 @@
                           <th>Comment</th>
                           <th>Status</th>
                           <th>Date</th>
-                          <th>Approve</th>
-                          <th>Unapprove</th>
                       </tr>
                   </thead>
                   <tbody>

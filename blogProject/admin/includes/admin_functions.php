@@ -592,10 +592,11 @@ function showAllComments()
         $content = $row["comment_content"];
         $status = $row["comment_status"];
         $date = $row["comment_date"];
+        $anchor = $post_id - 1;
 
         echo "
         <tr>
-        <td> $comment_id</td>";
+        <td id='approved$comment_id'> $comment_id</td>";
         showUser($user);
         showArticle($post_id);
         echo "
@@ -603,8 +604,9 @@ function showAllComments()
         echo "
         <td> $status</td>
         <td> $date</td>
-        <td><a href='?comment_approve=$comment_id'>Approve</a></td>
-        <td><a href='?comment_delete=$comment_id'>Unnaprove</a></td>
+        <td><a href='../../views/post.php?reading=$post_id'>Go to article</a></td>
+        <td><a href='?comment_approve=$comment_id#approved$comment_id'>Approve</a></td>
+        <td><a href='?comment_delete=$comment_id'>Delete</a></td>
         </tr>
         ";
     }
@@ -615,7 +617,7 @@ function showAllComments()
         $deleteThis = $abc->query("DELETE FROM comments WHERE comment_id = $comment_id");
 
         if ($deleteThis->execute()) {
-            header("location:comments.php");
+            header("location:comments.php#");
         }
     }
 
