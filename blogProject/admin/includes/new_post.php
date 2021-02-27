@@ -23,7 +23,8 @@
             <label for="new_status">Post Status</label>
             <select name="new_status" class="form-control">
                 <option value="Draft">Draft</option>
-                <option value="Publish">Publish</option>
+                <option value="Published">Publish</option>
+                <option value="Featured">Feature</option>
             </select>
         </div>
 

@@ -154,7 +154,7 @@ function landingPagePosts($readmore)
     }
   } else {
 
-    $dbposts = $abc->query("SELECT * FROM posts WHERE post_status = 'Published'");
+    $dbposts = $abc->query("SELECT * FROM posts WHERE post_status = 'Published' OR post_status = 'Featured'");
 
     while ($posts = $dbposts->fetch()) {
       $ptitle = $posts["post_title"];
@@ -162,6 +162,7 @@ function landingPagePosts($readmore)
       $pauthor = $posts["post_author"];
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
+      $pstatus = $posts["post_status"];
       $pcontent1 = $posts["post_content"];
 
       if (strlen($pcontent1) > 150) {
@@ -169,32 +170,33 @@ function landingPagePosts($readmore)
       } else {
         $pcontent = $pcontent1;
       }
-
-      echo "      
-      <h2>
-      <a href='views/post.php?reading=$pid'>$ptitle</a>
-      </h2>
-      <p class='lead'>by <a href='index.php'>$pauthor</a></p>
-      <p>
-      <span class='glyphicon glyphicon-time'></span>Posted on $pdate
-      </p>
-      <hr />
-      <img
-      class='img-responsive'
-      src='images/$pimage'
-      alt=''
-      />
-      <hr />
-      <p>
-      $pcontent
-      </p>
-      <a class='btn btn-primary' href='views/post.php?reading=$pid'
-      >Read More <span class='glyphicon glyphicon-chevron-right'></span
-      ></a>";
-      adminArticleBtn($readmore);
-      echo "
-      <hr />
-      ";
+      if ($pstatus === 'Featured') {
+        echo "      
+        <h2>
+        <a href='views/post.php?reading=$pid'>$ptitle</a>
+        </h2>
+        <p class='lead'>by <a href='index.php'>$pauthor</a></p>
+        <p>
+        <span class='glyphicon glyphicon-time'></span>Posted on $pdate
+        </p>
+        <hr />
+        <img
+        class='img-responsive'
+        src='images/$pimage'
+        alt=''
+        />
+        <hr />
+        <p>
+        $pcontent
+        </p>
+        <a class='btn btn-primary' href='views/post.php?reading=$pid'
+        >Read More <span class='glyphicon glyphicon-chevron-right'></span
+        ></a>";
+        adminArticleBtn($pstatus);
+        echo "
+        <hr />
+        ";
+      }
     }
   }
 }
@@ -553,7 +555,7 @@ function adminArticleBtn($unfeature)
   global $abc;
   if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] == 'Admin') {
-      if ($unfeature === 1) {
+      if ($unfeature === 'Featured') {
         echo "
         <span>
         <button class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</button>

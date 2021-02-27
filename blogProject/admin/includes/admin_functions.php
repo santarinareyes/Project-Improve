@@ -222,6 +222,7 @@ function showAllPosts()
         <td> $vp_status</td>
         <td> $vp_date</td>
         <td> $vp_tags</td>";
+        feature_unfeature_btn($vp_status, $vp_id);
         publish_unpublish_btn($vp_status, $vp_id);
         echo"
         <td><a href='?action=post_edit&editing=$vp_id'>Edit</a></td>
@@ -249,10 +250,10 @@ function showAllPosts()
     }
 }
 
-// Display publish/unpublish
+// Display publish/unpublish in CMS posts
 function publish_unpublish_btn($status, $post_id) {
     global $abc;
-    if($status === 'Published') {
+    if($status === 'Published' || $status === 'Unfeatured' || $status === 'Featured') {
         echo"
         <td><a href='?post_status=$status&post_id=$post_id'>Unpublish</a></td>
         ";
@@ -265,7 +266,7 @@ function publish_unpublish_btn($status, $post_id) {
     if (isset($_GET["post_status"])) {
         $post_status = $_GET["post_status"];
         $update_post_id = $_GET["post_id"];
-        if ($post_status == 'Published') {
+        if ($post_status === 'Published' || $post_status === 'Featured' || $post_status === 'Unfeatured') {
             $stm = $abc->prepare("UPDATE posts SET post_status = 'Unpublished' WHERE post_id = $update_post_id");
             
             if($stm->execute()) {
@@ -275,6 +276,38 @@ function publish_unpublish_btn($status, $post_id) {
             }
         } else {
             $stm = $abc->prepare("UPDATE posts SET post_status = 'Published' WHERE post_id = $update_post_id");
+
+            if ($stm->execute()) {
+                header("location:posts.php");
+            } else {
+                die("Something went wrong!");
+            }
+        }
+    }
+}
+
+// Display feature/unfeature in CMS posts
+function feature_unfeature_btn($status, $post_id) {
+    global $abc;
+    if ($status === 'Featured' ) {
+        echo "<td><a href='?post_feature=$status&post_id=$post_id'>Unfeature</a></td>";
+    } else {
+        echo "<td><a href='?post_feature=$status&post_id=$post_id'>Feature</a></td>";
+    }
+
+    if (isset($_GET["post_feature"])) {
+        $post_status = $_GET["post_feature"];
+        $update_post_id = $_GET["post_id"];
+        if ($post_status === 'Featured') {
+            $stm = $abc->prepare("UPDATE posts SET post_status = 'Published' WHERE post_id = $update_post_id");
+
+            if ($stm->execute()) {
+                header("location:posts.php");
+            } else {
+                die("Something went wrong!");
+            }
+        } else {
+            $stm = $abc->prepare("UPDATE posts SET post_status = 'Featured' WHERE post_id = $update_post_id");
 
             if ($stm->execute()) {
                 header("location:posts.php");
