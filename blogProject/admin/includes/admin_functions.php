@@ -19,8 +19,17 @@ function adminShowCategories()
         $d_id = $_GET["delete"];
 
         $delete_menu = $abc->query("DELETE FROM menus WHERE menu_id = $d_id");
-        $delete_menu->fetch();
-        header("location:categories.php?deleted=$d_id");
+
+        if ($delete_menu->execute()) {
+            $stm = $abc->query("UPDATE posts SET post_status = 'Draft' WHERE post_menu_id = $d_id");
+            if ($stm->execute()) {
+                header("location:categories.php?deleted=$d_id");
+            } else {
+                die("Something went wrong!");
+            }
+        } else {
+            die("Something went wrong!");
+        }
     }
 }
 
@@ -460,11 +469,16 @@ function categoryName($theId)
 
     $getCat = $abc->query("SELECT * FROM menus WHERE menu_id = $theId");
 
-    while ($allCat = $getCat->fetch()) {
-        $cat_title = $allCat["menu_title"];
-        $menu_id = $allCat["menu_id"];
+    if ($getCat->rowCount() == 0) {
+        echo "<td class='danger'>Deleted</td> ";
+    } else {
 
-        echo "<td>$cat_title</td>";
+        while ($allCat = $getCat->fetch()) {
+            $cat_title = $allCat["menu_title"];
+            $menu_id = $allCat["menu_id"];
+            
+            echo "<td>$cat_title</td>";
+        }
     }
 }
 

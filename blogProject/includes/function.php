@@ -61,6 +61,9 @@ function search()
               <a href='../index.php?landing_unfeature_post=$pid' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
               </span>
               <span>
+              <a href='../admin/views/posts.php?action=post_edit&editing=$pid' class='btn btn-warning' type='submit' name='edit_article'>Edit article</a>
+              </span>
+              <span>
               <a href='../includes/admin_buttons.php?landing_draft_post=$pid' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
               </span>
               <span>
@@ -71,6 +74,9 @@ function search()
               echo "
               <span>
               <a href='../includes/admin_buttons.php?landing_feature_post=$pid' class='btn btn-success' type='submit' name='feature_article'>Feature article</a>
+              </span>
+              <span>
+              <a href='../admin/views/posts.php?action=post_edit&editing=$pid' class='btn btn-warning' type='submit' name='edit_article'>Edit article</a>
               </span>
               <span>
               <a href='../includes/admin_buttons.php?landing_draft_post=$pid' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
@@ -93,15 +99,18 @@ function search()
 }
 
 // Display the username instead of post_comment_id (author)
-function showUser($user) {
+function showUser($user, $where) {
   global $abc;
 
   $stm = $abc->query("SELECT * FROM users WHERE user_id = $user");
 
   while ($row = $stm->fetch()) {
       $username = $row['username'];
-      
-      echo "<p class='lead'>by <a href='index.php'>$username</a></p>";
+      if ($where === 'Article') {
+        echo "<p class='lead'>by <a href='#'>$username</a></p>";
+      } else {
+        echo "<strong>$username</strong>";
+      }
   }
 }
 
@@ -154,7 +163,7 @@ function landingPagePosts($readmore)
         <h2>
         <a href='views/post.php?reading=$pid'>$ptitle</a>
         </h2>";
-        showUser($p_user_id);
+        showUser($p_user_id, 'Article');
         echo"
         <p>
         <span class='glyphicon glyphicon-time'></span>Posted on $pdate
@@ -179,7 +188,7 @@ function landingPagePosts($readmore)
         <h2>
         <a href='#'>$ptitle</a>
         </h2>";
-        showUser($p_user_id);
+        showUser($p_user_id, 'Article');
         echo
         "
         <p>
@@ -202,6 +211,9 @@ function landingPagePosts($readmore)
             echo "
             <span>
             <a href='?reading=$pid&post_unfeature_post=$pid' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
+            </span>
+            <span>
+            <a href='../admin/views/posts.php?action=post_edit&editing=$pid' class='btn btn-warning' type='submit' name='edit_article'>Edit article</a>
             </span>
             <span>
             <a href='../includes/admin_buttons.php?landing_draft_post=$pid' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
@@ -278,7 +290,7 @@ function landingPagePosts($readmore)
         <h2>
         <a href='views/post.php?reading=$pid'>$ptitle</a>
         </h2>";
-        showUser($p_user_id);
+        showUser($p_user_id, 'Article');
         echo "
         <p>
         <span class='glyphicon glyphicon-time'></span>Posted on $pdate
@@ -342,7 +354,7 @@ function categoryPagePosts()
       <h2>
       <a href='post.php?reading=$pid'>$ptitle</a>
       </h2>";
-      showUser($p_user_id);
+      showUser($p_user_id, 'Article');
       echo "
       <p>
       <span class='glyphicon glyphicon-time'></span>Posted on $pdate
@@ -668,8 +680,9 @@ function displayComments()
       />
       </a>
       <div class='media-body'>
-      <h4 class='media-heading'>
-      $comment_author_id
+      <h4 class='media-heading'>";
+      showUser($comment_author_id, 'Comment');
+      echo "
       <small>$comment_date</small>
       </h4>
       <p>
@@ -698,6 +711,9 @@ function adminArticleBtn($unfeature, $post_id)
           <a href='?category=$cat_id&unfeature_post=$post_id' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
           </span>
           <span>
+          <a href='../admin/views/posts.php?action=post_edit&editing=$post_id' class='btn btn-warning' type='submit' name='edit_article'>Edit article</a>
+          </span>
+          <span>
           <a href='../includes/admin_buttons.php?draft_post=$post_id&cat_id=$cat_id' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
           </span>
           <a href='../includes/admin_buttons.php?delete_post=$post_id&cat_id=$cat_id' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
@@ -721,6 +737,9 @@ function adminArticleBtn($unfeature, $post_id)
           <a href='?landing_unfeature_post=$post_id' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
           </span>
           <span>
+          <a href='admin/views/posts.php?action=post_edit&editing=$post_id' class='btn btn-warning' type='submit' name='edit_article'>Edit article</a>
+          </span>
+          <span>
           <a href='includes/admin_buttons.php?landing_draft_post=$post_id' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
           </span>
           <span>
@@ -734,6 +753,9 @@ function adminArticleBtn($unfeature, $post_id)
           echo "
           <span>
           <a href='../includes/admin_buttons.php?feature_post=$post_id' class='btn btn-success' type='submit' name='feature_article'>Feature article</a>
+          </span>
+          <span>
+          <a href='../admin/views/posts.php?action=post_edit&editing=$post_id' class='btn btn-warning' type='submit' name='edit_article'>Edit article</a>
           </span>
           <span>
           <a href='../includes/admin_buttons.php?draft_post=$post_id&cat_id=$cat_id' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
