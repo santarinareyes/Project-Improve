@@ -696,7 +696,7 @@ function showApproveBtn($comment_id) {
             ";
         } else {
             echo "
-            <td class='danger'><a href='?comment_approve=$comment_id#approved$comment_id'></a></td>
+            <td class='danger'></td>
             ";
         }
     }

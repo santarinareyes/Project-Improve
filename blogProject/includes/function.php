@@ -80,7 +80,7 @@ function landingPagePosts($readmore)
 {
   global $abc;
 
-  if( (isset($_GET["article_removed"]))) {
+  if ((isset($_GET["article_removed"]))) {
     echo "
     <h3 class='page-header form-group'>
     The article you are trying to find has been drafted or removed.
@@ -91,7 +91,7 @@ function landingPagePosts($readmore)
     $readingid = $_GET["reading"];
 
     $dbposts = $abc->query("SELECT * FROM posts WHERE post_id = $readingid AND post_status = 'Published'");
-    
+
     if ($dbposts->rowCount() < 1) {
       header("location:../index.php?article_removed");
     }
@@ -192,12 +192,11 @@ function landingPagePosts($readmore)
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
       ></a>";
       adminArticleBtn($readmore);
-      echo"
+      echo "
       <hr />
       ";
     }
   }
-
 }
 
 // Show posts related to the category
@@ -216,8 +215,8 @@ function categoryPagePosts()
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
       $pcontent1 = $posts["post_content"];
-      
-      if(strlen($pcontent1 > 150)) {
+
+      if (strlen($pcontent1 > 150)) {
         $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
       } else {
         $pcontent = $pcontent1;
@@ -245,7 +244,7 @@ function categoryPagePosts()
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
       ></a>";
       adminArticleBtn(0);
-      echo"
+      echo "
       <hr />
       ";
     }
@@ -414,7 +413,7 @@ function registerAcc()
 
     $check = $abc->query("SELECT username, user_email FROM users WHERE username = '$username' OR user_email = '$email'");
 
-    while($row = $check->fetch()) {
+    while ($row = $check->fetch()) {
       $existing_username = $row['username'];
       $existing_email = $row['user_email'];
       if ($existing_username == $username && $existing_email == $email) {
@@ -434,29 +433,27 @@ function registerAcc()
         $stm->bindParam(":role", $role);
         $stm->bindParam(":user_created", $created);
         $stm->bindParam(":pass", $password);
-    
-        if($stm->execute()) {
+
+        if ($stm->execute()) {
           header("location:../index.php");
         } else {
           die("Something went wrong");
         }
-
       }
     }
-
-
   }
 }
 
 // Display Category title when in a specific category
-function displayCat() {
+function displayCat()
+{
   global $abc;
-  if(isset($_GET["category"])) {
+  if (isset($_GET["category"])) {
     $category = $_GET["category"];
 
     $stm = $abc->query("SELECT menu_title FROM menus WHERE menu_id = $category");
 
-    while($row = $stm->fetch()) {
+    while ($row = $stm->fetch()) {
       $cat_title = $row['menu_title'];
 
       echo "<small>$cat_title</small>";
@@ -465,7 +462,8 @@ function displayCat() {
 }
 
 // Write a comment section
-function writeComment() {
+function writeComment()
+{
   global $abc;
   if (isset($_SESSION['username'])) {
     $user_id = $_SESSION['user_id'];
@@ -497,30 +495,31 @@ function writeComment() {
       $stm->bindParam(":author", $user_id);
       $stm->bindParam(":content", $comment_content);
       $stm->bindParam(":date", $comment_date);
-      
-      if(!$stm->execute()) {
+
+      if (!$stm->execute()) {
         die("Something went wrong.");
       } else {
         echo "<p id='comment_submitted'>Thank you for your comment! Comment will be shown after an admin has approved.</p>";
       }
     }
   }
-
 }
 
 // Display comments
-function displayComments() {
+function displayComments()
+{
   global $abc;
-  
-  if(isset($_GET["reading"])) {
+
+  if (isset($_GET["reading"])) {
     $post_id = $_GET["reading"];
 
-    $stm=$abc->query("SELECT * FROM comments WHERE comment_post_id = $post_id AND comment_status = 'Approved'");
+    $stm = $abc->query("SELECT * FROM comments WHERE comment_post_id = $post_id AND comment_status = 'Approved'");
 
     while ($row = $stm->fetch()) {
       $comment_author_id = $row['comment_author_id'];
       $comment_content = $row['comment_content'];
       $comment_date =  $row['comment_date'];
+      $comment_id =  $row['comment_id'];
 
       echo "
       <div class='media'>
@@ -528,7 +527,7 @@ function displayComments() {
       <img
       class='media-object'
       src='http://placehold.it/64x64'
-      alt=''
+      alt='profile-picture'
       />
       </a>
       <div class='media-body'>
@@ -536,7 +535,11 @@ function displayComments() {
       $comment_author_id
       <small>$comment_date</small>
       </h4>
-      $comment_content
+      <p>
+      $comment_content";
+      adminDeleteComment($comment_id, $post_id);
+      echo "
+      </p>
       </div>
       </div>
       ";
@@ -544,12 +547,13 @@ function displayComments() {
   }
 }
 
-// Display delete button on articles for fast delete
-function adminArticleBtn($unfeature) {
+// Display delete button on articles for fast delete if logged in as admin
+function adminArticleBtn($unfeature)
+{
   global $abc;
   if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] == 'Admin') {
-      if($unfeature === 1) {
+      if ($unfeature === 1) {
         echo "
         <span>
         <button class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</button>
@@ -574,6 +578,28 @@ function adminArticleBtn($unfeature) {
         </span>
         ";
       }
+    }
+  }
+}
+
+// Display delete button on commens if logged in as admin
+function adminDeleteComment($comment_id, $post_id)
+{
+  global $abc;
+
+  if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin') {
+    echo "<a href='?reading=$post_id&delete_comment=$comment_id'>Delete comment</a>";
+  }
+  
+  if(isset($_GET["delete_comment"])) {
+    $delete_comment = $_GET["delete_comment"];
+
+    $stm = $abc->query("DELETE FROM comments WHERE comment_id = $delete_comment");
+    
+    if($stm->execute()) {
+      header("location:../views/post.php?reading=$post_id");
+    } else {
+      die("Something went wrong!");
     }
   }
 }

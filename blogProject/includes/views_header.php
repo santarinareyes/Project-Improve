@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="stylesheet" href="css/style.css">
 
     <title>Blog Home - Start Bootstrap Template</title>
 
