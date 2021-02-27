@@ -92,6 +92,19 @@ function search()
   }
 }
 
+// Display the username instead of post_comment_id (author)
+function showUser($user) {
+  global $abc;
+
+  $stm = $abc->query("SELECT * FROM users WHERE user_id = $user");
+
+  while ($row = $stm->fetch()) {
+      $username = $row['username'];
+      
+      echo "<p class='lead'>by <a href='index.php'>$username</a></p>";
+  }
+}
+
 // Functions to display the navs (Menu/Category) from database
 function showCategories($link)
 {
@@ -134,13 +147,15 @@ function landingPagePosts($readmore)
       $pimage = $posts["post_img"];
       $pcontent = $posts["post_content"];
       $pstatus = $posts["post_status"];
+      $p_user_id = $posts["post_user_id"];
 
       if ($readmore === 1) {
         echo "    
         <h2>
         <a href='views/post.php?reading=$pid'>$ptitle</a>
-        </h2>
-        <p class='lead'>by <a href='index.php'>$pauthor</a></p>
+        </h2>";
+        showUser($p_user_id);
+        echo"
         <p>
         <span class='glyphicon glyphicon-time'></span>Posted on $pdate
         </p>
@@ -163,8 +178,10 @@ function landingPagePosts($readmore)
         echo "    
         <h2>
         <a href='#'>$ptitle</a>
-        </h2>
-        <p class='lead'>by <a href='#'>$pauthor</a></p>
+        </h2>";
+        showUser($p_user_id);
+        echo
+        "
         <p>
         <span class='glyphicon glyphicon-time'></span>Posted on $pdate
         </p>
@@ -249,6 +266,7 @@ function landingPagePosts($readmore)
       $pimage = $posts["post_img"];
       $pstatus = $posts["post_status"];
       $pcontent1 = $posts["post_content"];
+      $p_user_id = $posts["post_user_id"];
 
       if (strlen($pcontent1) > 150) {
         $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
@@ -259,8 +277,9 @@ function landingPagePosts($readmore)
         echo "      
         <h2>
         <a href='views/post.php?reading=$pid'>$ptitle</a>
-        </h2>
-        <p class='lead'>by <a href='index.php'>$pauthor</a></p>
+        </h2>";
+        showUser($p_user_id);
+        echo "
         <p>
         <span class='glyphicon glyphicon-time'></span>Posted on $pdate
         </p>
@@ -311,6 +330,7 @@ function categoryPagePosts()
       $pdate = $posts["post_date"];
       $pimage = $posts["post_img"];
       $pcontent1 = $posts["post_content"];
+      $p_user_id = $posts["post_user_id"];
 
       if (strlen($pcontent1 > 150)) {
         $pcontent = substr($pcontent1, 0, strpos($pcontent1, " ", 150));
@@ -321,8 +341,9 @@ function categoryPagePosts()
       echo "
       <h2>
       <a href='post.php?reading=$pid'>$ptitle</a>
-      </h2>
-      <p class='lead'>by <a href='#'>$pauthor</a></p>
+      </h2>";
+      showUser($p_user_id);
+      echo "
       <p>
       <span class='glyphicon glyphicon-time'></span>Posted on $pdate
       </p>
