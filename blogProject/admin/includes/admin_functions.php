@@ -147,7 +147,7 @@ function newPost()
     if (isset($_POST["add_post"])) {
         $new_title = $_POST["new_title"];
         $category = $_POST["update_category"];
-        $new_author = $_POST["new_author"];
+        $new_author = $_SESSION["user_id"];
         $new_status = $_POST["new_status"];
 
         $new_image = $_FILES["new_image"]['name'];
@@ -162,7 +162,7 @@ function newPost()
         move_uploaded_file($new_image_temp, "../../images/$new_image");
 
 
-        $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_author, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
+        $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_user_id, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
 
         $new_title_encrypt = encrypt($new_title);
 
@@ -209,13 +209,14 @@ function showAllPosts()
         $vp_tags = $postsrow["post_tags"];
         $vp_comments = $postsrow["post_comment_count"];
         $vp_date = $postsrow["post_date"];
+        $vp_user_id = $postsrow["post_user_id"];
 
         echo "
         <tr>
         <td><img src='../../images/$vp_img' class='img-responsive' alt='image' style='max-width: 100px'></td>
         <td> $vp_title</td>
-        <td> $vp_author</td>
         ";
+        showUser($vp_user_id);
         categoryName($vp_menu);
         echo "
         

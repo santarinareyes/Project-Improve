@@ -15,6 +15,12 @@ function search()
     }
 
     if ($search && $stm != 0) {
+      echo "
+      <h1 class='page-header'>
+      <small>Search complete</small>
+      </h1>
+      ";
+
       while ($posts = $aftersearch->fetch()) {
         $post_status = $posts['post_status'];
         $pid = $posts["post_id"];
@@ -31,31 +37,55 @@ function search()
           $pcontent = $pcontent1;
         }
 
-        echo "
-        <h2>
-        <a href='post.php?reading=$pid'>$ptitle</a>
-        </h2>
-        <p class='lead'>by <a href='index.php'>$pauthor</a></p>
-        <p>
-        <span class='glyphicon glyphicon-time'></span>Posted on $pdate
-        </p>
-        <hr />
-        <img class='img-responsive' src='../images/$pimage' alt='$ptitle' />
-        <hr />
-        <p>
-        $pcontent
-        </p>
-        <a class='btn btn-primary' href='post.php?reading=$pid'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>";
-        if ($post_status === 'Featured') {
-          $post_status = 1;
-        } else {
-          $post_status = 0;
-        }
-        adminArticleBtn($post_status);
+        if ($post_status !== 'Draft') {
+          echo "
+          <h2>
+          <a href='post.php?reading=$pid'>$ptitle</a>
+          </h2>
+          <p class='lead'>by <a href='index.php'>$pauthor</a></p>
+          <p>
+          <span class='glyphicon glyphicon-time'></span>Posted on $pdate
+          </p>
+          <hr />
+          <img class='img-responsive' src='../images/$pimage' alt='$ptitle' />
+          <hr />
+          <p>
+          $pcontent
+          </p>
+          <a class='btn btn-primary' href='post.php?reading=$pid'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>";
+
+          if(isset($_SESSION['role']) && $_SESSION['role'] === 'Admin') {
+            if($post_status === 'Featured') {
+              echo "
+              <span>
+              <a href='../index.php?landing_unfeature_post=$pid' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
+              </span>
+              <span>
+              <a href='../includes/admin_buttons.php?landing_draft_post=$pid' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
+              </span>
+              <span>
+              <a href='../includes/admin_buttons.php?landing_delete_post=$pid' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
+              </span>
+              ";
+            } else {
+              echo "
+              <span>
+              <a href='../includes/admin_buttons.php?landing_feature_post=$pid' class='btn btn-success' type='submit' name='feature_article'>Feature article</a>
+              </span>
+              <span>
+              <a href='../includes/admin_buttons.php?landing_draft_post=$pid' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
+              </span>
+              <span>
+              <a href='../includes/admin_buttons.php?landing_delete_post=$pid' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
+              </span>
+              ";
+            }
+          }
         echo "
         <hr />
         ";
       }
+    }
     } else {
       echo "<h1>Couldn't find what you were looking for.</h1>";
     }
@@ -79,19 +109,19 @@ function showCategories($link)
 function landingPagePosts($readmore)
 {
   global $abc;
-
-  if ((isset($_GET["article_removed"]))) {
-    echo "
-    <h3 class='page-header form-group'>
-    The article you are trying to find has been drafted or removed.
-    </h3>
-    <a class='btn'>Back to start</a>
-    ";
-  } else if (isset($_GET["reading"])) {
-    $readingid = $_GET["reading"];
-
-    $dbposts = $abc->query("SELECT * FROM posts WHERE post_id = $readingid AND post_status = 'Published'");
-
+  if (isset($_SESSION['role'])) {
+    if ((isset($_GET["article_removed"]))) {
+      echo "
+      <h3 class='page-header form-group'>
+      The article you are trying to find has been drafted or removed.
+      </h3>
+      <a class='btn'>Back to start</a>
+      ";
+    } else if (isset($_GET["reading"])) {
+      $readingid = $_GET["reading"];
+      
+      $dbposts = $abc->query("SELECT * FROM posts WHERE post_id = $readingid AND (post_status = 'Published' OR post_status = 'Featured')");
+      
     if ($dbposts->rowCount() < 1) {
       header("location:../index.php?article_removed");
     }
@@ -105,7 +135,7 @@ function landingPagePosts($readmore)
       $pcontent = $posts["post_content"];
       $pstatus = $posts["post_status"];
 
-      if ($readmore == 1) {
+      if ($readmore === 1) {
         echo "    
         <h2>
         <a href='views/post.php?reading=$pid'>$ptitle</a>
@@ -150,10 +180,65 @@ function landingPagePosts($readmore)
         </p>
         <hr />
         ";
+        if(isset($_SESSION['role']) && $_SESSION['role'] === 'Admin') {
+          if($pstatus === 'Featured') {
+            echo "
+            <span>
+            <a href='?reading=$pid&post_unfeature_post=$pid' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
+            </span>
+            <span>
+            <a href='../includes/admin_buttons.php?landing_draft_post=$pid' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
+            </span>
+            <span>
+            <a href='../includes/admin_buttons.php?landing_delete_post=$pid' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
+            </span>
+            <hr>
+            </hr>
+            ";
+          } else {
+            echo "
+            <span>
+            <a href='?reading=$pid&post_feature_post=$pid' class='btn btn-success' type='submit' name='feature_article'>Feature article</a>
+            </span>
+            <span>
+            <a href='../includes/admin_buttons.php?landing_draft_post=$pid' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
+            </span>
+            <span>
+            <a href='../includes/admin_buttons.php?landing_delete_post=$pid' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
+            </span>
+            <hr>
+            </hr>
+            ";
+          }
+
+          if (isset($_GET["post_unfeature_post"])) {
+            $post_id = $_GET["post_unfeature_post"];
+
+            $stm = $abc->query("UPDATE posts SET post_status = 'Published' WHERE post_id = $post_id");
+
+            if ($stm->execute()) {
+              header("location:post.php?reading=$post_id");
+            }
+          }
+
+          if (isset($_GET["post_feature_post"])) {
+            $post_id = $_GET["post_feature_post"];
+
+            $stm = $abc->query("UPDATE posts SET post_status = 'Featured' WHERE post_id = $post_id");
+
+            if ($stm->execute()) {
+              header("location:post.php?reading=$post_id");
+            }
+        }
+        }
       }
     }
   } else {
-
+    echo "
+    <h1 class='page-header'>
+    <small>Featured articles</small>
+    </h1>
+    ";
     $dbposts = $abc->query("SELECT * FROM posts WHERE post_status = 'Published' OR post_status = 'Featured'");
 
     while ($posts = $dbposts->fetch()) {
@@ -192,25 +277,34 @@ function landingPagePosts($readmore)
         <a class='btn btn-primary' href='views/post.php?reading=$pid'
         >Read More <span class='glyphicon glyphicon-chevron-right'></span
         ></a>";
-        adminArticleBtn($pstatus);
+        adminArticleBtn($pstatus, $pid);
         echo "
         <hr />
         ";
       }
     }
   }
+} else {
+  echo "
+  <h3 class='page-header form-group'>
+  Please sign in to see the content.
+  </h3>
+  ";
+}
 }
 
 // Show posts related to the category
 function categoryPagePosts()
 {
   global $abc;
+  if (isset($_SESSION['role'])) {
   if (isset($_GET["category"])) {
     $category_id = $_GET["category"];
 
-    $dbposts = $abc->query("SELECT * FROM posts WHERE post_menu_id = '$category_id' AND post_status = 'Published'");
+    $dbposts = $abc->query("SELECT * FROM posts WHERE post_menu_id = $category_id AND (post_status = 'Published' OR post_status = 'Featured')");
 
     while ($posts = $dbposts->fetch()) {
+      $pstatus = $posts["post_status"];
       $ptitle = $posts["post_title"];
       $pid = $posts["post_id"];
       $pauthor = $posts["post_author"];
@@ -245,12 +339,19 @@ function categoryPagePosts()
       <a class='btn btn-primary' href='post.php?reading=$pid'
       >Read More <span class='glyphicon glyphicon-chevron-right'></span
       ></a>";
-      adminArticleBtn(0);
+      adminArticleBtn($pstatus, $pid);
       echo "
       <hr />
       ";
     }
   }
+} else {
+  echo "
+  <h3 class='page-header form-group'>
+  Please sign in to see the content.
+  </h3>
+  ";
+}
 }
 
 // Show admin nav
@@ -303,7 +404,7 @@ function signIn()
 
       header("location:../index.php");
     } else {
-      header("location:../index.php");
+      header("location:../index.php?login=failed");
     }
   }
 }
@@ -344,7 +445,14 @@ function signedIn($link)
     btnRegister($link);
     echo "
     </div>
-    </form>
+    </form>";
+    if (isset($_GET["login"])) {
+      echo "
+      <hr/>
+      <p class='text-danger'>Username or password is incorrect.</p>
+      ";
+    }
+    echo "
     </div>
     ";
   }
@@ -450,6 +558,7 @@ function registerAcc()
 function displayCat()
 {
   global $abc;
+  if (isset($_SESSION['role'])) {
   if (isset($_GET["category"])) {
     $category = $_GET["category"];
 
@@ -458,9 +567,14 @@ function displayCat()
     while ($row = $stm->fetch()) {
       $cat_title = $row['menu_title'];
 
-      echo "<small>$cat_title</small>";
+      echo "
+      <h1 class='page-header'>
+      <small>$cat_title</small>
+      </h1>
+      ";
     }
   }
+}
 }
 
 // Write a comment section
@@ -550,35 +664,75 @@ function displayComments()
 }
 
 // Display delete button on articles for fast delete if logged in as admin
-function adminArticleBtn($unfeature)
+function adminArticleBtn($unfeature, $post_id)
 {
   global $abc;
   if (isset($_SESSION['role'])) {
-    if ($_SESSION['role'] == 'Admin') {
+    if ($_SESSION['role'] === 'Admin') {
       if ($unfeature === 'Featured') {
-        echo "
-        <span>
-        <button class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</button>
-        </span>
-        <span>
-        <button class='btn btn-warning' type='submit' name='draft_article'>Draft article</button>
-        </span>
-        <span>
-        <button class='btn btn-danger' type='submit' name='delete_article'>Delete article</button>
-        </span>
-        ";
+        if (isset($_GET["category"])) {
+          $cat_id = $_GET["category"];
+          echo "
+          <span>
+          <a href='?category=$cat_id&unfeature_post=$post_id' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
+          </span>
+          <span>
+          <a href='../includes/admin_buttons.php?draft_post=$post_id&cat_id=$cat_id' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
+          </span>
+          <a href='../includes/admin_buttons.php?delete_post=$post_id&cat_id=$cat_id' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
+          </span>
+          ";
+
+          if (isset($_GET["unfeature_post"])) {
+            $post_id = $_GET["unfeature_post"];
+            $stm = $abc->prepare("UPDATE posts SET post_status = 'Published' WHERE post_id = $post_id");
+    
+            if($stm->execute()) {
+              header("location:category.php?category=$cat_id");
+            } else {
+              die("Something went wrong!");
+            }
+          }
+          
+        } else {
+          echo "
+          <span>
+          <a href='?landing_unfeature_post=$post_id' class='btn btn-info' type='submit' name='unfeature_article'>Unfeature article</a>
+          </span>
+          <span>
+          <a href='includes/admin_buttons.php?landing_draft_post=$post_id' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
+          </span>
+          <span>
+          <a href='includes/admin_buttons.php?landing_delete_post=$post_id' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
+          </span>
+          ";
+        }
       } else {
-        echo "
-        <span>
-        <button class='btn btn-success' type='submit' name='feature_article'>Feature article</button>
-        </span>
-        <span>
-        <button class='btn btn-warning' type='submit' name='draft_article'>Draft article</button>
-        </span>
-        <span>
-        <button class='btn btn-danger' type='submit' name='delete_article'>Delete article</button>
-        </span>
-        ";
+        if (isset($_GET["category"])) {
+          $cat_id = $_GET["category"];
+          echo "
+          <span>
+          <a href='../includes/admin_buttons.php?feature_post=$post_id' class='btn btn-success' type='submit' name='feature_article'>Feature article</a>
+          </span>
+          <span>
+          <a href='../includes/admin_buttons.php?draft_post=$post_id&cat_id=$cat_id' class='btn btn-warning' type='submit' name='draft_article'>Draft article</a>
+          </span>
+          <span>
+          <a href='../includes/admin_buttons.php?delete_post=$post_id&cat_id=$cat_id' class='btn btn-danger' type='submit' name='delete_article'>Delete article</a>
+          </span>
+          ";
+        }
+      }
+
+      if (isset($_GET["landing_unfeature_post"])) {
+        $post_id = $_GET["landing_unfeature_post"];
+        $stm = $abc->prepare("UPDATE posts SET post_status = 'Published' WHERE post_id = $post_id");
+
+        if($stm->execute()) {
+          header("location:index.php");
+        } else {
+          die("Something went wrong!");
+        }
       }
     }
   }

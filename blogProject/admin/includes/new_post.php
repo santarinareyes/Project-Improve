@@ -14,10 +14,10 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="new_author">Author</label>
             <input type="text" name="new_author" class="form-control">
-        </div>
+        </div> -->
 
         <div class="form-group">
             <label for="new_status">Post Status</label>

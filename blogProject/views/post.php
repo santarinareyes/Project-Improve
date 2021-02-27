@@ -7,10 +7,6 @@
               <!-- Blog Entries Column -->
               <div class="col-md-8">
 <!-- Display blog posts -->
-<h1 class='page-header'>
-      Page Heading
-      <small>Secondary Text</small>
-      </h1>
 <?php landingPagePosts(0); ?>
 <!-- Display comments -->
 <?php include "../includes/comments.php";?>

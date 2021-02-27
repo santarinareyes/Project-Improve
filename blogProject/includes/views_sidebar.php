@@ -18,22 +18,6 @@
             <!-- /.input-group -->
           </div>
 
-          <!-- Blog Categories Well -->
-          <div class="well">
-            <h4>Blog Categories</h4>
-            <div class="row">
-              <div class="col-lg-12">
-                <ul class="list-unstyled">
-                  <?php
-                  showCategories('category.php');
-                  ?>
-                </ul>
-              </div>
-            </div>
-            <!-- /.row -->
-          </div>
-          <!-- /. well -->
-
           <!-- Side Widget Well -->
           <?php include "../includes/widget.php"; ?>
         </div>

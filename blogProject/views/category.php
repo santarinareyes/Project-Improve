@@ -7,10 +7,7 @@
               <!-- Blog Entries Column -->
               <div class="col-md-8">
 <!-- Display blog posts -->
-<h1 class='page-header'>
-      Category
       <?php displayCat();?>
-      </h1>
 <?php categoryPagePosts(); ?>
 <!-- Pager -->
 <?php include "../includes/pagination.php";?>
