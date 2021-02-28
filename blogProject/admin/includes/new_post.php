@@ -14,11 +14,6 @@
             </select>
         </div>
 
-        <!-- <div class="form-group">
-            <label for="new_author">Author</label>
-            <input type="text" name="new_author" class="form-control">
-        </div> -->
-
         <div class="form-group">
             <label for="new_status">Post Status</label>
             <select name="new_status" class="form-control">
@@ -33,6 +28,18 @@
             <label for="new_image">Select Image</label>
             <input type="file" name="new_image" class="form-control">
         </div>
+            <?php 
+                        if (isset($_GET["not_an_image"])) {
+                            if ($_GET["not_an_image"]) {
+            
+                                echo "
+                                <div class='form-group'>
+                                <strong class='text-danger'>The file is not an image!</strong>
+                                </div>
+                                ";
+                            }
+                        }
+            ?>
 
         <div class="form-group">
             <label for="new_content">Content</label>
