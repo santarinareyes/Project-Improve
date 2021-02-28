@@ -34,11 +34,6 @@
         </div>
 
         <div class="form-group">
-            <label for="new_user_img">Select Image</label>
-            <input type="file" name="new_user_img" class="form-control">
-        </div>
-
-        <div class="form-group">
             <input class="btn btn-primary" type="submit" value="Add User" name="add_user">
         </div>
 

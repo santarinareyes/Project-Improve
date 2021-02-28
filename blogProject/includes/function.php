@@ -556,34 +556,39 @@ function registerAcc()
 
     $check = $abc->query("SELECT username, user_email FROM users WHERE username = '$username' OR user_email = '$email'");
 
-    while ($row = $check->fetch()) {
-      $existing_username = $row['username'];
-      $existing_email = $row['user_email'];
-      if ($existing_username == $username && $existing_email == $email) {
-        echo "<br/><p class='text-danger'>Both Username and Email already exist.</p>";
-      } else if ($existing_email == $email) {
-        echo "<br/><p class='text-danger'>Email already exist.</p>";
-      } else if ($existing_username == $username) {
-        echo "<br/><p class='text-danger'>Username already exsist.</p>";
-      } else {
-        $stm = "INSERT INTO users (username, user_firstname, user_lastname, user_email, user_role, user_created, user_password) ";
-        $stm .= "VALUES (:user, :first, :last, :email, :role, :user_created, :pass)";
-        $stm = $abc->prepare($stm);
-        $stm->bindParam(":user", $username);
-        $stm->bindParam(":first", $firstname);
-        $stm->bindParam(":last", $lastname);
-        $stm->bindParam(":email", $email);
-        $stm->bindParam(":role", $role);
-        $stm->bindParam(":user_created", $created);
-        $stm->bindParam(":pass", $password);
+    if ($check->rowCount() > 0) {
 
-        if ($stm->execute()) {
-          header("location:../index.php");
-        } else {
-          die("Something went wrong");
+      while ($row = $check->fetch()) {
+        $existing_username = $row['username'];
+        $existing_email = $row['user_email'];
+        if ($existing_username == $username && $existing_email == $email) {
+          echo "<br/><p class='text-danger'>Both Username and Email already exist.</p>";
+        } else if ($existing_email == $email) {
+          echo "<br/><p class='text-danger'>Email already exist.</p>";
+        } else if ($existing_username == $username) {
+          echo "<br/><p class='text-danger'>Username already exsist.</p>";
         }
       }
+    } else {
+      $stm = "INSERT INTO users (username, user_firstname, user_lastname, user_email, user_role, user_created, user_password) ";
+      $stm .= "VALUES (:user, :first, :last, :email, :role, :user_created, :pass)";
+      $stm = $abc->prepare($stm);
+      $stm->bindParam(":user", $username);
+      $stm->bindParam(":first", $firstname);
+      $stm->bindParam(":last", $lastname);
+      $stm->bindParam(":email", $email);
+      $stm->bindParam(":role", $role);
+      $stm->bindParam(":user_created", $created);
+      $stm->bindParam(":pass", $password);
+
+      if ($stm->execute()) {
+        header("location:../index.php");
+      } else {
+        die("Something went wrong");
+      }
     }
+      
+
   }
 }
 

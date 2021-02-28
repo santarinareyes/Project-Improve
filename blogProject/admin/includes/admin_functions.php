@@ -67,9 +67,12 @@ function editCategory()
                 $old_dec = encrypt($old_title);
                 $new_dec = encrypt($newTitle);
 
-                $updateTitle = $abc->query("UPDATE menus SET menu_title = '$newTitle' WHERE menu_id = $e_id");
+                $updateTitle = $abc->prepare("UPDATE menus SET menu_title = :newTitle WHERE menu_id = :e_id");
+                $updateTitle->bindParam(":newTitle", $newTitle);
+                $updateTitle->bindParam(":e_id", $e_id);
 
-                if ($updateTitle) {
+
+                if ($updateTitle->execute()) {
                     header("location:?updated=$old_dec?to=$new_dec");
                 }
             } else {
@@ -244,8 +247,18 @@ function newPost()
         }
 
 
-        $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_user_id, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
-
+        $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_user_id, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES (:category, :new_title, :new_author, :post_user, now(), :new_image, :new_content, :new_status, :new_tags, :post_comment_count, :post_view_count)");
+        $new_post->bindParam(":category", $category);
+        $new_post->bindParam(":new_title", $new_title);
+        $new_post->bindParam(":new_author", $new_author);
+        $new_post->bindParam(":post_user", $post_user);
+        $new_post->bindParam(":new_image", $new_image);
+        $new_post->bindParam(":new_content", $new_content);
+        $new_post->bindParam(":new_status", $new_status);
+        $new_post->bindParam(":new_tags", $new_tags);
+        $new_post->bindParam(":post_comment_count", $post_comment_count);
+        $new_post->bindParam(":post_view_count", $post_view_count);
+        
         $new_title_encrypt = encrypt($new_title);
 
         if ($new_post->execute()) {
@@ -351,16 +364,22 @@ function publish_unpublish_btn($status, $post_id)
         $post_status = $_GET["post_status"];
         $update_post_id = $_GET["post_id"];
         if ($post_status === 'Published' || $post_status === 'Featured' || $post_status === 'Unfeatured') {
-            $stm = $abc->prepare("UPDATE posts SET post_status = 'Unpublished' WHERE post_id = $update_post_id");
-
+            $unpublished = 'Unpublished';
+            $stm = $abc->prepare("UPDATE posts SET post_status = :un WHERE post_id = :update_post_id");
+            $stm->bindParam(":un", $unpublished);
+            $stm->bindParam(":update_post_id", $update_post_id);
+            
             if ($stm->execute()) {
                 header("location:posts.php");
             } else {
                 die("Something went wrong!");
             }
         } else {
-            $stm = $abc->prepare("UPDATE posts SET post_status = 'Published' WHERE post_id = $update_post_id");
-
+            $published = 'Published';
+            $stm = $abc->prepare("UPDATE posts SET post_status = :pub WHERE post_id = :update_post_id");
+            $stm->bindParam(":pub", $published);
+            $stm->bindParam(":update_post_id", $update_post_id);
+            
             if ($stm->execute()) {
                 header("location:posts.php");
             } else {
@@ -384,7 +403,10 @@ function feature_unfeature_btn($status, $post_id)
         $post_status = $_GET["post_feature"];
         $update_post_id = $_GET["post_id"];
         if ($post_status === 'Featured') {
-            $stm = $abc->prepare("UPDATE posts SET post_status = 'Published' WHERE post_id = $update_post_id");
+            $published = 'Published';
+            $stm = $abc->prepare("UPDATE posts SET post_status = :pub WHERE post_id = :update_post_id");
+            $stm->bindParam(":pub", $published);
+            $stm->bindParam(":update_post_id", $update_post_id);
 
             if ($stm->execute()) {
                 header("location:posts.php");
@@ -392,7 +414,10 @@ function feature_unfeature_btn($status, $post_id)
                 die("Something went wrong!");
             }
         } else {
-            $stm = $abc->prepare("UPDATE posts SET post_status = 'Featured' WHERE post_id = $update_post_id");
+            $featured = 'Featured';
+            $stm = $abc->prepare("UPDATE posts SET post_status = :feat WHERE post_id = :update_post_id");
+            $stm->bindParam(":feat", $featured);
+            $stm->bindParam(":update_post_id", $update_post_id);
 
             if ($stm->execute()) {
                 header("location:posts.php");
@@ -444,11 +469,6 @@ function editPost()
             </div>
             
             <div class='form-group'>
-            <label for='update_author'>Author</label>
-            <input type='text' name='update_author' class='form-control' value='$ep_author'>
-            </div>
-            
-            <div class='form-group'>
             <label for='update_status'>Post status</label>
             <select class='form-control' name='update_status'>;
             <option value='$ep_status'></option>
@@ -461,8 +481,20 @@ function editPost()
             <div class='form-group'>
             <label for='update_image'>Select Image</label>
             <input type='file' name='update_image' class='form-control'>
-            </div>
-            
+            </div>";
+
+            if (isset($_GET['not_an_image'])) {
+                if ($_GET['not_an_image']) {
+    
+                    echo "
+                    <div class='form-group'>
+                    <strong class='text-danger'>File must be an image (of type PNG, GIF, JPG, JPEG) and max 500kB!</strong>
+                    </div>
+                    ";
+                }
+            }
+
+            echo"
             <div class='form-group'>
             <label for='update_content'>Content</label>
             <textarea name='update_content' class='form-control' rows='10' cols='30' style='resize: none'>$ep_content</textarea>
@@ -486,12 +518,24 @@ function editPost()
             $up_category = $_POST["update_category"];
             $up_author = $_POST["update_author"];
             $up_status = $_POST["update_status"];
+
             $up_image = $_FILES["update_image"]['name'];
+            $up_image_size = $_FILES["update_image"]['size'];
             $up_image_temp = $_FILES["update_image"]['tmp_name'];
+            $filetype = strtolower(pathinfo($up_image, PATHINFO_EXTENSION));
+
             $up_content = $_POST["update_content"];
             $up_tags = $_POST["update_tags"];
 
-            move_uploaded_file($up_image_temp, "../../images/$up_image");
+            if ($up_image_temp) {
+                $check = getimagesize($up_image_temp);
+                if ($check && $up_image_size < 524288 && ($filetype === 'png' || $filetype === 'gif' || $filetype === 'jpg' || $filetype === 'jpeg')) {
+                        move_uploaded_file($up_image_temp, "../../images/$up_image");
+                } else {
+                    header("location:posts.php?action=post_edit&editing=$editThis&not_an_image=1");
+                    die();
+                }
+            }
 
             if (empty($up_image)) {
 
@@ -503,16 +547,22 @@ function editPost()
             }
 
             $updatePost = "UPDATE posts SET ";
-            $updatePost .= "post_menu_id = $up_category, ";
-            $updatePost .= "post_title = '$up_title', ";
-            $updatePost .= "post_author = '$up_author', ";
-            $updatePost .= "post_status = '$up_status', ";
+            $updatePost .= "post_menu_id = :up_category, ";
+            $updatePost .= "post_title = :up_title, ";
+            $updatePost .= "post_status = :up_status, ";
             $updatePost .= "post_date = now(), ";
-            $updatePost .= "post_img = '$up_image', ";
-            $updatePost .= "post_content = '$up_content', ";
-            $updatePost .= "post_tags = '$up_tags' ";
-            $updatePost .= "WHERE post_id = $editThis ";
+            $updatePost .= "post_img = :up_image, ";
+            $updatePost .= "post_content = :post_content, ";
+            $updatePost .= "post_tags = :up_tags ";
+            $updatePost .= "WHERE post_id = :editThis ";
             $updatePost2 = $abc->prepare($updatePost);
+            $updatePost2->bindParam(":up_category", $up_category);
+            $updatePost2->bindParam(":up_title", $up_title);
+            $updatePost2->bindParam(":up_status", $up_status);
+            $updatePost2->bindParam(":up_image", $up_image);
+            $updatePost2->bindParam(":post_content", $post_content);
+            $updatePost2->bindParam(":up_tags", $up_tags);
+            $updatePost2->bindParam(":editThis", $editThis);
 
             if (!$updatePost2->execute()) {
                 die("Something went wrong.");
@@ -571,13 +621,11 @@ function showAllUsers()
         $user_last = $row['user_lastname'];
         $user_email = $row['user_email'];
         $created = $row['user_created'];
-        $user_image = $row['user_image'];
         $user_role = $row['user_role'];
 
         echo "
         <tr>
         <td>$user_id</td>
-        <td><img src='../../images/user_images/$user_image' class='img-responsive' alt='profile-picture' style='max-height: 100px'></td>
         <td>$user_user</td>
         <td>$user_first</td>
         <td>$user_last</td>
@@ -656,12 +704,6 @@ function editUser()
             <input type='password' name='update_password' class='form-control' value='' autocomplete='off'>
             </div>
             
-            <img src='../../images/user_images/$user_image' alt='' width='100'>
-            <div class='form-group'>
-            <label for='update_image'>Select Image</label>
-            <input type='file' name='update_image' class='form-control'>
-            </div>
-            
             <div class='form-group'>
             <input class='btn btn-primary' type='submit' value='Update user' name='u_user'>
             </div>
@@ -677,35 +719,32 @@ function editUser()
             $u_first = $_POST["update_first"];
             $u_last = $_POST["update_last"];
             $u_email = $_POST["update_email"];
-            $u_image = $_FILES["update_image"]["name"];
-            $u_image_temp = $_FILES["update_image"]["tmp_name"];
             $u_password = $_POST["update_password"];
-
-            move_uploaded_file($u_image_temp, "../../images/user_images/$u_image");
-
-            if (empty($u_image)) {
-                $get_old_img = $abc->query("SELECT user_image FROM users WHERE user_id = $user_id");
-
-                while ($rows = $get_old_img->fetch()) {
-                    $u_image = $rows['user_image'];
-                }
-            }
 
             if (!empty($u_password)) {
                 $u_password = password_hash($u_password, PASSWORD_BCRYPT, array('cost' => 10));
-                $stm = $abc->prepare("UPDATE users SET user_password = '$u_password' WHERE user_id = $user_id");
+                $stm = $abc->prepare("UPDATE users SET user_password = :u_password WHERE user_id = :user_id");
+                $stm->bindParam(":u_password", $u_password);
+                $stm->bindParam(":user_id", $user_id);
                 $stm->execute();
             }
 
             $updateUser = "UPDATE users SET ";
-            $updateUser .= "username = '$u_user', ";
-            $updateUser .= "user_role = '$u_role', ";
-            $updateUser .= "user_firstname = '$u_first', ";
-            $updateUser .= "user_lastname = '$u_last', ";
-            $updateUser .= "user_email = '$u_email', ";
-            $updateUser .= "user_image = '$u_image' ";
-            $updateUser .= "WHERE user_id = $user_id";
+            $updateUser .= "username = :u_user, ";
+            $updateUser .= "user_role = :u_role, ";
+            $updateUser .= "user_firstname = :u_first, ";
+            $updateUser .= "user_lastname = :u_last, ";
+            $updateUser .= "user_email = :u_email, ";
+            $updateUser .= "user_image = :u_image ";
+            $updateUser .= "WHERE user_id = :user_id";
             $stm = $abc->prepare("$updateUser");
+            $stm->bindParam(":u_user", $u_user);
+            $stm->bindParam(":u_role", $u_role);
+            $stm->bindParam(":u_first", $u_first);
+            $stm->bindParam(":u_last", $u_last);
+            $stm->bindParam(":u_email", $u_email);
+            $stm->bindParam(":u_image", $u_image);
+            $stm->bindParam(":user_id", $user_id);
 
             if (!$stm->execute()) {
                 die("Something went wrong.");
@@ -730,17 +769,17 @@ function adminNewUser()
         $lastname = $_POST["new_last"];
         $email = $_POST["new_email"];
         $password = $_POST["new_password"];
-        $image = $_FILES['new_user_img']['name'];
-        $temp_image = $_FILES['new_user_img']['tmp_name'];
 
         $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-        move_uploaded_file($temp_image, "../../images/user_images/$image");
-
         $addUser = "INSERT INTO users (username, user_role, user_firstname, user_lastname, user_email, user_password, user_created, user_image) ";
-        $addUser .= "VALUES (:altUser, '$role', '$firstname', '$lastname', '$email', :altPass, now(), '$image')";
+        $addUser .= "VALUES (:altUser, :role, :firstname, :lastname, :email, :altPass, now())";
         $stm = $abc->prepare("$addUser");
         $stm->bindParam(':altPass', $password);
+        $stm->bindParam(':role', $role);
+        $stm->bindParam(':firstname', $firstname);
+        $stm->bindParam(':lastname', $lastname);
+        $stm->bindParam(':email', $email);
         $stm->bindParam(':altUser', $username);
 
         if ($stm->execute()) {
