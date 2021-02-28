@@ -772,15 +772,15 @@ function adminNewUser()
 
         $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-        $addUser = "INSERT INTO users (username, user_role, user_firstname, user_lastname, user_email, user_password, user_created, user_image) ";
+        $addUser = "INSERT INTO users (username, user_role, user_firstname, user_lastname, user_email, user_password, user_created) ";
         $addUser .= "VALUES (:altUser, :role, :firstname, :lastname, :email, :altPass, now())";
         $stm = $abc->prepare("$addUser");
-        $stm->bindParam(':altPass', $password);
+        $stm->bindParam(':altUser', $username);
         $stm->bindParam(':role', $role);
         $stm->bindParam(':firstname', $firstname);
         $stm->bindParam(':lastname', $lastname);
         $stm->bindParam(':email', $email);
-        $stm->bindParam(':altUser', $username);
+        $stm->bindParam(':altPass', $password);
 
         if ($stm->execute()) {
             header("location:users.php");
