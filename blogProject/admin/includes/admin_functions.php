@@ -154,7 +154,67 @@ function newPost()
 {
     global $abc;
 
-    
+    if (isset($_GET["action"]) && $_GET["action"] == 'new_post') {
+        echo "
+        <div class='col-xs-6'>
+        <form action='' method='post' enctype='multipart/form-data'>
+        <div class='form-group'>
+        <label for='new_title'>Title</label>
+        <input type='text' name='new_title' class='form-control'>
+        </div>
+
+        <div class='form-group'>
+        <label for='category'>Category</label>
+        <select class='form-control' name='update_category'>'";
+        displayCategoriesOption();
+        echo "
+        </select>
+        </div>
+
+        <div class='form-group'>
+        <label for='new_status'>Post Status</label>
+        <select name='new_status' class='form-control'>
+        <option value='Draft'>Draft</option>
+        <option value='Published'>Publish</option>
+        <option value='Featured'>Feature</option>
+        </select>
+        </div>
+
+        <div class='form-group'>
+        <label for='new_image'>Select Image</label>
+        <input type='file' name='new_image' class='form-control'>
+        </div>";
+
+        if (isset($_GET['not_an_image'])) {
+            if ($_GET['not_an_image']) {
+
+                echo "
+                <div class='form-group'>
+                <strong class='text-danger'>File must be an image (of type PNG, GIF, JPG, JPEG) and max 500kB! <a href='javascript:history.go(-1)'>Click here to get the previous content.</a></strong>
+                </div>
+                ";
+            }
+        }
+
+        echo "
+        <div class='form-group'>
+        <label for='new_content'>Content</label>
+        <textarea name='new_content' class='form-control' rows='10' cols='30' style='resize: none'></textarea>
+        </div>
+
+        <div class='form-group'>
+        <label for='new_tags'>Tags</label>
+        <input type='text' name='new_tags' class='form-control'>
+        </div>
+
+        <div class='form-group'>
+        <input class='btn btn-primary' type='submit' value='Publish Post' name='add_post'>
+        </div>
+
+        </form>
+        </div>
+        ";
+    }
 
     if (isset($_POST["add_post"])) {
         $new_title = $_POST["new_title"];
@@ -162,8 +222,10 @@ function newPost()
         $new_author = $_SESSION["user_id"];
         $new_status = $_POST["new_status"];
 
-        $new_image = strtolower($_FILES["new_image"]['name']);
-        $new_image_temp = strtolower($_FILES["new_image"]['tmp_name']);
+        $new_image = $_FILES["new_image"]['name'];
+        $new_image_size = $_FILES["new_image"]['size'];
+        $new_image_temp = $_FILES["new_image"]['tmp_name'];
+        $filetype = strtolower(pathinfo($new_image, PATHINFO_EXTENSION));
 
         $new_tags = $_POST["new_tags"];
         $new_content = $_POST["new_content"];
@@ -173,14 +235,13 @@ function newPost()
 
         if ($new_image_temp) {
             $check = getimagesize($new_image_temp);
-            if ($check) {
-                move_uploaded_file($new_image_temp, "../../images/$new_image");
+            if ($check && $new_image_size < 524288 && ($filetype === 'png' || $filetype === 'gif' || $filetype === 'jpg' || $filetype === 'jpeg')) {
+                    move_uploaded_file($new_image_temp, "../../images/$new_image");
             } else {
                 header("location:posts.php?action=new_post&not_an_image=1");
                 die();
             }
         }
-        
 
 
         $new_post = $abc->prepare("INSERT INTO posts (post_menu_id, post_title, post_user_id, post_user, post_date, post_img, post_content, post_status, post_tags, post_comment_count, post_views_count) VALUES ($category, '$new_title', '$new_author', '$post_user', now(), '$new_image', '$new_content', '$new_status', '$new_tags', '$post_comment_count', '$post_view_count')");
@@ -246,7 +307,7 @@ function showAllPosts()
         <td> $vp_tags</td>";
         feature_unfeature_btn($vp_status, $vp_id);
         publish_unpublish_btn($vp_status, $vp_id);
-        echo"
+        echo "
         <td><a href='?action=post_edit&editing=$vp_id'>Edit</a></td>
         <td><a href='?post_delete=$vp_id'>Delete</a></td>
         </tr>
@@ -260,8 +321,8 @@ function showAllPosts()
 
         if ($deleteThis->execute()) {
             $stm = $abc->query("DELETE FROM comments WHERE comment_post_id = $post_delete");
-            
-            if($stm->execute()) {
+
+            if ($stm->execute()) {
                 header("location:posts.php");
             } else {
                 die("Something went wrong.");
@@ -273,14 +334,15 @@ function showAllPosts()
 }
 
 // Display publish/unpublish in CMS posts
-function publish_unpublish_btn($status, $post_id) {
+function publish_unpublish_btn($status, $post_id)
+{
     global $abc;
-    if($status === 'Published' || $status === 'Unfeatured' || $status === 'Featured') {
-        echo"
+    if ($status === 'Published' || $status === 'Unfeatured' || $status === 'Featured') {
+        echo "
         <td><a href='?post_status=$status&post_id=$post_id'>Unpublish</a></td>
         ";
     } else {
-        echo"
+        echo "
         <td><a href='?post_status=$status&post_id=$post_id'>Publish</a></td>
         ";
     }
@@ -290,8 +352,8 @@ function publish_unpublish_btn($status, $post_id) {
         $update_post_id = $_GET["post_id"];
         if ($post_status === 'Published' || $post_status === 'Featured' || $post_status === 'Unfeatured') {
             $stm = $abc->prepare("UPDATE posts SET post_status = 'Unpublished' WHERE post_id = $update_post_id");
-            
-            if($stm->execute()) {
+
+            if ($stm->execute()) {
                 header("location:posts.php");
             } else {
                 die("Something went wrong!");
@@ -309,9 +371,10 @@ function publish_unpublish_btn($status, $post_id) {
 }
 
 // Display feature/unfeature in CMS posts
-function feature_unfeature_btn($status, $post_id) {
+function feature_unfeature_btn($status, $post_id)
+{
     global $abc;
-    if ($status === 'Featured' ) {
+    if ($status === 'Featured') {
         echo "<td><a href='?post_feature=$status&post_id=$post_id'>Unfeature</a></td>";
     } else {
         echo "<td><a href='?post_feature=$status&post_id=$post_id'>Feature</a></td>";
@@ -488,19 +551,20 @@ function categoryName($theId)
         while ($allCat = $getCat->fetch()) {
             $cat_title = $allCat["menu_title"];
             $menu_id = $allCat["menu_id"];
-            
+
             echo "<td>$cat_title</td>";
         }
     }
 }
 
 // View all users from the database and delete users
-function showAllUsers() {
+function showAllUsers()
+{
     global $abc;
-    
+
     $getUsers = $abc->query("SELECT * FROM users");
 
-    while($row = $getUsers->fetch()) {
+    while ($row = $getUsers->fetch()) {
         $user_id = $row['user_id'];
         $user_user = $row['username'];
         $user_first = $row['user_firstname'];
@@ -531,15 +595,15 @@ function showAllUsers() {
 
         $deleteUser = $abc->query("DELETE FROM users WHERE user_id = $user_id");
 
-        if($deleteUser->execute()) {
+        if ($deleteUser->execute()) {
             header("location:users.php");
         }
     }
-    
 }
 
 // Edit users
-function editUser() {
+function editUser()
+{
     global $abc;
 
     if (isset($_GET["user_id"])) {
@@ -607,7 +671,7 @@ function editUser() {
             ";
         }
 
-        if(isset($_POST["u_user"])) {
+        if (isset($_POST["u_user"])) {
             $u_user = $_POST["update_user"];
             $u_role = $_POST["update_role"];
             $u_first = $_POST["update_first"];
@@ -616,23 +680,23 @@ function editUser() {
             $u_image = $_FILES["update_image"]["name"];
             $u_image_temp = $_FILES["update_image"]["tmp_name"];
             $u_password = $_POST["update_password"];
-            
+
             move_uploaded_file($u_image_temp, "../../images/user_images/$u_image");
-            
-            if(empty($u_image)) {
+
+            if (empty($u_image)) {
                 $get_old_img = $abc->query("SELECT user_image FROM users WHERE user_id = $user_id");
-                
-                while($rows = $get_old_img->fetch()) {
+
+                while ($rows = $get_old_img->fetch()) {
                     $u_image = $rows['user_image'];
                 }
             }
-            
-            if(!empty($u_password)) {
+
+            if (!empty($u_password)) {
                 $u_password = password_hash($u_password, PASSWORD_BCRYPT, array('cost' => 10));
                 $stm = $abc->prepare("UPDATE users SET user_password = '$u_password' WHERE user_id = $user_id");
                 $stm->execute();
             }
-            
+
             $updateUser = "UPDATE users SET ";
             $updateUser .= "username = '$u_user', ";
             $updateUser .= "user_role = '$u_role', ";
@@ -655,10 +719,11 @@ function editUser() {
 }
 
 // Create a user from CMS
-function adminNewUser() {
+function adminNewUser()
+{
     global $abc;
 
-    if(isset($_POST["add_user"])) {
+    if (isset($_POST["add_user"])) {
         $username = $_POST["new_user"];
         $role = $_POST["role"];
         $firstname = $_POST["new_first"];
@@ -678,7 +743,7 @@ function adminNewUser() {
         $stm->bindParam(':altPass', $password);
         $stm->bindParam(':altUser', $username);
 
-        if($stm->execute()) {
+        if ($stm->execute()) {
             header("location:users.php");
         } else {
             die("Something went wrong");
@@ -711,7 +776,7 @@ function showAllComments()
         <td> $status</td>
         <td> $date</td>";
         showApproveBtn($comment_id);
-        echo"
+        echo "
         <td><a href='../../views/post.php?reading=$post_id'>Go to article</a></td>
         <td><a href='?comment_delete=$comment_id'>Delete</a></td>
         </tr>
@@ -732,7 +797,7 @@ function showAllComments()
         $comment_id = $_GET["comment_approve"];
 
         $stm = $abc->prepare("UPDATE comments SET comment_status = 'Approved' WHERE comment_id = $comment_id");
-        
+
         if (!$stm->execute()) {
             die("Something went wrong");
         } else {
@@ -742,7 +807,8 @@ function showAllComments()
 }
 
 // Show approve button if comment is not yet approved
-function showApproveBtn($comment_id) {
+function showApproveBtn($comment_id)
+{
     global $abc;
 
     $stm = $abc->query("SELECT * FROM comments where comment_id = $comment_id");
@@ -763,12 +829,13 @@ function showApproveBtn($comment_id) {
 }
 
 // Convert post_id into post_title
-function showArticle($post) {
+function showArticle($post)
+{
     global $abc;
 
     $getPosts = $abc->query("SELECT * FROM posts WHERE post_id = $post");
-    
-    while($row = $getPosts->fetch()) {
+
+    while ($row = $getPosts->fetch()) {
         $post_title = $row['post_title'];
     }
 
@@ -776,14 +843,15 @@ function showArticle($post) {
 }
 
 // Convert user_id into user_title
-function showUser($user) {
+function showUser($user)
+{
     global $abc;
 
     $getUsers = $abc->query("SELECT * FROM users WHERE user_id = $user");
 
     while ($row = $getUsers->fetch()) {
         $username = $row['username'];
-        
+
         echo "<td> $username</td>";
     }
 }

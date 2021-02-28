@@ -1,6 +1,5 @@
 <?php
 include "../includes/admin_header.php";
-newPost();
 ?>
 <div id="wrapper">
       <!-- Navigation -->
