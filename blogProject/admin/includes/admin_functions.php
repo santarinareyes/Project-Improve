@@ -794,7 +794,24 @@ function adminNewUser()
 function showAllComments()
 {
     global $abc;
-    $getComments = $abc->query("SELECT * FROM comments");
+
+    $stm = $abc->query("SELECT * FROM comments");
+    $count = $stm->rowCount();
+    $count = ceil($count/20);
+
+    if(isset($_GET["page"])) {
+        $page = $_GET["page"];
+    } else {
+        $page = '';
+    }
+
+    if($page === 1 || $page === '') {
+        $page_1 = 0;
+    } else {
+        $page_1 = ($page * 20) - 20;
+    }
+
+    $getComments = $abc->query("SELECT * FROM comments LIMIT $page_1, 20");
 
     while ($row = $getComments->fetch()) {
         $comment_id = $row["comment_id"];
@@ -816,31 +833,76 @@ function showAllComments()
         <td> $date</td>";
         showApproveBtn($comment_id);
         echo "
-        <td><a href='../../views/post.php?reading=$post_id'>Go to article</a></td>
-        <td><a href='?comment_delete=$comment_id'>Delete</a></td>
+        <td><a href='../../views/post.php?reading=$post_id'>Go to article</a></td>";
+
+        if (isset($_GET["page"])) {
+            $page = $_GET["page"];
+            echo "
+            <td><a href='?page=$page&comment_delete=$comment_id'>Delete</a></td>
+            ";
+        } else {
+            $page = 1;
+            echo "
+            <td><a href='?page=$page&comment_delete=$comment_id'>Delete</a></td>
+            ";
+        }
+        
+        echo"
         </tr>
         ";
+    }
+
+    echo "
+    <ul class='pager'>";
+    for ($i = 1; $i <= $count; $i++) {
+      if($i == $page) {
+        echo "
+        <li>
+        <a class='active_link' href='comments.php?page=$i'>$i</a>
+        </li>
+        ";
+      } else {
+        echo "
+        <li>
+        <a class='active_link' href='comments.php?page=$i'>$i</a>
+        </li>
+        ";
+      }
     }
 
     if (isset($_GET["comment_delete"])) {
         $comment_id = $_GET["comment_delete"];
 
+        if(isset($_GET["page"])) {
+            $page = $_GET["page"];
+        } else {
+            $page = 1;
+        }
+
         $deleteThis = $abc->query("DELETE FROM comments WHERE comment_id = $comment_id");
 
         if ($deleteThis->execute()) {
-            header("location:comments.php#");
+            header("location:comments.php?page=$page");
+        } else {
+            die("Something went wrong");
         }
     }
 
     if (isset($_GET["comment_approve"])) {
         $comment_id = $_GET["comment_approve"];
 
+        if(isset($_GET["page"])) {
+            $page = $_GET["page"];
+        } else {
+            $page = 1;
+        }
+
         $stm = $abc->prepare("UPDATE comments SET comment_status = 'Approved' WHERE comment_id = $comment_id");
 
         if (!$stm->execute()) {
             die("Something went wrong");
         } else {
-            header("location:comments.php");
+            header("location:comments.php?page=$page");
         }
     }
 }
@@ -855,6 +917,18 @@ function showApproveBtn($comment_id)
     while ($row = $stm->fetch()) {
         $comment_status = $row['comment_status'];
 
+    if(isset($_GET["page"])) {
+        $page = $_GET["page"];
+        if ($comment_status !== 'Approved') {
+            echo "
+            <td><a href='?page=$page&comment_approve=$comment_id#approved$comment_id'>Approve</a></td>
+            ";
+        } else {
+            echo "
+            <td class='danger'></td>
+            ";
+        }
+    } else {
         if ($comment_status !== 'Approved') {
             echo "
             <td><a href='?comment_approve=$comment_id#approved$comment_id'>Approve</a></td>
@@ -864,6 +938,7 @@ function showApproveBtn($comment_id)
             <td class='danger'></td>
             ";
         }
+    }
     }
 }
 
