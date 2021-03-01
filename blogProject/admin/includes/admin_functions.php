@@ -560,7 +560,7 @@ function editPost()
             $updatePost2->bindParam(":up_title", $up_title);
             $updatePost2->bindParam(":up_status", $up_status);
             $updatePost2->bindParam(":up_image", $up_image);
-            $updatePost2->bindParam(":post_content", $post_content);
+            $updatePost2->bindParam(":post_content", $up_content);
             $updatePost2->bindParam(":up_tags", $up_tags);
             $updatePost2->bindParam(":editThis", $editThis);
 
