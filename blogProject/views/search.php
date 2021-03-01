@@ -10,8 +10,8 @@
               <div class="col-md-8">
 <?php search();?>
 
-<!-- Pager -->
-<?php include "../includes/pagination.php";?>
+<!-- Pagination -->
+</div>
 <!-- Blog Sidebar Widgets Column -->
 <?php include "../includes/views_sidebar.php";?>
 </div> <!-- /.row -->

@@ -10,8 +10,8 @@
 <?php landingPagePosts(0); ?>
 <!-- Display comments -->
 <?php include "../includes/comments.php";?>
-<!-- Pager -->
-<?php include "../includes/pagination.php";?>
+<!-- Pagination -->
+</div>
 <!-- Blog Sidebar Widgets Column -->
 <?php include "../includes/views_sidebar.php";?>
 </div> <!-- /.row -->

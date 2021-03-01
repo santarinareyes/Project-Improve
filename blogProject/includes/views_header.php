@@ -15,6 +15,7 @@
 
     <!-- Custom CSS -->
     <link href="../css/blog-home.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/styles.css">
 
     <script src="../js/jquery.js"></script>
     <script src="../js/bootstrap.min.js"></script>

@@ -8,8 +8,8 @@
               <div class="col-md-8">
 <!-- Display blog posts -->
 <?php landingPagePosts(1); ?>
-<!-- Pager -->
-<?php include "includes/pagination.php";?>
+<!-- Pagination -->
+</div>
 <!-- Sidebar Widgets Column -->
 <?php include "includes/sidebar.php";?>
 

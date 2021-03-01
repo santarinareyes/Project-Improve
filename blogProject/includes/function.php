@@ -268,7 +268,24 @@ function landingPagePosts($readmore)
     <small>Featured articles</small>
     </h1>
     ";
-    $dbposts = $abc->query("SELECT * FROM posts WHERE post_status = 'Published' OR post_status = 'Featured'");
+
+    $stm = $abc->query("SELECT * FROM posts");
+    $stm->fetch();
+    $count = ceil($stm->rowCount() / 3);
+
+    if(isset($_GET["page"])) {      
+      $page = $_GET["page"];
+    } else {
+      $page = '';
+    }
+
+    if($page === '' || $page === 1) {
+      $page_1 = 0;
+    } else {
+      $page_1 = ($page * 3) - 3;
+    }
+
+    $dbposts = $abc->query("SELECT * FROM posts WHERE post_status = 'Published' OR post_status = 'Featured' LIMIT $page_1, 3");
 
     while ($posts = $dbposts->fetch()) {
       $ptitle = $posts["post_title"];
@@ -311,6 +328,24 @@ function landingPagePosts($readmore)
         adminArticleBtn($pstatus, $pid);
         echo "
         <hr />
+        </ul>
+        ";
+      }
+    }
+    echo "
+    <ul class='pager'>";
+    for ($i = 1; $i <= $count; $i++) {
+      if($i == $page) {
+        echo "
+        <li>
+        <a class='active_link' href='?page=$i'>$i</a>
+        </li>
+        ";
+      } else {
+        echo "
+        <li>
+        <a href='?page=$i'>$i</a>
+        </li>
         ";
       }
     }
@@ -332,7 +367,23 @@ function categoryPagePosts()
   if (isset($_GET["category"])) {
     $category_id = $_GET["category"];
 
-    $dbposts = $abc->query("SELECT * FROM posts WHERE post_menu_id = $category_id AND (post_status = 'Published' OR post_status = 'Featured')");
+    $stm = $abc->query("SELECT * FROM posts");
+    $stm->fetch();
+    $count = ceil($stm->rowCount() / 3);
+
+    if(isset($_GET["page"])) {      
+      $page = $_GET["page"];
+    } else {
+      $page = '';
+    }
+
+    if($page === '' || $page === 1) {
+      $page_1 = 0;
+    } else {
+      $page_1 = ($page * 3) - 3;
+    }
+
+    $dbposts = $abc->query("SELECT * FROM posts WHERE post_menu_id = $category_id AND (post_status = 'Published' OR post_status = 'Featured') LIMIT $page_1, 3");
 
     while ($posts = $dbposts->fetch()) {
       $pstatus = $posts["post_status"];
@@ -377,6 +428,25 @@ function categoryPagePosts()
       <hr />
       ";
     }
+
+    echo "
+    <ul class='pager'>";
+    for ($i = 1; $i <= $count; $i++) {
+      if($i == $page) {
+        echo "
+        <li>
+        <a class='active_link' href='category.php?category=$category_id&page=$i'>$i</a>
+        </li>
+        ";
+      } else {
+        echo "
+        <li>
+        <a href='category.php?category=$category_id&page=$i'>$i</a>
+        </li>
+        ";
+      }
+    }
+
   }
 } else {
   echo "

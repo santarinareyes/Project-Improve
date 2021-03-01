@@ -9,8 +9,8 @@
 <!-- Display blog posts -->
       <?php displayCat();?>
 <?php categoryPagePosts(); ?>
-<!-- Pager -->
-<?php include "../includes/pagination.php";?>
+<!-- Pagination -->
+</div>
 <!-- Blog Sidebar Widgets Column -->
 <?php include "../includes/views_sidebar.php";?>
 </div> <!-- /.row -->
