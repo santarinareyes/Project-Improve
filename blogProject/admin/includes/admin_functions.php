@@ -239,7 +239,7 @@ function newPost()
         if ($new_image_temp) {
             $check = getimagesize($new_image_temp);
             if ($check && $new_image_size < 524288 && ($filetype === 'png' || $filetype === 'gif' || $filetype === 'jpg' || $filetype === 'jpeg')) {
-                    move_uploaded_file($new_image_temp, "../../images/$new_image");
+                move_uploaded_file($new_image_temp, "../../images/$new_image");
             } else {
                 header("location:posts.php?action=new_post&not_an_image=1");
                 die();
@@ -258,7 +258,7 @@ function newPost()
         $new_post->bindParam(":new_tags", $new_tags);
         $new_post->bindParam(":post_comment_count", $post_comment_count);
         $new_post->bindParam(":post_view_count", $post_view_count);
-        
+
         $new_title_encrypt = encrypt($new_title);
 
         if ($new_post->execute()) {
@@ -368,7 +368,7 @@ function publish_unpublish_btn($status, $post_id)
             $stm = $abc->prepare("UPDATE posts SET post_status = :un WHERE post_id = :update_post_id");
             $stm->bindParam(":un", $unpublished);
             $stm->bindParam(":update_post_id", $update_post_id);
-            
+
             if ($stm->execute()) {
                 header("location:posts.php");
             } else {
@@ -379,7 +379,7 @@ function publish_unpublish_btn($status, $post_id)
             $stm = $abc->prepare("UPDATE posts SET post_status = :pub WHERE post_id = :update_post_id");
             $stm->bindParam(":pub", $published);
             $stm->bindParam(":update_post_id", $update_post_id);
-            
+
             if ($stm->execute()) {
                 header("location:posts.php");
             } else {
@@ -485,7 +485,7 @@ function editPost()
 
             if (isset($_GET['not_an_image'])) {
                 if ($_GET['not_an_image']) {
-    
+
                     echo "
                     <div class='form-group'>
                     <strong class='text-danger'>File must be an image (of type PNG, GIF, JPG, JPEG) and max 500kB!</strong>
@@ -494,7 +494,7 @@ function editPost()
                 }
             }
 
-            echo"
+            echo "
             <div class='form-group'>
             <label for='update_content'>Content</label>
             <textarea name='update_content' class='form-control' rows='10' cols='30' style='resize: none'>$ep_content</textarea>
@@ -530,7 +530,7 @@ function editPost()
             if ($up_image_temp) {
                 $check = getimagesize($up_image_temp);
                 if ($check && $up_image_size < 524288 && ($filetype === 'png' || $filetype === 'gif' || $filetype === 'jpg' || $filetype === 'jpeg')) {
-                        move_uploaded_file($up_image_temp, "../../images/$up_image");
+                    move_uploaded_file($up_image_temp, "../../images/$up_image");
                 } else {
                     header("location:posts.php?action=post_edit&editing=$editThis&not_an_image=1");
                     die();
@@ -797,15 +797,15 @@ function showAllComments()
 
     $stm = $abc->query("SELECT * FROM comments");
     $count = $stm->rowCount();
-    $count = ceil($count/20);
+    $count = ceil($count / 20);
 
-    if(isset($_GET["page"])) {
+    if (isset($_GET["page"])) {
         $page = $_GET["page"];
     } else {
         $page = '';
     }
 
-    if($page === 1 || $page === '') {
+    if ($page === 1 || $page === '') {
         $page_1 = 0;
     } else {
         $page_1 = ($page * 20) - 20;
@@ -846,8 +846,8 @@ function showAllComments()
             <td><a href='?page=$page&comment_delete=$comment_id'>Delete</a></td>
             ";
         }
-        
-        echo"
+
+        echo "
         </tr>
         ";
     }
@@ -855,25 +855,25 @@ function showAllComments()
     echo "
     <ul class='pager'>";
     for ($i = 1; $i <= $count; $i++) {
-      if($i == $page) {
-        echo "
+        if ($i == $page) {
+            echo "
         <li>
         <a class='active_link' href='comments.php?page=$i'>$i</a>
         </li>
         ";
-      } else {
-        echo "
+        } else {
+            echo "
         <li>
         <a class='active_link' href='comments.php?page=$i'>$i</a>
         </li>
         ";
-      }
+        }
     }
 
     if (isset($_GET["comment_delete"])) {
         $comment_id = $_GET["comment_delete"];
 
-        if(isset($_GET["page"])) {
+        if (isset($_GET["page"])) {
             $page = $_GET["page"];
         } else {
             $page = 1;
@@ -891,7 +891,7 @@ function showAllComments()
     if (isset($_GET["comment_approve"])) {
         $comment_id = $_GET["comment_approve"];
 
-        if(isset($_GET["page"])) {
+        if (isset($_GET["page"])) {
             $page = $_GET["page"];
         } else {
             $page = 1;
@@ -917,28 +917,28 @@ function showApproveBtn($comment_id)
     while ($row = $stm->fetch()) {
         $comment_status = $row['comment_status'];
 
-    if(isset($_GET["page"])) {
-        $page = $_GET["page"];
-        if ($comment_status !== 'Approved') {
-            echo "
+        if (isset($_GET["page"])) {
+            $page = $_GET["page"];
+            if ($comment_status !== 'Approved') {
+                echo "
             <td><a href='?page=$page&comment_approve=$comment_id#approved$comment_id'>Approve</a></td>
             ";
-        } else {
-            echo "
+            } else {
+                echo "
             <td class='danger'></td>
             ";
-        }
-    } else {
-        if ($comment_status !== 'Approved') {
-            echo "
+            }
+        } else {
+            if ($comment_status !== 'Approved') {
+                echo "
             <td><a href='?comment_approve=$comment_id#approved$comment_id'>Approve</a></td>
             ";
-        } else {
-            echo "
+            } else {
+                echo "
             <td class='danger'></td>
             ";
+            }
         }
-    }
     }
 }
 

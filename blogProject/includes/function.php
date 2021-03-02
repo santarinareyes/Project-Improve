@@ -269,7 +269,7 @@ function landingPagePosts($readmore)
     </h1>
     ";
 
-    $stm = $abc->query("SELECT * FROM posts");
+    $stm = $abc->query("SELECT * FROM posts WHERE post_status = 'Featured'");
     $stm->fetch();
     $count = ceil($stm->rowCount() / 3);
 
